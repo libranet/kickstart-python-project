@@ -1,5 +1,5 @@
-autoadd_bindir
-==============
+Kickstart Python Porject
+========================
 
 .. toctree::
     :maxdepth: 2
@@ -17,11 +17,6 @@ autoadd_bindir
     contributing
     code-of-conduct
 
-.. toctree::
-    :maxdepth: 2
-    :caption: Modules
-
-    modules/autoadd_bindir/index.rst
 
 Indices and tables
 ==================
