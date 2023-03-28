@@ -1,0 +1,134 @@
+# Configuration-file for pre-commit
+# References:
+#   - Official docs: https://pre-commit.com
+#   - for more hooks: https://pre-commit.com/hooks.html
+#
+# To avoid duplication, we try to configure the tools in pyproject.toml as much as possible.
+#
+# Usage:
+#   > pre-commit install
+#   > pre-commit install hooks  -f
+#   > pre-commit autoupdate
+#   > pre-commit run --all-files
+
+repos:
+  - repo: local
+    hooks:
+      # docs: https://black.readthedocs.io/en/stable/integrations/source_version_control.html
+      - id: black
+        name: Black
+        entry: black
+        args: ["--config=pyproject.toml"]
+        # "--check",  # don't write the files back, just return the status.
+        language: system # use executable found on path
+        require_serial: true
+        types: [python] # check only specific filetypes
+
+  # docs: https://flake8.pycqa.org/en/latest/user/using-hooks.html
+  - repo: local
+    hooks:
+      - id: flake8
+        name: Flake8
+        entry: flake8
+        language: system
+        require_serial: true
+        types: [python]
+
+  # docs: https://pycqa.github.io/isort/docs/configuration/pre-commit.html
+  - repo: local
+    hooks:
+      - id: isort
+        name: Isort
+        entry: isort
+        args: ["--settings-path=pyproject.toml"] # "--filter-files"
+        language: system
+        require_serial: true
+        types: [python] # pyi? cython?
+
+  - repo: local
+    hooks:
+      - id: ruff
+        name: Ruff
+        entry: ruff
+        args: [--fix, --show-fixes]
+        language: system
+        types: [python]
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: Mypy
+        entry: mypy
+        language: system
+        types: [python]
+
+  - repo: local
+    hooks:
+      - id: bandit
+        name: Bandit
+        entry: bandit
+        language: system
+        types: [python]
+        # see https://github.com/PyCQA/bandit/issues/318
+        args: ["--configfile pyproject.toml", "--baseline etc/bandit-baseline.json"]
+
+  # The following are all pre-commit-hooks
+  # docs: https://github.com/pre-commit/pre-commit-hooks
+
+  - repo: local
+    hooks:
+      - id: debug-statements
+        name: Check debug statements
+        entry: debug-statement-hook
+        language: system
+        types: [python]
+
+  - repo: local
+    hooks:
+      - id: check-toml
+        name: Check Toml
+        entry: check-toml
+        language: system
+        types: [toml]
+
+  - repo: local
+    hooks:
+      - id: check-yaml
+        name: Check Yaml
+        entry: check-yaml
+        language: system
+        types: [yaml]
+
+  - repo: local
+    hooks:
+      - id: end-of-file-fixer
+        name: Fix End of Files
+        entry: end-of-file-fixer
+        language: system
+        stages: [commit, push, manual]
+        types: [python] # text too broad?
+
+  - repo: local
+    hooks:
+      - id: fix-encoding-pragma
+        name: Fix encoding pragma
+        entry: fix-encoding-pragma
+        language: system
+        types: [python]
+
+  - repo: local
+    hooks:
+      - id: mixed-line-ending
+        name: Fix mixed line-endings
+        entry: mixed-line-ending
+        language: system
+        types: [text]
+
+  - repo: local
+    hooks:
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespace # fix-trailing-whitespace
+        entry: trailing-whitespace-fixer
+        language: system
+        stages: [commit, push, manual]
+        types: [text]

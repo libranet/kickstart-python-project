@@ -1,0 +1,314 @@
+# This is a comment.
+# syntax-documentation:
+#  - https://python-poetry.org/docs/pyproject
+#  - https://flit.readthedocs.io/en/latest/pyproject_toml.html
+#
+# NOTE: you have to use single-quoted strings in TOML for regular expressions.
+# It's the equivalent of r-strings in Python.  Multiline strings are treated as
+# verbose regular expressions by Black.  Use [ ] to denote a significant space
+# character.
+#
+#   > poetry install
+#   > poetry install --only docs
+#   > poetry install (--with|--without) (docs|dev|ipython|profiling|testing|typing)
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.bandit]
+# bandit does not use this config by default.
+# You need to invoke "bandit --configfile pyproject.toml"
+# see https://github.com/PyCQA/bandit/issues/318"
+baseline = "etc/bandit-baseline.json"
+exclude_dirs = [".venv", "var"]
+recursive = true
+skips = ["B101"]
+targets = ["src", "tests"]
+
+
+[tool.black]
+line-length = 120
+target_version = ["py310"]
+include = '\.py$'          # regex -> single-quotes
+
+
+[tool.coverage.html]
+directory = "var/coverage/html"
+
+[tool.coverage.xml]
+output = "var/coverage/coverage.xml"
+
+# [tool.coverage.paths]
+# source = ["src", "*/site-packages"]
+# tests = ["tests", "*/tests"]
+
+[tool.coverage.report]
+# cfr. https://coverage.readthedocs.io/en/coverage-4.2/excluding.html
+exclude_lines = [
+    "pragma: no cover",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+]
+# fail_under = 100
+include = ["src/*"]
+# show_missing = true
+
+[tool.coverage.run]
+branch = true
+data_file = "var/coverage/coverage.db"
+source = ["{{cookiecutter.package_name}}", "tests"]
+
+
+[tool.flake8]
+max_line_length = 121
+per_file_ignores = [
+    "tests/test_entrypoints.py:B011", # B011: Do not call assert False
+    "__init__.py:F401",               # F401: imported but unused
+]
+
+
+[tool.isort]
+include_trailing_comma = true # corresponds to -tc flag
+known_third_party = []
+line_length = 120             # corresponds to -w  flag
+multi_line_output = 3         # corresponds to -m  flag
+skip_glob = '^((?!py$).)*$'   # isort all Python files
+# profile = "black"
+# force_single_line = true
+# lines_after_imports = 2
+
+
+[tool.mypy]
+# cfr https://mypy.readthedocs.io/en/stable/config_file.html#using-a-pyproject-toml-file
+cache_dir = "var/cache/mypy"
+check_untyped_defs = true
+exclude = "^bin/"
+ignore_missing_imports = true
+mypy_path = ["src"]
+
+# strict = true
+# warn_unreachable = true
+# pretty = true
+# show_column_numbers = true
+# show_error_context = true
+
+
+[tool.nox]
+envdir = "var/cache/nox"
+
+
+[tool.poetry]
+{% if cookiecutter.package_name != cookiecutter.project_name.replace('-', '_') -%}{% endif -%}
+name = "{{cookiecutter.project_name}}"
+version = "{{cookiecutter.version}}"
+license = "{{cookiecutter.license}}"
+description = "{{cookiecutter.friendly_name}}"
+readme = "docs/readme.md"
+authors = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
+maintainers = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
+homepage = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
+repository = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
+documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"
+keywords = []
+packages = [{ include = "{{cookiecutter.package_name}}", from = "src" }]
+classifiers = [
+    "{{cookiecutter.development_status}}",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Typing :: Typed",
+]
+
+
+[tool.poetry.dependencies]
+python = ">=3.9.0,<4.0"
+click = ">=8.0.1"
+python-dotenv = ">=1.0.0"
+# sitecustomize-entrypoints = ">=0.1.0"
+autoread_dotenv = ">=0.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+# poetry install --with | --without dev
+bandit = ">=1.7.5"
+black = { version = ">=22.1.0", allow-prereleases = true }
+flake8 = ">=4.0.1"
+flake8-bugbear = ">=23.2.13"
+flake8-docstrings = ">=1.6.0"
+flake8-pyproject = ">=1.2.2"
+flake8-rst-docstrings = ">=0.2.5"
+isort = ">=5.10.1"
+pep8-naming = ">=0.12.1"
+pre-commit = ">=2.14.1"
+pre-commit-hooks = ">=4.1.0"
+pylint = ">=2.12.2"
+ruff = ">=0.0.254"
+safety = ">=1.10.3"
+# Pygments = ">=2.10.0"
+# darglint = ">=1.8.1"
+# pyupgrade = ">=2.29.1"
+# typeguard = ">=2.13.3"
+
+[tool.poetry.group.dist.dependencies]
+pyroma = ">=4.2"
+twine = ">=4.0.2"
+
+[tool.poetry.group.docs.dependencies]
+# poetry install --with | --without docs
+autoapi = ">=2.0.1"
+# furo = ">=2021.11.12"
+markupsafe = ">=2.1.2"
+myst-parser = ">=1.0.0"
+# myst-parser = {version = ">=0.16.1"}
+recommonmark = ">=0.7.1"
+Sphinx = ">=4.4.0"
+sphinx-autoapi = ">=1.8.4"
+# sphinx-autobuild = ">=2021.3.14"
+# sphinx-click = ">=3.0.2"
+sphinx-rtd-theme = ">=1.0.0"
+
+
+[tool.poetry.group.ipython.dependencies]
+# poetry install --with | --without ipython
+ipdb = ">=0.13.9"
+ipython = ">=8.4.0"
+
+[tool.poetry.group.profiling.dependencies]
+# poetry install --with | --without profiling
+importtime-waterfall = ">=1.0.0"
+tuna = ">=0.5.11"
+
+[tool.poetry.group.testing.dependencies]
+# poetry install --with | --without testing
+coverage = { extras = ["toml"], version = ">=6.2" }
+nox = ">=2022.11.21"
+nox-poetry = ">=1.0.2"
+pytest = ">=7.0.1"
+pytest-cov = ">=3.0.0"
+tox = ">=4.4.8"
+# xdoctest = { extras = ["colors"], version = ">=0.15.10" }
+
+
+[tool.poetry.group.typing.dependencies]
+lxml = { version = ">=4.9.2", optional = true, allow-prereleases = false } # mypy coverage-report
+mypy = ">=0.931"
+
+
+[tool.poetry.scripts]
+{{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.__main__:main"
+
+
+[tool.poetry.urls]
+# "Bug Tracker" = "https://github.com/Libranet/autoread_dotenv/issues"
+Issues = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues"
+Changelog = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
+
+
+[tool.poetry2conda]
+# https://pypi.org/project/poetry2conda/
+# https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf
+name = "conda-base"
+
+
+[tool.poetry-dynamic-versioning]
+# cfr https://github.com/mtkennerly/poetry-dynamic-versioning
+enable = true
+vcs = "git"
+style = "semver"
+
+[tool.poetry-dynamic-versioning.substitution]
+files = [
+    "src/autoread_dotenv/__init__.py",
+    "src/*/__version__.py",
+    "docs/changes.rst",
+]
+
+
+[tool.poetry.plugins] # Optional super table
+
+[tool.poetry.plugins."sitecustomize"]
+# https://python-poetry.org/docs/pyproject/#plugins
+# https://github.com/Darsstar/sitecustomize-entrypoints/blob/main/src/sitecustomize/__init__.py
+autoread_dotenv = "autoread_dotenv:entrypoint"
+
+[tool.poetry-release]
+release-replacements = [
+    { file = "docs/changes.rst", pattern = "TBD \\(Unreleased\\)", replace = "{version} \\({date}\\)" },
+    { file = "src/autoread_dotenv/__init__.py", pattern = '__version__ = "{version}"', replace = '__version__ = "{next_version}"' },
+    # { file="CHANGELOG.md", pattern="\\(https://semver.org/spec/v2.0.0.html\\).", replace="(https://semver.org/spec/v20.0.html).\n\n## [Unreleased]"},
+]
+disable-push = false
+disable-tag = false
+disable-dev = false
+release-commit-message = "Release {package_name} {version}"
+post-release-commit-message = "Start next development iteration {next_version}"
+tag-name = "{version}"
+sign-tag = false
+sign-commit = false
+
+
+[tool.pylint.format]
+max-line-length = 120
+good-names = [
+    "foo", # dummy variable
+    "i",   # counter in loop
+    "ok",  # status
+]
+
+[tool.pylint.messages_control]
+disable = [
+    "C0116", # missing-function-docstring
+]
+
+[tool.pytest.ini_options]
+cache_dir = "var/cache/pytest"
+log_cli = false                   # enable to show log-output
+log_cli_level = "NOTSET"
+filterwarnings = []
+markers = ["unit", "integration"]
+testpaths = ["tests"]
+# the junit-report is used to report coverage in gitlab
+addopts = "--color=yes --junit-xml='var/coverage/pytest.xml'"
+
+
+# [tool.tox.legacy_tox_ini]
+# # envlist = ["py38", "py39", "py310", "py311"]
+# # isolated_build = true
+# toxworkdir = "var/cache/tox"
+
+
+[tool.tox]
+# see https://tox.wiki/en/3.5.0/example/basic.html#pyproject-toml-tox-legacy-ini
+legacy_tox_ini = """
+[tox]
+envlist = py{39,310,311}
+# envlist = [py39, py310, py311]
+isolated_build = True
+toxworkdir = var/cache/tox
+
+[testenv]
+allowlist_externals =
+    make
+    poetry
+skip_install = true
+commands =
+    make install
+    pytest --pdb --exitfirst
+"""
+
+
+[tool.ruff]
+# https://beta.ruff.rs/docs/configuration/
+cache-dir = "var/cache/ruff"
+line-length = 120
