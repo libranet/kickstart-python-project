@@ -3,8 +3,10 @@
 
 
 # Overview
+Cookiecutter is a tool to create projects from project-templates, e.g. Python package projects.
+**kickstart-python-project** is a cookiecutter-template to generate
+the file- and directory structure for a python-base project, according to Libranet coding- and project conventions.
 
-Write me.
 
 ## Installation
 
