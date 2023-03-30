@@ -27,13 +27,13 @@ permissions:
 #
 # https://docs.github.com/en/actions/using-jobs/using-concurrency
 concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+    group: ${{"{{"}} github.workflow{{"}}"}}-${{"{{"}} github.ref{{"}}"}}
+    cancel-in-progress: ${{"{{"}} github.event_name == 'pull_request'{{"}}"}}
 
 jobs:
     python-tests:
         name: Python tests
-        runs-on: ${{ matrix.os }}
+        runs-on: ${{"{{"}} matrix.os{{"}}"}}
         timeout-minutes: 10
 
         strategy:
@@ -58,16 +58,16 @@ jobs:
                   persist-credentials: false
                   fetch-depth: 0
 
-            - name: Set up Python ${{ matrix.python-version }}
+            - name: Set up Python ${{"{{"}} matrix.python-version{{"}}"}}
               uses: actions/setup-python@v4
               with:
-                  python-version: ${{ matrix.python-version }}
+                  python-version: ${{"{{"}} matrix.python-version{{"}}"}}
                   # TODO: This appears to require poetry to be installed before usage
                   # cache: "poetry"
 
             - name: Set up Poetry
               run: |
-                  pip install poetry==${{ env.POETRY_VERSION }}
+                  pip install poetry==${{"{{"}} env.POETRY_VERSION{{"}}"}}
 
             - name: Install packages
               run: |
@@ -85,5 +85,5 @@ jobs:
                   # files: var/coverage/coverage.xml, # optional
                   directory: var/coverage
                   flags: unittests # optional
-                  token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+                  token: ${{"{{"}} secrets.CODECOV_TOKEN{{"}}"}} # not required for public repos
                   verbose: true # optional (default = false)
