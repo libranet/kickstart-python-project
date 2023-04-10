@@ -30,7 +30,7 @@ targets = ["src", "tests"]
 
 [tool.black]
 line-length = 120
-target_version = ["py310"]
+target_version = ["py311"]
 include = '\.py$'          # regex -> single-quotes
 
 
@@ -106,7 +106,7 @@ envdir = "var/cache/nox"
 name = "{{cookiecutter.project_name}}"
 version = "{{cookiecutter.version}}"
 license = "{{cookiecutter.license}}"
-description = "{{cookiecutter.friendly_name}}"
+description = "{{cookiecutter.description}}"
 readme = "docs/readme.md"
 authors = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
 maintainers = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
@@ -125,7 +125,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: {{cookiecutter.minimum_python}}",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries",
@@ -135,11 +135,13 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-python = ">=3.9.0,<4.0"
+python = ">={{cookiecutter.minimum_python}},<4.0"
 click = ">=8.0.1"
-python-dotenv = ">=1.0.0"
-# sitecustomize-entrypoints = ">=0.1.0"
 autoread_dotenv = ">=0.0.0"
+libranet_logging = ">=0.0.0"
+# python-dotenv = ">=1.0.0"
+# sitecustomize-entrypoints = ">=0.1.0"
+typer = ">=0.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -168,7 +170,6 @@ pyroma = ">=4.2"
 twine = ">=4.0.2"
 
 [tool.poetry.group.docs.dependencies]
-# poetry install --with | --without docs
 autoapi = ">=2.0.1"
 # furo = ">=2021.11.12"
 markupsafe = ">=2.1.2"
@@ -183,25 +184,22 @@ sphinx-rtd-theme = ">=1.0.0"
 
 
 [tool.poetry.group.ipython.dependencies]
-# poetry install --with | --without ipython
 ipdb = ">=0.13.9"
 ipython = ">=8.4.0"
 
 [tool.poetry.group.profiling.dependencies]
-# poetry install --with | --without profiling
 importtime-waterfall = ">=1.0.0"
 tuna = ">=0.5.11"
 
 [tool.poetry.group.testing.dependencies]
-# poetry install --with | --without testing
 coverage = { extras = ["toml"], version = ">=6.2" }
 nox = ">=2022.11.21"
 nox-poetry = ">=1.0.2"
 pytest = ">=7.0.1"
+pytest-codecov = ">=0.5.1"
 pytest-cov = ">=3.0.0"
 tox = ">=4.4.8"
 # xdoctest = { extras = ["colors"], version = ">=0.15.10" }
-
 
 [tool.poetry.group.typing.dependencies]
 lxml = { version = ">=4.9.2", optional = true, allow-prereleases = false } # mypy coverage-report
@@ -218,10 +216,10 @@ Issues = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project
 Changelog = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
 
 
-[tool.poetry2conda]
-# https://pypi.org/project/poetry2conda/
-# https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf
-name = "conda-base"
+# [tool.poetry2conda]
+# # https://pypi.org/project/poetry2conda/
+# # https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf
+# name = "conda-base"
 
 
 [tool.poetry-dynamic-versioning]

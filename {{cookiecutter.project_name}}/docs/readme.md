@@ -1,4 +1,4 @@
-# {{ cookiecutter.friendly_name }}
+# {{ cookiecutter.project_name }}
 
 [![PyPI](https://img.shields.io/pypi/v/{{cookiecutter.project_name}}.svg)][pypi status]
 [![Status](https://img.shields.io/pypi/status/{{cookiecutter.project_name}}.svg)][pypi status]
@@ -29,7 +29,7 @@
 
 ## Installation
 
-You can install _{{cookiecutter.friendly_name}}_ via [pip] from [PyPI]:
+You can install _{{cookiecutter.package_name}}_ via [pip] from [PyPI]:
 
 ```console
 $ pip install {{cookiecutter.project_name}}
@@ -47,7 +47,7 @@ To learn more, see the [Contributor Guide].
 ## License
 
 Distributed under the terms of the [{{cookiecutter.license.replace("-", " ")}} license][license],
-_{{cookiecutter.friendly_name}}_ is free and open source software.
+_{{cookiecutter.project_name}}_ is free and open source software.
 
 ## Issues
 

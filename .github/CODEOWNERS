@@ -12,4 +12,6 @@
 # These will be requested for review when someone opens a pull request.
 
 # * @WouterVH  # via github-username
-* wouter@libranet.eu  # via email assocciated with a github-username
+
+# via email assocciated with a github-username
+* wouter@libranet.eu

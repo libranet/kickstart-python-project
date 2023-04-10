@@ -1,5 +1,8 @@
 # See ../makefile
 
+
+REP_URL := "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
+
 .PHONY: git-init  ## initialize  new git-repo
 git-init:
 	git init

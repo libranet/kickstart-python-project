@@ -42,5 +42,5 @@
 # exclude toplevel var-dir
 /var/
 
-# excluded generated python-files Byte-compiled / optimized / DLL files
+# excluded generated python-files
 __pycache__/
