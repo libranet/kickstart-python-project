@@ -207,7 +207,7 @@ mypy = ">=0.931"
 
 
 [tool.poetry.scripts]
-{{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.__main__:main"
+{{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
 
 
 [tool.poetry.urls]

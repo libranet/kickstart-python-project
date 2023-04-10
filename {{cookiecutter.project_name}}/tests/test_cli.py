@@ -1,15 +1,10 @@
 """Tests for module {{cookiecutter.package_name}}.cli."""
 import pytest
 
-from click.testing import CliRunner
+from typer.testing import CliRunner
 
-from {{cookiecutter.package_name}} import cli
+from {{cookiecutter.package_name}}.cli import app
 
-
-# @pytest.fixture
-# def runner() -> CliRunner:
-#     """Fixture for invoking command-line interfaces."""
-#     return CliRunner()
 
 
 # def test_main_succeeds(runner: CliRunner) -> None:
@@ -20,15 +15,21 @@ from {{cookiecutter.package_name}} import cli
 
 
 def test_cli():
-    # Your test setup code goes here, if any
 
     # Invoke the main() function
     result = CliRunner().invoke(main)
+
+    assert result.output.strip() == "{{cookiecutter.package_name}}."
+
+
+
+
+
+def test_app_version(cli_runner):
+    result = cli_runner.invoke(app, ["--version"])
 
     # Assert that the command exited successfully
     assert result.exit_code == 0
 
     # Assert that the output is what we expect
-    assert result.output.strip() == "{{cookiecutter.package_name}}."
-
-    # Your test teardown code goes here, if any
+    assert "Hello Camila" in result.stdout
