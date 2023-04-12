@@ -189,6 +189,7 @@ ipython = ">=8.4.0"
 
 [tool.poetry.group.profiling.dependencies]
 importtime-waterfall = ">=1.0.0"
+pyinstrument = ">=4.4.0"
 tuna = ">=0.5.11"
 
 [tool.poetry.group.testing.dependencies]
