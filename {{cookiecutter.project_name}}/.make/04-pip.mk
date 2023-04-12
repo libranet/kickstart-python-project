@@ -11,6 +11,6 @@ pip-which:
 	@ which pip
 
 
-.PHONY: pip-upgrade ##
+.PHONY: pip-upgrade ## upgrade pip itself
 pip-upgrade:
 	 python -m pip install --upgrade pip

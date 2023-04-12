@@ -32,3 +32,7 @@ pytest-cov-pdb: pytest-pdb-cov
 .PHONY: pytest-pdb-cov-lf
 pytest-pdb-cov-lf:
 	- pytest tests --cov=src --cov-report html -v --pdb --lf
+
+
+.PHONY: pytest-cov-pdb-lf
+pytest-cov-pdb-lf: pytest-pdb-cov-lf
