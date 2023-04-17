@@ -32,8 +32,3 @@ pytest_plugins = [
 def cli_runner() -> CliRunner:
     """Fixture for invoking command-line interfaces."""
     return CliRunner()
-
-
-# @pytest.fixture()
-# def demo():
-#     return "demo"

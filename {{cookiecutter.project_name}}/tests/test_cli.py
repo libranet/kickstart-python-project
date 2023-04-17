@@ -1,10 +1,5 @@
 """Tests for module {{cookiecutter.package_name}}.cli."""
-import pytest
-
 from typer.testing import CliRunner
-
-from {{cookiecutter.package_name}}.cli import app
-
 
 
 # def test_main_succeeds(runner: CliRunner) -> None:
@@ -13,8 +8,8 @@ from {{cookiecutter.package_name}}.cli import app
 #     assert result.exit_code == 0
 
 
-
 def test_cli():
+    from {{cookiecutter.package_name}}.cli import main
 
     # Invoke the main() function
     result = CliRunner().invoke(main)
@@ -23,9 +18,9 @@ def test_cli():
 
 
 
-
-
 def test_app_version(cli_runner):
+    from {{cookiecutter.package_name}}.cli import app
+
     result = cli_runner.invoke(app, ["--version"])
 
     # Assert that the command exited successfully

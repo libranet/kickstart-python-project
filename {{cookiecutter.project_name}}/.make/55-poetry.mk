@@ -47,7 +47,7 @@ poetry-build:
 
 .PHONY: poetry-publish ## publish the package to pypi
 poetry-publish:
-       poetry publish
+	poetry publish
 
 
 .PHONY: poetry-check ## run poetry check on python-package

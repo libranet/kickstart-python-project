@@ -25,5 +25,6 @@
     "Development Status :: 6 - Mature",
     "Development Status :: 7 - Inactive"
   ],
-  "minimum_python": "3.9.0"
+  "minimum_python": "3.9.0",
+  "readthedocs": true
 }
