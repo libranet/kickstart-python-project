@@ -247,6 +247,9 @@ loggers:
     multipart:
         level: !env LOGLEVEL_MULTIPART, NOTSET
 
+    pkg_resources:
+        level: !env LOGLEVEL_PKG_RESOURCES, NOTSET
+
     parso: # triggered by ipython autocomplete
         level: !env LOGLEVEL_PARSO, NOTSET
 
@@ -255,6 +258,12 @@ loggers:
 
     requests:
         level: !env LOGLEVEL_REQUESTS, NOTSET
+
+    stack_data:
+        level: !env LOGLEVEL_STACK_DATA, NOTSET
+
+    setuptools:
+        level: !env LOGLEVEL_SETUPTOOLS, NOTSET
 
     sh:
         level: !env LOGLEVEL_SH, NOTSET

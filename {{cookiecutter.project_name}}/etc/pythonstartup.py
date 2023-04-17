@@ -33,8 +33,6 @@ except FileNotFoundError:
 
 atexit.register(readline.write_history_file, histfile)
 
-print("PYTHONSTARTUP")
-
 # cleanup namespace
 del atexit
 del readline
@@ -45,3 +43,5 @@ del histfile
 del local_cache_dir
 del local_cache_dir_python
 del prefix
+
+print("PYTHONSTARTUP")

@@ -1,0 +1,42 @@
+{
+    // oh-my-posh uses special font (CaskaydiaCove) to display icons in the console
+    "editor.fontFamily": "Consolas, 'Courier New', monospace,'DejaVu Sans Mono for Powerline','CaskaydiaCove NF'",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "files.associations": {
+        ".env": "dotenv",
+        ".env.example": "dotenv"
+    },
+    "makefile.extensionOutputFolder": "./var/cache/vscode",
+    "[makefile]": { // per-language config
+        "editor.insertSpaces": false,
+    },
+    "[yaml]": { // per-language config
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+    },
+    "makefile.defaultLaunchConfiguration": {},
+    "makefile.makefilePath": "makefile", // Makefile is default
+    "makefile.configurations": [],
+    // https://code.visualstudio.com/docs/python/settings-reference
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.linting.enabled": true,
+    "python.linting.banditArgs": [
+        "--configfile",
+        "${workspaceFolder}/pyproject.toml",
+        "--recursive"
+    ],
+    "python.terminal.activateEnvironment": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "--cov=src",
+        "--cov-report=xml",
+        "--cov-report=html",
+        "--pdb",
+        "-v",
+        "${workspaceFolder}/tests/",
+    ],
+}
