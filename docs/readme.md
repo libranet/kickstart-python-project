@@ -16,8 +16,20 @@ Install via pip:
 > bin/pip install cookiecutter
 ```
 
-Or add to your poetry-based project:
+```bash
+> bin/pip install cruft
+```
+
+
+## Usage
+
 
 ```bash
+> cookiecutter https://github.com/libranet/kickstart-python-project
 > cookiecutter gh:libranet/kickstart-python-project
+```
+
+
+```bash
+cruft create https://github.com/libranet/kickstart-python-project
 ```

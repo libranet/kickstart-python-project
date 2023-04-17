@@ -29,9 +29,10 @@ targets = ["src", "tests"]
 
 
 [tool.black]
-line-length = 120
-target_version = ["py311"]
 include = '\.py$'          # regex -> single-quotes
+line-length = 120
+profile = "black"
+target_version = ["py311"]
 
 
 [tool.coverage.html]
@@ -55,6 +56,7 @@ exclude_lines = [
 ]
 # fail_under = 100
 include = ["src/*"]
+# omit = ["*tests*"]
 # show_missing = true
 
 [tool.coverage.run]
@@ -63,12 +65,17 @@ data_file = "var/coverage/coverage.db"
 source = ["{{cookiecutter.package_name}}", "tests"]
 
 
+[tool.coverage.report]
+
 [tool.flake8]
 max_line_length = 121
 per_file_ignores = [
     "tests/test_entrypoints.py:B011", # B011: Do not call assert False
     "__init__.py:F401",               # F401: imported but unused
 ]
+# extend-ignore =
+#     E203  # https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#slices
+#     S101  # Allow assertions since we do not intend to compile to optimised byte code.
 
 
 [tool.isort]
@@ -89,12 +96,12 @@ check_untyped_defs = true
 exclude = "^bin/"
 ignore_missing_imports = true
 mypy_path = ["src"]
-
-# strict = true
-# warn_unreachable = true
 # pretty = true
 # show_column_numbers = true
+# show_error_codes = true
 # show_error_context = true
+# strict = true
+# warn_unreachable = true
 
 
 [tool.nox]
@@ -152,11 +159,13 @@ flake8 = ">=4.0.1"
 flake8-bugbear = ">=23.2.13"
 flake8-docstrings = ">=1.6.0"
 flake8-pyproject = ">=1.2.2"
+flake8-pytest-style = ">=1.6.0"
 flake8-rst-docstrings = ">=0.2.5"
 isort = ">=5.10.1"
 pep8-naming = ">=0.12.1"
 pre-commit = ">=2.14.1"
 pre-commit-hooks = ">=4.1.0"
+pydocstyle = ">=6.1.1"
 pylint = ">=2.12.2"
 ruff = ">=0.0.254"
 safety = ">=1.10.3"
@@ -199,12 +208,15 @@ nox-poetry = ">=1.0.2"
 pytest = ">=7.0.1"
 pytest-codecov = ">=0.5.1"
 pytest-cov = ">=3.0.0"
+pytest-mock = ">=3.6.1"
 tox = ">=4.4.8"
 # xdoctest = { extras = ["colors"], version = ">=0.15.10" }
 
 [tool.poetry.group.typing.dependencies]
 lxml = { version = ">=4.9.2", optional = true, allow-prereleases = false } # mypy coverage-report
 mypy = ">=0.931"
+# types-setuptools = ">=57.4.6"
+# types-toml = ">=0.10.2"
 
 
 [tool.poetry.scripts]

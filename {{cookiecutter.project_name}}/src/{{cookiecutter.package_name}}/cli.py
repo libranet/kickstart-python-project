@@ -3,15 +3,8 @@
 Command-line interface.
 """
 from {{cookiecutter.package_name}} import __version__
-# import click
+
 import typer
-
-
-# @click.command()
-# @click.version_option()
-# def main() -> None:
-#     """{{cookiecutter.package_name}}."""
-
 
 app = typer.Typer()
 
