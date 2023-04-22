@@ -206,6 +206,7 @@ tuna = ">=0.5"
 
 [tool.poetry.group.testing.dependencies]
 coverage = { extras = ["toml"], version = ">=6.2" }
+hypothesis = ">=6.72"
 nox = ">=2022.11"
 nox-poetry = ">=1.0"
 pytest = ">=7.0"
