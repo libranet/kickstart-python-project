@@ -1,0 +1,8 @@
+# This is a comment.
+#
+# py.typed is a marker file for PEP 561:
+# "Package maintainers who wish to support type checking of their code
+# MUST add a marker file named py.typed to their package supporting typing.
+# This marker applies recursively: if a top-level package includes it,
+# all its sub-packages MUST support type checking as well."
+# see https://peps.python.org/pep-0561.

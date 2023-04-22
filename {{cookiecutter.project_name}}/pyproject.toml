@@ -144,6 +144,7 @@ python = ">={{cookiecutter.minimum_python}},<4.0"
 autoread_dotenv = ">=0.0"
 httpx = ">=0.24"
 libranet_logging = ">=0.0"
+pydantic = "=1.10"
 # python-dotenv = ">=1.0"
 # sitecustomize-entrypoints = ">=0.1"
 typer = ">=0.0"
@@ -165,12 +166,15 @@ pre-commit = ">=2.14"
 pre-commit-hooks = ">=4.1"
 pydocstyle = ">=6.1"
 pylint = ">=2.12"
-ruff = ">=0.0.2"
-safety = ">=1.10.3"
+ruff = ">=0.0"
+safety = ">=1.10"
 # Pygments = ">=2.10"
 # darglint = ">=1.8"
 # pyupgrade = ">=2.29"
 # typeguard = ">=2.13"
+
+[tool.poetry.group.deploy.dependencies]
+uvicorn = { extras = ["standard"], version = ">=0.20" }
 
 [tool.poetry.group.dist.dependencies]
 pyroma = ">=4.2"
@@ -205,9 +209,12 @@ coverage = { extras = ["toml"], version = ">=6.2" }
 nox = ">=2022.11"
 nox-poetry = ">=1.0"
 pytest = ">=7.0"
+pytest-clarity = "^1.0"
 pytest-codecov = ">=0.5"
 pytest-cov = ">=3.0"
+pytest-click = ">=1.1"
 pytest-mock = ">=3.6"
+pytest-xdist = ">=3.2"
 tox = ">=4.4"
 # xdoctest = { extras = ["colors"], version = ">=0.15" }
 
