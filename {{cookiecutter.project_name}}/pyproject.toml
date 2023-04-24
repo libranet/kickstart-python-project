@@ -29,7 +29,7 @@ targets = ["src", "tests"]
 
 
 [tool.black]
-include = '\.py$'          # regex -> single-quotes
+include = '\.py$'  # regex -> single-quotes
 line-length = 120
 profile = "black"
 target_version = ["py311"]
@@ -107,24 +107,18 @@ envdir = "var/cache/nox"
 
 
 [tool.poetry]
-{% if cookiecutter.package_name != cookiecutter.project_name.replace('-', '_') -%}{% endif -%}
-
-
-
-
-
-{%- if cookiecutter.support_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
-{%- if cookiecutter.support_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
 name = "{{cookiecutter.project_name}}"
 version = "{{cookiecutter.version}}"
-# license = "{{cookiecutter.license}}"
-license = { text = "{{cookiecutter.license}}" }
+license = "{{cookiecutter.license}}"
+# license = { text = "{{cookiecutter.license}}" }
 description = "{{cookiecutter.description}}"
 readme = "docs/readme.md"
 authors = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
 maintainers = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
 homepage = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
 repository = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
+{%- if cookiecutter.support_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
+{%- if cookiecutter.support_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
 keywords = []
 packages = [{ include = "{{cookiecutter.package_name}}", from = "src" }]
 classifiers = [
@@ -147,33 +141,26 @@ classifiers = [
 
 
 [tool.poetry.dependencies]
-
-
-{%- if cookiecutter.with_typer|int %}typer = ">=0.0"{%- endif %}
-
-{%- if cookiecutter.with_fastapi|int %}
-
-
-
-{%- endif %}
-
-{%- if cookiecutter.with_django|int %}
 python = ">={{cookiecutter.minimum_python}},<4.0"
 autoread_dotenv = ">=0.0"
 httpx = ">=0.24"
 libranet_logging = ">=0.0"
 pydantic = "=1.10"
-
-
-
-{%- endif %}
-
 # python-dotenv = ">=1.0"
 # sitecustomize-entrypoints = ">=0.1"
+
+{%- if cookiecutter.with_typer|int %}
+typer = ">=0.0"
+{%- endif %}
+
+{%- if cookiecutter.with_fastapi|int %}
 fastapi = { extras = ["all"], version = ">0.9" }
-gunicorn = ">=20.1"
-# fastapi = { extras = ["all"], version = ">0.9" }
-# gunicorn = ">=20.1"
+{%- endif %}
+
+{%- if cookiecutter.with_django|int %}
+{%- endif %}
+
+
 [tool.poetry.group.dev.dependencies]
 absolufy-imports = ">=0.3"
 bandit = ">=1.7"
@@ -195,6 +182,7 @@ safety = ">=1.10"
 
 [tool.poetry.group.deploy.dependencies]
 uvicorn = { extras = ["standard"], version = ">=0.20" }
+gunicorn = ">=20.1"
 
 [tool.poetry.group.dist.dependencies]
 pyroma = ">=4.2"
@@ -250,15 +238,13 @@ types-toml = ">=0.10"
 {{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
 
 [tool.poetry.urls]
-
-{%- if cookiecutter.support_rtd|int %}"Docs" = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
-{%- if cookiecutter.support_rtd|int == 0 %}"Docs" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
-
-
 "Repository" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
 "Changelog" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/docs/changes.md"
 "Issues" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues"
 "Releases" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
+{%- if cookiecutter.support_rtd|int %}"Docs" = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
+{%- if cookiecutter.support_rtd|int == 0 %}"Docs" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
+
 # [tool.poetry2conda]
 # # https://pypi.org/project/poetry2conda/
 # # https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf
