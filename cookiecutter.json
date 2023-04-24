@@ -26,6 +26,9 @@
     "Development Status :: 7 - Inactive"
   ],
   "minimum_python": "3.9.0",
+  "with_django": "0",
+  "with_flask": "0",
   "with_fastapi": "0",
-  "with_readthedocs": "0"
+  "with_typer": "0",
+  "support_rtd": "0"
 }
