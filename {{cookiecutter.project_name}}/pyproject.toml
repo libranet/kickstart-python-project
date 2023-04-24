@@ -110,10 +110,11 @@ envdir = "var/cache/nox"
 {% if cookiecutter.package_name != cookiecutter.project_name.replace('-', '_') -%}{% endif -%}
 name = "{{cookiecutter.project_name}}"
 version = "{{cookiecutter.version}}"
-# license = "{{cookiecutter.license}}"
 
-{%- if cookiecutter.with_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
-{%- if cookiecutter.with_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
+
+{%- if cookiecutter.support_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
+{%- if cookiecutter.support_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
+# license = "{{cookiecutter.license}}"
 license = { text = "{{cookiecutter.license}}" }
 description = "{{cookiecutter.description}}"
 readme = "docs/readme.md"
