@@ -23,3 +23,17 @@
 
 .PHONY: install  ## full initial installation
 install: create-dirs dotenv-install poetry-install symlink-venv-dirs
+
+
+.PHONY: dev-install  ## development installation
+dev-install: git-init precommit-install-hook install
+
+
+.PHONY: prd-install  ## production installation
+dev-install: create-dirs dotenv-install poetry-install
+
+
+.PHONY: post-install  ## post-install steps
+post-install:
+	# bin/pip install -e var/src/<dependent-package>
+

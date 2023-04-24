@@ -21,7 +21,7 @@ if not with_typer:
 if not support_rtd:
     pl.Path(f".readthedocs.yaml").unlink(missing_ok=True)
 
-if git_platform != "gitHub":
+if git_platform != "github":
     shutil.rmtree(".github/")
-elif git_platform != "gitLab":
+elif git_platform != "gitlab":
     pl.Path(f".gitlab-ci.yaml").unlink(missing_ok=True)

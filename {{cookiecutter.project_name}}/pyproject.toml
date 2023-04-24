@@ -144,7 +144,9 @@ classifiers = [
 python = ">={{cookiecutter.minimum_python}},<4.0"
 autoread_dotenv = ">=0.0"
 httpx = ">=0.24"
-libranet_logging = ">=0.0"
+libranet-logging = ">=0.0"
+python-dateutil = ">=2.8"
+python-multipart = ">=0.0"
 pydantic = "=1.10"
 # python-dotenv = ">=1.0"
 # sitecustomize-entrypoints = ">=0.1"
@@ -158,6 +160,8 @@ fastapi = { extras = ["all"], version = ">0.9" }
 {%- endif %}
 
 {%- if cookiecutter.with_django|int %}
+django-ninja = ">=0.19"
+wagtail = ">=4.1"
 {%- endif %}
 
 
@@ -180,9 +184,17 @@ pylint = ">=2.12"
 ruff = ">=0.0"
 safety = ">=1.10"
 
+{%- if cookiecutter.with_django|int %}
+# extra django-deps
+django-stubs = ">=1.12.0"
+watchfiles = ">=0.18.0"
+{%- endif %}
+
+
 [tool.poetry.group.deploy.dependencies]
 uvicorn = { extras = ["standard"], version = ">=0.20" }
 gunicorn = ">=20.1"
+hypercorn = ">=0.14"
 
 [tool.poetry.group.dist.dependencies]
 pyroma = ">=4.2"
@@ -204,6 +216,7 @@ sphinx-rtd-theme = ">=1.0"
 
 [tool.poetry.group.ipython.dependencies]
 ipdb = ">=0.13"
+ipykernel = ">=6.9"
 ipython = ">=8.4"
 
 [tool.poetry.group.profiling.dependencies]
@@ -227,12 +240,25 @@ pytest-xdist = ">=3.2"
 tox = ">=4.4"
 # xdoctest = { extras = ["colors"], version = ">=0.15" }
 
+[tool.poetry.group.webtesting.dependencies]
+httpie = ">=3.2"
+locust = ">=2.11"
+
+{%- if cookiecutter.with_django|int %}
+# extra django-deps
+pytest-django = ">=4.5.2"
+{%- endif %}
+
+
 [tool.poetry.group.typing.dependencies]
 lxml = { version = ">=4.9", optional = false, allow-prereleases = false } # mypy coverage-report
 mypy = ">=0.9"
 typeguard = ">=2.13"
+types-python-dateutil = ">=2.8"
 # types-setuptools = ">=57.4"
+types-requests = ">=2.28"
 types-toml = ">=0.10"
+
 
 [tool.poetry.scripts]
 {{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
