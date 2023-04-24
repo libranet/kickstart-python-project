@@ -1,4 +1,4 @@
-import os
+import pathlib as pl
 import shutil
 
 # Read Cookiecutter configuration.
@@ -11,18 +11,17 @@ support_rtd = int("{{ cookiecutter.support_rtd }}")
 git_platform= "{{ cookiecutter.git_platform }}"
 
 if not with_fastapi:
-    os.remove(f"src/{package_name}/api.py")
-    os.remove("tests/test_api.py")
+    pl.Path(f"src/{package_name}/api.py").unlink(missing_ok=True)
+    pl.Path(f"tests/test_api.py").unlink(missing_ok=True)
 
 if not with_typer:
-    os.remove(f"src/{package_name}/cli.py")
-    os.remove("tests/test_cli.py")
+    pl.Path(f"src/{package_name}/cli.py").unlink(missing_ok=True)
+    pl.Path(f"tests/test_cli.py").unlink(missing_ok=True)
 
 if not support_rtd:
-    os.remove(".readthedocs.yaml")
-
+    pl.Path(f".readthedocs.yaml").unlink(missing_ok=True)
 
 if git_platform != "gitHub":
     shutil.rmtree(".github/")
 elif git_platform != "gitLab":
-    os.remove(".gitlab-ci.yml")
+    pl.Path(f".gitlab-ci.yaml").unlink(missing_ok=True)
