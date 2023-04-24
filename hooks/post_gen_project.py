@@ -7,7 +7,7 @@ with_django = int("{{ cookiecutter.with_django }}")
 with_fastapi = int("{{ cookiecutter.with_fastapi }}")
 with_flask = int("{{ cookiecutter.with_flask }}")
 with_typer = int("{{ cookiecutter.with_typer }}")
-suppport_rtd = int("{{ cookiecutter.suppport_rtd }}")
+support_rtd = int("{{ cookiecutter.support_rtd }}")
 git_platform= int("{{ cookiecutter.git_platform }}")
 
 if not with_fastapi:
@@ -18,7 +18,7 @@ if not with_typer:
     os.remove(f"src/{package_name}/cli.py")
     os.remove("tests/test_cli.py")
 
-if not suppport_rtd:
+if not support_rtd:
     os.remove(".readthedocs.yaml")
 
 
