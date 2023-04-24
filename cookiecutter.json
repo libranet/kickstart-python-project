@@ -26,5 +26,6 @@
     "Development Status :: 7 - Inactive"
   ],
   "minimum_python": "3.9.0",
-  "readthedocs": true
+  "with_fastapi": "0",
+  "with_readthedocs": "0"
 }

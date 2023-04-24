@@ -12,6 +12,21 @@
 #   > pre-commit autoupdate
 #   > pre-commit run --all-files
 
+default_install_hook_types: [commit-msg, pre-commit]
+
+default_stages: [commit, manual]
+
+# configuration-wide default for the stages property of hooks.
+# This will only override individual hooks that do not set stages.
+default_stages: [pre-commit, pre-push]  # default: (all stages)
+
+
+default_language_version:
+  python: python3.11
+
+# to have pre-commit stop running hooks after the first failure
+fail_fast: false # default: false
+
 repos:
   - repo: local
     hooks:

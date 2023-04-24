@@ -110,14 +110,16 @@ envdir = "var/cache/nox"
 {% if cookiecutter.package_name != cookiecutter.project_name.replace('-', '_') -%}{% endif -%}
 name = "{{cookiecutter.project_name}}"
 version = "{{cookiecutter.version}}"
-license = "{{cookiecutter.license}}"
+# license = "{{cookiecutter.license}}"
+
+{%- if cookiecutter.with_fastapi_api|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
+license = { text = "{{cookiecutter.license}}" }
 description = "{{cookiecutter.description}}"
 readme = "docs/readme.md"
 authors = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
 maintainers = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
 homepage = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
 repository = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
-documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"
 keywords = []
 packages = [{ include = "{{cookiecutter.package_name}}", from = "src" }]
 classifiers = [
@@ -147,11 +149,17 @@ libranet_logging = ">=0.0"
 pydantic = "=1.10"
 # python-dotenv = ">=1.0"
 # sitecustomize-entrypoints = ">=0.1"
+
+
+{%- if cookiecutter.with_fastapi_api|int %}
+
+{%- endif %}
+
 typer = ">=0.0"
-
-
+fastapi = { extras = ["all"], version = ">0.9" }
+gunicorn = ">=20.1"
 [tool.poetry.group.dev.dependencies]
-# poetry install --with | --without dev
+absolufy-imports = ">=0.3"
 bandit = ">=1.7"
 black = { version = ">=22.0", allow-prereleases = true }
 flake8 = ">=4.0"
@@ -168,10 +176,9 @@ pydocstyle = ">=6.1"
 pylint = ">=2.12"
 ruff = ">=0.0"
 safety = ">=1.10"
-# Pygments = ">=2.10"
-# darglint = ">=1.8"
+
+
 # pyupgrade = ">=2.29"
-# typeguard = ">=2.13"
 
 [tool.poetry.group.deploy.dependencies]
 uvicorn = { extras = ["standard"], version = ">=0.20" }
@@ -186,6 +193,7 @@ autoapi = ">=2.0"
 markupsafe = ">=2.1"
 myst-parser = ">=1.0"
 # myst-parser = {version = ">=0.16"}
+pdoc = ">=13.0"
 recommonmark = ">=0.7"
 Sphinx = ">=4.4"
 sphinx-autoapi = ">=1.8"
@@ -223,6 +231,7 @@ tox = ">=4.4"
 # lxml = { version = ">=4.9", optional = true, allow-prereleases = false } # mypy coverage-report
 lxml = { version = ">=4.9", allow-prereleases = false } # mypy coverage-report
 mypy = ">=0.9"
+typeguard = ">=2.13"
 # types-setuptools = ">=57.4"
 # types-toml = ">=0.10"
 
@@ -236,6 +245,11 @@ mypy = ">=0.9"
 Issues = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues"
 Changelog = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
 
+
+Documentation = "https://typeguard.readthedocs.io/en/latest/"
+"Change log" = "https://typeguard.readthedocs.io/en/latest/versionhistory.html"
+"Source code" = "https://github.com/agronholm/typeguard"
+"Issue tracker" = "https://github.com/agronholm/typeguard/issues"
 
 # [tool.poetry2conda]
 # # https://pypi.org/project/poetry2conda/
