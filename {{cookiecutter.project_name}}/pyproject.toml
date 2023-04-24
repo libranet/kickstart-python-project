@@ -108,12 +108,15 @@ envdir = "var/cache/nox"
 
 [tool.poetry]
 {% if cookiecutter.package_name != cookiecutter.project_name.replace('-', '_') -%}{% endif -%}
-name = "{{cookiecutter.project_name}}"
-version = "{{cookiecutter.version}}"
+
+
+
 
 
 {%- if cookiecutter.support_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
 {%- if cookiecutter.support_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
+name = "{{cookiecutter.project_name}}"
+version = "{{cookiecutter.version}}"
 # license = "{{cookiecutter.license}}"
 license = { text = "{{cookiecutter.license}}" }
 description = "{{cookiecutter.description}}"
@@ -146,24 +149,31 @@ classifiers = [
 [tool.poetry.dependencies]
 
 
-
 {%- if cookiecutter.with_typer|int %}typer = ">=0.0"{%- endif %}
+
 {%- if cookiecutter.with_fastapi|int %}
 
 
 
 {%- endif %}
 
-
+{%- if cookiecutter.with_django|int %}
 python = ">={{cookiecutter.minimum_python}},<4.0"
 autoread_dotenv = ">=0.0"
 httpx = ">=0.24"
 libranet_logging = ">=0.0"
 pydantic = "=1.10"
+
+
+
+{%- endif %}
+
 # python-dotenv = ">=1.0"
 # sitecustomize-entrypoints = ">=0.1"
 fastapi = { extras = ["all"], version = ">0.9" }
 gunicorn = ">=20.1"
+# fastapi = { extras = ["all"], version = ">0.9" }
+# gunicorn = ">=20.1"
 [tool.poetry.group.dev.dependencies]
 absolufy-imports = ">=0.3"
 bandit = ">=1.7"
@@ -182,9 +192,6 @@ pydocstyle = ">=6.1"
 pylint = ">=2.12"
 ruff = ">=0.0"
 safety = ">=1.10"
-
-
-# pyupgrade = ">=2.29"
 
 [tool.poetry.group.deploy.dependencies]
 uvicorn = { extras = ["standard"], version = ">=0.20" }
@@ -206,7 +213,6 @@ sphinx-autoapi = ">=1.8"
 # sphinx-autobuild = ">=2021.3"
 # sphinx-click = ">=3.0"
 sphinx-rtd-theme = ">=1.0"
-
 
 [tool.poetry.group.ipython.dependencies]
 ipdb = ">=0.13"
@@ -234,29 +240,25 @@ tox = ">=4.4"
 # xdoctest = { extras = ["colors"], version = ">=0.15" }
 
 [tool.poetry.group.typing.dependencies]
-# lxml = { version = ">=4.9", optional = true, allow-prereleases = false } # mypy coverage-report
-lxml = { version = ">=4.9", allow-prereleases = false } # mypy coverage-report
+lxml = { version = ">=4.9", optional = false, allow-prereleases = false } # mypy coverage-report
 mypy = ">=0.9"
 typeguard = ">=2.13"
 # types-setuptools = ">=57.4"
-# types-toml = ">=0.10"
-
+types-toml = ">=0.10"
 
 [tool.poetry.scripts]
 {{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
 
-
 [tool.poetry.urls]
-# "Bug Tracker" = "https://github.com/Libranet/autoread_dotenv/issues"
-Issues = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues"
-Changelog = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
+
+{%- if cookiecutter.support_rtd|int %}"Docs" = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
+{%- if cookiecutter.support_rtd|int == 0 %}"Docs" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
 
 
-Documentation = "https://typeguard.readthedocs.io/en/latest/"
-"Change log" = "https://typeguard.readthedocs.io/en/latest/versionhistory.html"
-"Source code" = "https://github.com/agronholm/typeguard"
-"Issue tracker" = "https://github.com/agronholm/typeguard/issues"
-
+"Repository" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
+"Changelog" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/docs/changes.md"
+"Issues" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues"
+"Releases" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
 # [tool.poetry2conda]
 # # https://pypi.org/project/poetry2conda/
 # # https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf
@@ -271,23 +273,21 @@ style = "semver"
 
 [tool.poetry-dynamic-versioning.substitution]
 files = [
-    "src/autoread_dotenv/__init__.py",
+    "src/{{cookiecutter.package_name}}/__init__.py",
     "src/*/__version__.py",
-    "docs/changes.rst",
+    "docs/changes.md",
 ]
 
 
 [tool.poetry.plugins] # Optional super table
-
 # [tool.poetry.plugins."sitecustomize"]
-# https://python-poetry.org/docs/pyproject/#plugins
-# https://github.com/Darsstar/sitecustomize-entrypoints/blob/main/src/sitecustomize/__init__.py
-# autoread_dotenv = "autoread_dotenv:entrypoint"
+# https://sitecustomize-entrypoints.readthedocs.io/en/stable/
+# {{cookiecutter.package_name}}_foo = "{{cookiecutter.package_name}}:entrypoint"
 
 [tool.poetry-release]
 release-replacements = [
-    { file = "docs/changes.rst", pattern = "TBD \\(Unreleased\\)", replace = "{version} \\({date}\\)" },
-    { file = "src/autoread_dotenv/__init__.py", pattern = '__version__ = "{version}"', replace = '__version__ = "{next_version}"' },
+    { file = "docs/changes.md", pattern = "TBD \\(Unreleased\\)", replace = "{version} \\({date}\\)" },
+    { file = "src/{{cookiecutter.package_name}}/__init__.py", pattern = '__version__ = "{version}"', replace = '__version__ = "{next_version}"' },
     # { file="CHANGELOG.md", pattern="\\(https://semver.org/spec/v2.0.0.html\\).", replace="(https://semver.org/spec/v20.0.html).\n\n## [Unreleased]"},
 ]
 disable-push = false
