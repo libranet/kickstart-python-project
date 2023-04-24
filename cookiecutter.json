@@ -28,8 +28,8 @@
   "minimum_python": "3.9.0",
   "with_django": "0",
   "with_flask": "0",
-  "with_fastapi": "0",
+  "with_fastapi": "1",
   "with_typer": "1",
-  "support_rtd": "0",
+  "support_rtd": "1",
   "__package_name_snake_case": "{{ cookiecutter.package_name|slugify(separator='_') }}"
 }
