@@ -31,5 +31,5 @@
   "with_fastapi": "0",
   "with_typer": "0",
   "support_rtd": "0",
-  "__package_name_snake_case": "{{ cookiecutter.package_name|slugify(separator='_') }}",
+  "__package_name_snake_case": "{{ cookiecutter.package_name|slugify(separator='_') }}"
 }
