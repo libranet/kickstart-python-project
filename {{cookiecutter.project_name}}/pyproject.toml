@@ -268,8 +268,8 @@ types-toml = ">=0.10"
 "Changelog" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/docs/changes.md"
 "Issues" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues"
 "Releases" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
-{%- if cookiecutter.support_rtd|int %}"Docs" = "https://{{cookiecutter.project_name}}.readthedocs.io"{%- endif %}
-{%- if cookiecutter.support_rtd|int == 0 %}"Docs" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{%- endif %}
+{% if cookiecutter.support_rtd|int %}"Docs" = "https://{{cookiecutter.project_name}}.readthedocs.io"{% endif %}
+{% if cookiecutter.support_rtd|int == 0 %}"Docs" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{% endif %}
 
 # [tool.poetry2conda]
 # # https://pypi.org/project/poetry2conda/

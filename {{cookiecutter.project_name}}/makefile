@@ -22,18 +22,24 @@
 
 
 .PHONY: install  ## full initial installation
-install: create-dirs dotenv-install poetry-install symlink-venv-dirs
+install: create-dirs create-dirs-extra dotenv-install poetry-install symlink-venv-dirs
 
 
-.PHONY: dev-install  ## development installation
-dev-install: git-init precommit-install-hook install
+.PHONY: install-dev  ## development installation
+install-dev: git-init precommit-install-hook install
 
 
-.PHONY: prd-install  ## production installation
-dev-install: create-dirs dotenv-install poetry-install
+.PHONY: prd-install-prd  ## production installation
+install-prd: create-dirs dotenv-install poetry-install
 
 
 .PHONY: post-install  ## post-install steps
 post-install:
 	# bin/pip install -e var/src/<dependent-package>
 
+
+.PHONY: create-dirs-extra ## create extra dirs
+create-dirs-extra:
+	mkdir -p var/data
+	mkdir -p var/static
+	mkdir -p var/upload

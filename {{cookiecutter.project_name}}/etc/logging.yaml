@@ -186,6 +186,20 @@ handlers:
         formatter: "generic"
         level: "DEBUG"
 
+    {% if cookiecutter.with_django | int %}
+    django_db_backends_handler:
+        <<: *default
+        filename: django-db-backends.log
+        level: DEBUG
+        formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
+
+    django_server_handler:
+        class: logging.StreamHandler
+        level: DEBUG
+        # formatter: django.server
+        formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
+    {% endif %}
+
     uvicorn_default:
         formatter: "uvicorn_default"
         class: "logging.StreamHandler"
@@ -216,6 +230,19 @@ loggers:
         level: !env LOGLEVEL_{{cookiecutter.package_name}}, NOTSET
         handlers:
             - {{cookiecutter.package_name}}_file
+
+    {% if cookiecutter.with_django|int %}
+    django:
+        level: !env LOGLEVEL_DJANGO, DEBUG
+        handlers: # review
+            - console
+
+    django.db.backends:
+        level: !env LOGLEVEL_DJANGO_DB_BACKENDS, DEBUG
+        handlers:
+            - django_db_backends_handler
+        propagate': False
+    {% endif %}
 
     dotenv:
         level: !env LOGLEVEL_DOTENV, NOTSET
