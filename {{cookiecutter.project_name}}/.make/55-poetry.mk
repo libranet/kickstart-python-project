@@ -1,29 +1,18 @@
 # See ../makefile
 
-# do not use ths in CD/CI where other python-versions might be tested with
-.PHONY: create-venv ## create virtual-env with specified python-version in .env
-create-venv:
-	poetry env use ${PYTHON_VERSION}
-
-
 .PHONY: poetry-install ## run poetry install to create the virtualenv
 poetry-install:
 	poetry install
 
 
+.PHONY: poetry-install-only main ## run poetry install --only main
+poetry-install-only main:
+	poetry install --only main
+
+
 .PHONY: poetry-install-no-dev ## run poetry install without dev-dependencies
 poetry-install-no-dev:
 	poetry install --no-dev
-
-
-.PHONY: poetry-install-no-root ## run poetry install to create the virtualenv and install only the dependencies
-poetry-install-no-root:
-	poetry install --no-root
-
-
-.PHONY: poetry-install-no-root-no-dev ## run poetry install to create the virtualenv and install only the prd-dependencies
-poetry-install-no-root-no-dev:
-	poetry install --no-root --no-dev
 
 
 .PHONY: poetry-lock ## run poetry lock to update poetry.lock
@@ -70,7 +59,6 @@ poetry-export-requirements:
 	poetry export --format requirements.txt --output requirements.txt
 
 
-# no longer needed
 # .PHONY: poetry-export-requirements-docs  ## generate a requirements.txt-file for readthedocs
 # poetry-export-requirements-docs:
 # 	poetry export --format requirements.txt --only=docs --without-hashes --output docs/requirements.txt

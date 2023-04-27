@@ -1,0 +1,6 @@
+# Debian / Ubuntu
+
+# apt install <package>
+
+# apache-airflow-client
+libgraphviz-dev

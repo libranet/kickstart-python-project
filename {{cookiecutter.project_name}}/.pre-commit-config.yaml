@@ -90,6 +90,14 @@ repos:
 
   - repo: local
     hooks:
+      - id: check-case-conflict
+        name: Check for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT.
+        entry: poetry run check-case-conflict
+        language: system
+        types: [text]
+
+  - repo: local
+    hooks:
       - id: debug-statements
         name: Check debug statements
         entry: poetry run debug-statement-hook
@@ -99,18 +107,36 @@ repos:
   - repo: local
     hooks:
       - id: check-toml
-        name: Check Toml
+        name: Check TOML-syntax
         entry: poetry run check-toml
         language: system
         types: [toml]
 
   - repo: local
     hooks:
+      - id: check-xml
+        name: Check XML-syntax
+        entry: poetry run check-xml
+        language: system
+        types: [xml]
+
+  - repo: local
+    hooks:
       - id: check-yaml
-        name: Check Yaml
+        name: Check YAML-syntax
         entry: poetry run check-yaml
         language: system
         types: [yaml]
+        # exclude: "etc/logging.yaml"
+
+  - repo: local
+    hooks:
+      - id: check-merge-conflict
+        name: Check for files that contain merge conflict strings
+        entry: poetry run check-merge-conflict
+        language: system
+        types: [text]
+        args: ["--assume-in-mergel"] # Allow running this hook when there is no ongoing merge operation
 
   - repo: local
     hooks:
