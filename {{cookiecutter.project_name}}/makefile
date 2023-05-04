@@ -38,8 +38,10 @@ post-install:
 	# bin/pip install -e var/src/<dependent-package>
 
 
-.PHONY: create-dirs-extra ## create extra dirs
+{%- if cookiecutter.with_django|int %}
+.PHONY: create-dirs-extra  ## create extra dirs
 create-dirs-extra:
 	mkdir -p var/data
 	mkdir -p var/static
 	mkdir -p var/upload
+{%- endif %}
