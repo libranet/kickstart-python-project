@@ -234,7 +234,9 @@ pytest = ">=7.0"
 pytest-clarity = "^1.0"
 pytest-codecov = ">=0.5"
 pytest-cov = ">=3.0"
+{%- if cookiecutter.with_typer|int %}
 pytest-click = ">=1.1"
+{%- endif %}
 pytest-mock = ">=3.6"
 pytest-xdist = ">=3.2"
 tox = ">=4.4"
