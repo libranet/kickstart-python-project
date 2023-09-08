@@ -25,6 +25,10 @@
 install: create-dirs create-dirs-extra dotenv-install poetry-install symlink-venv-dirs
 
 
+.PHONY: create-dirs-extra  ## create additional directories
+create-dirs-extra:
+
+
 .PHONY: install-dev  ## development installation
 install-dev: git-init precommit-install-hook install
 
