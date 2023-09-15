@@ -1,10 +1,10 @@
 {
     "recommendations": [
-        "bungcip.better-toml",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-vscode.makefile-tools",
         "peakchen90.open-html-in-browser",
+        "tamasfe.even-better-toml",
         "zeshuaro.vscode-python-poetry"
     ]
 }
