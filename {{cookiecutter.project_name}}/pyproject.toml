@@ -230,7 +230,7 @@ hypothesis = ">=6.72"
 nox = ">=2022.11"
 nox-poetry = ">=1.0"
 pytest = ">=7.0"
-pytest-clarity = "^1.0"
+pytest-clarity = ">=1.0"
 pytest-codecov = ">=0.5"
 pytest-cov = ">=3.0"
 {%- if cookiecutter.with_typer|int %}
