@@ -1,4 +1,11 @@
 """{{cookiecutter.package_name}}."""
-__version__ = "{{cookiecutter.version}}"
-__author__ = "{{cookiecutter.author}}"
-__license__ = "{{cookiecutter.license}}"
+
+from {{cookiecutter.package_name}}._about import __author__, __author_email__, __copyright__, __license__, __version__
+
+__all__: list[str] = [
+    "__author__",
+    "__author_email__",
+    "__copyright__",
+    "__license__",
+    "__version__",
+]

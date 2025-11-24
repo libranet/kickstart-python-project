@@ -1,7 +1,7 @@
 {
   "project_name": "kickstart-python-project",
   "package_name": "{{ cookiecutter.project_name.replace('-', '_') }}",
-  "description": "",
+  "description": "Write project summary.",
   "author": "Wouter Vanden Hove",
   "email": "wouter@libranet.eu",
   "git_platform": [
@@ -13,23 +13,25 @@
   "copyright_year": "{% now 'utc', '%Y' %}",
   "license": [
     "MIT",
-    "Apache-2.0",
-    "GPL-3.0"
+    // "Apache-2.0",
+    // "BSD-3-Clause",
+    // "GPL-3.0-or-later",
+    // "LGPL-3.0-or-later",
   ],
   "development_status": [
-    "Development Status :: 1 - Planning",
-    "Development Status :: 2 - Pre-Alpha",
-    "Development Status :: 3 - Alpha",
+    // "Development Status :: 1 - Planning",
+    // "Development Status :: 2 - Pre-Alpha",
+    // "Development Status :: 3 - Alpha",
     "Development Status :: 4 - Beta",
-    "Development Status :: 5 - Production/Stable",
-    "Development Status :: 6 - Mature",
-    "Development Status :: 7 - Inactive"
+    // "Development Status :: 5 - Production/Stable",
+    // "Development Status :: 6 - Mature",
+    // "Development Status :: 7 - Inactive"
   ],
-  "minimum_python": "3.10.0",
+  "minimum_python": "3.13.0",
   "with_django": "0",
   "with_flask": "0",
   "with_fastapi": "0",
-  "with_typer": "0",
+  "with_cyclopts": "1",
   "with_postgres": "0",
   "support_rtd": "0",
   "__package_name_snake_case": "{{ cookiecutter.package_name|slugify(separator='_') }}"

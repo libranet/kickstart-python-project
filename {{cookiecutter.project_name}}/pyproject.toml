@@ -13,8 +13,8 @@
 #   > poetry install (--with|--without) (docs|dev|ipython|profiling|testing|typing)
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.8.9,<0.9.0"]
+build-backend = "uv_build"
 
 
 [tool.bandit]
@@ -65,12 +65,12 @@ data_file = "var/coverage/coverage.db"
 source = ["{{cookiecutter.package_name}}", "tests"]
 
 
-[tool.flake8]
-max_line_length = 121
-per_file_ignores = [
-    "tests/test_entrypoints.py:B011", # B011: Do not call assert False
-    "__init__.py:F401",               # F401: imported but unused
-]
+# [tool.flake8]
+# max_line_length = 121
+# per_file_ignores = [
+#     "tests/test_entrypoints.py:B011", # B011: Do not call assert False
+#     "__init__.py:F401",               # F401: imported but unused
+# ]
 # extend-ignore =
 #     E203  # https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#slices
 #     S101  # Allow assertions since we do not intend to compile to optimised byte code.
@@ -88,7 +88,7 @@ skip_glob = '^((?!py$).)*$'   # isort all Python files
 
 
 [tool.mypy]
-# cfr https://mypy.readthedocs.io/en/stable/config_file.html#using-a-pyproject-toml-file
+# cfr. https://mypy.readthedocs.io/en/stable/config_file.html#using-a-pyproject-toml-file
 cache_dir = "var/cache/mypy"
 check_untyped_defs = true
 exclude = "^bin/"
@@ -102,25 +102,23 @@ mypy_path = ["src"]
 # warn_unreachable = true
 
 
-[tool.nox]
-envdir = "var/cache/nox"
+[tool.mutmut]
+# cfr. https://mutmut.readthedocs.io/en/latest/#configuration
+paths_to_mutate = [ "src/" ]
+pytest_add_cli_args_test_selection= [ "tests/" ]
 
 
-[tool.poetry]
+[project]
 name = "{{cookiecutter.project_name}}"
 version = "{{cookiecutter.version}}"
 license = "{{cookiecutter.license}}"
 # license = { text = "{{cookiecutter.license}}" }
 description = "{{cookiecutter.description}}"
 readme = "docs/readme.md"
-authors = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
-maintainers = ["{{cookiecutter.author}} <{{cookiecutter.email}}>"]
-homepage = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
-repository = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
-{% if cookiecutter.support_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{% endif %}
-{% if cookiecutter.support_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{% endif %}
-keywords = []
-packages = [{ include = "{{cookiecutter.package_name}}", from = "src" }]
+requires-python = ">={{cookiecutter.minimum_python}}"
+authors = [{ name = "{{cookiecutter.author}}", email = "{{cookiecutter.email}}" }]
+maintainers = [{ name = "{{cookiecutter.author}}", email = "{{cookiecutter.email}}" }]
+keywords = ["kickstart"]
 classifiers = [
     "{{cookiecutter.development_status}}",
     "Environment :: Console",
@@ -128,10 +126,16 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.9",
+    {%- for v in reversed(range(cookiecutter.minimum_python|int, 15)) %}
+    "Programming Language :: Python :: 3.{{ v }}",
+    {%- endfor %}
+
+    # "Programming Language :: Python :: 3.14",
+    # "Programming Language :: Python :: 3.13",
+    # "Programming Language :: Python :: 3.12",
+    # "Programming Language :: Python :: 3.11",
+    # "Programming Language :: Python :: 3.10",
+    # "Programming Language :: Python :: 3.9",
     # "Programming Language :: Python :: {{cookiecutter.minimum_python}}",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
@@ -141,177 +145,173 @@ classifiers = [
 ]
 
 
-[tool.poetry.dependencies]
-python = ">={{cookiecutter.minimum_python}},<4.0"
-autoread-dotenv = ">=0.0"
-httpx = ">=0.24"
-libranet-logging = ">=0.0"
-python-dateutil = ">=2.8"
-pydantic = "=1.10"
 
 
-{%- if cookiecutter.with_typer|int %}
-typer = ">=0.0"
-{%- endif %}
 
-{%- if cookiecutter.with_fastapi|int %}
-fastapi = { extras = ["all"], version = ">0.9" }
-{%- endif %}
+dependencies = [
+    "autoread-dotenv>=1.0.3",
 
-{%- if cookiecutter.with_django|int %}
-django = ">=4.2"
-django-ninja = ">=0.19"
-# wagtail = ">=4.1"
-{%- endif %}
+    {%- if cookiecutter.with_cyclopts|int %}
+    "cyclopts>=3.24",
+    {%- endif %}
 
+    {%- if cookiecutter.with_django|int %}
+    "django>=4.2",
+    "django-ninja>=0.19",
+    "django-stubs>=1.12.0",
+    # "wagtail>=4.1",
+    "watchfiles>=0.18.0",
+    {%- endif %}
 
-[tool.poetry.group.dev.dependencies]
-absolufy-imports = ">=0.3"
-bandit = ">=1.7"
-black = { version = ">=22.0", allow-prereleases = true }
-flake8 = ">=4.0"
-flake8-bugbear = ">=23.2"
-flake8-docstrings = ">=1.6"
-flake8-pyproject = ">=1.2"
-flake8-pytest-style = ">=1.6"
-flake8-rst-docstrings = ">=0.2"
-isort = ">=5.10"
-pep8-naming = ">=0.12"
-pre-commit = ">=2.14"
-pre-commit-hooks = ">=4.1"
-pydocstyle = ">=6.1"
-pylint = ">=2.12"
-ruff = ">=0.0"
-safety = ">=1.10"
-
-{%- if cookiecutter.with_django|int %}
-# extra django-deps
-django-stubs = ">=1.12.0"
-watchfiles = ">=0.18.0"
-{% endif %}
+    {%- if cookiecutter.with_fastapi|int %}
+    "fastapi[all]>=0.117",
+    {%- endif %}
+    "httpx>=0.28",
+    "libranet-logging>=1.5",
+    "python-dateutil>=2.9",
+    "pydantic>=2.9",
+]
 
 
-[tool.poetry.group.deploy.dependencies]
-uvicorn = { extras = ["standard"], version = ">=0.20" }
-gunicorn = ">=20.1"
-hypercorn = ">=0.14"
+[dependency-groups]
+dev = [
+    "pylint>=3.1.0",
+    "ruff>=0.8.6",
+]
+deploy = [
+    "gunicorn>=20.1",
+    "hypercorn>=0.14",
+    "uvicorn>=0.20"
+    # "uvicorn = { extras = ["standard"], version = ">=0.20" }
+]
+docs = [
+    "autoapi>=2.0",
+    # "furo>=2021.11",
+    "markupsafe>=2.1",
+    "myst-parser>=1.0",
+    "pdoc>=13.0",
+    "recommonmark>=0.7",
+    "Sphinx>=4.4",
+    "sphinx-autoapi>=1.8",
+    # "sphinx-autobuild>=2021.3",
+    # "sphinx-click>=3.0",
+    "sphinx-rtd-theme>=1.0",
+]
+ipython = [
+    "ipdb>=0.13",
+    "ipython>=8.0",
+    "rich>=13.9.4",
+]
+jupyter = [
+    "ipykernel>=6.0",
+]
+packaging = [
+    "pyroma>=4.2",
+]
+pre-commit = [
+    "pre-commit>=3.5",  # 3.5 still supports python3.8
+    "pre-commit-hooks>=5.0.0",
+]
+profiling = [
+    "gprof2dot>=2022.7",
+    "importtime-waterfall>=1.0",
+    "pyinstrument>=4.4",
+    "tuna>=0.5",
+]
+security = [
+    "bandit>=1.7",
+    # bandit = { extras = ["toml"], version = ">=1.7" }
+    "safety>=2.3",
+]
+testing = [
+    "mutmut>=3.3",
+    "pytest>=8.1",
+    "pytest-clarity>=1.0",
+    "pytest-cov>=5.0.0",
+    "pytest-dotenv>=0.5",
+    {%- if cookiecutter.with_django|int %}
+    "pytest-django>=4.5.2",
+    {%- endif %}
+    "pytest-mock>=3.15",
+    "pytest-xdist==3.8.0",
+]
+typing = [
+    "lxml>=4.9",
+    # lxml = { version = ">=4.9", allow-prereleases = false } # mypy coverage-report
+    "mypy>=1.14",
+    "ty>=0.0.1a17",
+    "typeguard>=2.13",
+    "types-python-dateutil>=2.8",
+    "types-requests>=2.28",
+    "types-toml>=0.10",
+]
+webtesting = [
+    "httpie>=3.2",
+    "locust>=2.11"
+]
 
-[tool.poetry.group.dist.dependencies]
-pyroma = ">=4.2"
-twine = ">=4.0.2"
 
-[tool.poetry.group.docs.dependencies]
-autoapi = ">=2.0"
-# furo = ">=2021.11"
-markupsafe = ">=2.1"
-myst-parser = ">=1.0"
-# myst-parser = {version = ">=0.16"}
-pdoc = ">=13.0"
-recommonmark = ">=0.7"
-Sphinx = ">=4.4"
-sphinx-autoapi = ">=1.8"
-# sphinx-autobuild = ">=2021.3"
-# sphinx-click = ">=3.0"
-sphinx-rtd-theme = ">=1.0"
 
-[tool.poetry.group.ipython.dependencies]
-ipdb = ">=0.13"
-ipykernel = ">=6.9"
-ipython = ">=8.4"
 
-[tool.poetry.group.profiling.dependencies]
-gprof2dot = ">=2022.7"
-importtime-waterfall = ">=1.0"
-pyinstrument = ">=4.4"
-tuna = ">=0.5"
+# [tool.poetry.group.dev.dependencies]
+# absolufy-imports = ">=0.3"
+# bandit = ">=1.7"
+# black = { version = ">=22.0", allow-prereleases = true }
+# flake8 = ">=4.0"
+# flake8-bugbear = ">=23.2"
+# flake8-docstrings = ">=1.6"
+# flake8-pyproject = ">=1.2"
+# flake8-pytest-style = ">=1.6"
+# flake8-rst-docstrings = ">=0.2"
+# isort = ">=5.10"
+# pep8-naming = ">=0.12"
+# pre-commit = ">=2.14"
+# pre-commit-hooks = ">=4.1"
+# pydocstyle = ">=6.1"
+# pylint = ">=2.12"
+# ruff = ">=0.0"
+# safety = ">=1.10"
 
-[tool.poetry.group.testing.dependencies]
-coverage = { extras = ["toml"], version = ">=6.2" }
-hypothesis = ">=6.72"
-nox = ">=2022.11"
-nox-poetry = ">=1.0"
-pytest = ">=7.0"
-pytest-clarity = ">=1.0"
-pytest-codecov = ">=0.5"
-pytest-cov = ">=3.0"
-{%- if cookiecutter.with_typer|int %}
-pytest-click = ">=1.1"
-{%- endif %}
-pytest-mock = ">=3.6"
-pytest-xdist = ">=3.2"
-tox = ">=4.4"
+
+
+
+
+
+
+
+# [tool.poetry.group.testing.dependencies]
+# coverage = { extras = ["toml"], version = ">=6.2" }
+# hypothesis = ">=6.72"
+# nox = ">=2022.11"
+# nox-poetry = ">=1.0"
+# pytest = ">=7.0"
+# pytest-clarity = ">=1.0"
+# pytest-codecov = ">=0.5"
+# pytest-cov = ">=3.0"
+# {%- if cookiecutter.with_cyclopts|int %}
+# pytest-click = ">=1.1"
+# {%- endif %}
+# pytest-mock = ">=3.6"
+# pytest-xdist = ">=3.2"
+# tox = ">=4.4"
 # xdoctest = { extras = ["colors"], version = ">=0.15" }
 
-[tool.poetry.group.webtesting.dependencies]
-httpie = ">=3.2"
-locust = ">=2.11"
-
-{%- if cookiecutter.with_django|int %}
-# extra django-deps
-pytest-django = ">=4.5.2"
-{%- endif %}
 
 
-[tool.poetry.group.typing.dependencies]
-lxml = { version = ">=4.9", optional = false, allow-prereleases = false } # mypy coverage-report
-mypy = ">=0.9"
-typeguard = ">=2.13"
-types-python-dateutil = ">=2.8"
-# types-setuptools = ">=57.4"
-types-requests = ">=2.28"
-types-toml = ">=0.10"
-
-
-[tool.poetry.scripts]
+[project.scripts]
 {{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
 
-[tool.poetry.urls]
-"Repository" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
+[project.urls]
+homepage = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
+repository = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"
 "Changelog" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/docs/changes.md"
 "Issues" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/issues"
 "Releases" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
-{% if cookiecutter.support_rtd|int %}"Docs" = "https://{{cookiecutter.project_name}}.readthedocs.io"{% endif %}
-{% if cookiecutter.support_rtd|int == 0 %}"Docs" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{% endif %}
-
-# [tool.poetry2conda]
-# # https://pypi.org/project/poetry2conda/
-# # https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf
-# name = "conda-base"
+{% if cookiecutter.support_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{% endif %}
+{% if cookiecutter.support_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{% endif %}
 
 
-[tool.poetry-dynamic-versioning]
-# cfr https://github.com/mtkennerly/poetry-dynamic-versioning
-enable = true
-vcs = "git"
-style = "semver"
 
-[tool.poetry-dynamic-versioning.substitution]
-files = [
-    "src/{{cookiecutter.package_name}}/__init__.py",
-    "src/*/__version__.py",
-    "docs/changes.md",
-]
-
-
-[tool.poetry.plugins] # Optional super table
-# [tool.poetry.plugins."sitecustomize"]
-# https://sitecustomize-entrypoints.readthedocs.io/en/stable/
-# {{cookiecutter.package_name}}_foo = "{{cookiecutter.package_name}}:entrypoint"
-
-[tool.poetry-release]
-release-replacements = [
-    { file = "docs/changes.md", pattern = "TBD \\(Unreleased\\)", replace = "{version} \\({date}\\)" },
-    { file = "src/{{cookiecutter.package_name}}/__init__.py", pattern = '__version__ = "{version}"', replace = '__version__ = "{next_version}"' },
-    # { file="CHANGELOG.md", pattern="\\(https://semver.org/spec/v2.0.0.html\\).", replace="(https://semver.org/spec/v20.0.html).\n\n## [Unreleased]"},
-]
-disable-push = false
-disable-tag = false
-disable-dev = false
-release-commit-message = "Release {package_name} {version}"
-post-release-commit-message = "Start next development iteration {next_version}"
-tag-name = "{version}"
-sign-tag = false
-sign-commit = false
 
 
 [tool.pylint.format]
@@ -338,33 +338,64 @@ testpaths = ["tests"]
 addopts = "--color=yes --junit-xml='var/coverage/pytest.xml'"
 
 
-# [tool.tox.legacy_tox_ini]
-# # envlist = ["py38", "py39", "py310", "py311"]
-# # isolated_build = true
-# toxworkdir = "var/cache/tox"
 
 
-[tool.tox]
-# see https://tox.wiki/en/3.5.0/example/basic.html#pyproject-toml-tox-legacy-ini
-legacy_tox_ini = """
-[tox]
-envlist = py{39,310,311}
-# envlist = [py39, py310, py311]
-isolated_build = True
-toxworkdir = var/cache/tox
 
-[testenv]
-allowlist_externals =
-    make
-    poetry
-skip_install = true
-commands =
-    make install
-    pytest --pdb --exitfirst
-"""
 
 
 [tool.ruff]
-# https://beta.ruff.rs/docs/configuration/
-cache-dir = "var/cache/ruff"
+# https://docs.astral.sh/ruff/configuration/
+cache-dir = "var/cache/ruff" # relative to project_root
 line-length = 120
+
+[tool.ruff.lint]
+ignore = [
+    # COM812 may cause conflicts when used with the ruff formatter
+    "COM812",
+    # D203 conflicts withs D211
+    "D203", # 1 blank line required before class docstring
+    # "D211", # No blank lines allowed before class docstring
+    # D212 conflicts with D213
+    "D212",  # Multi-line docstring summary should start at the first line
+    # "D213",  # Multi-line docstring summary should start at the second line
+    "ERA001", # Found commented-out code
+]
+select = ["ALL"]
+
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.isort]
+# https://docs.astral.sh/ruff/settings/#lintisort
+combine-as-imports = true
+force-single-line = false
+from-first = false
+known-third-party = []
+known-first-party = ["autoread_dotenv"]
+known-local-folder = ["_helpers"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "ANN001",  # Missing type annotation
+    "D103",    # Missing docstring in public function
+    "INP001",  # tests-dir should not be a python-package
+    "PLC0415", # `import` should be at the top-level of a file
+    "S101",    # Use of `assert` detected
+    ]
+
+
+[tool.ty]
+
+
+[tool.uv]
+managed = true
+package = true
+default-groups = [
+    # "dev",
+    # "ipython",
+    # "jupyter",
+    # "pre-commit",
+    # "testing",
+    # "typing",
+]

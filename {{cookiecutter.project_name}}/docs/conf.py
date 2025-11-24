@@ -5,7 +5,7 @@ copyright = "{{cookiecutter.copyright_year}}, {{cookiecutter.author}}"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
-{%- if cookiecutter.with_typer|int %}
+{%- if cookiecutter.with_cyclopts|int %}
     "sphinx_click",
 {%- endif %}
     "myst_parser",
