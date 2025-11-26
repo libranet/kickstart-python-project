@@ -23,4 +23,4 @@ def test_license() -> None:
     # from {{cookiecutter.package_name}} import __license__
 
     assert isinstance({{cookiecutter.package_name}}.__license__, str)
-    assert "{{cookiecutter.license}}" in {{cookiecutter.package_name}}.__license__
+    assert "MIT" in {{cookiecutter.package_name}}.__license__

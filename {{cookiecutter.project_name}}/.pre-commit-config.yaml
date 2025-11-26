@@ -1,173 +1,199 @@
 # Configuration-file for pre-commit
+#
 # References:
 #   - Official docs: https://pre-commit.com
 #   - for more hooks: https://pre-commit.com/hooks.html
+#   - https://github.com/pre-commit/pre-commit-hooks
 #
-# To avoid duplication, we try to configure the tools in pyproject.toml as much as possible.
-# we call the executables via "poetry run <executable>"
+# Notes:
+#   - To avoid duplication, we try to configure the tools in pyproject.toml as much as possible.
+#   - The setting "language: system" is used to run commands that are already available on your system,
+#     and pre-commit does not need to create or manage an isolated environment.
+#   - Single-quote regular expressions.
 #
 # Usage:
-#   > pre-commit install
-#   > pre-commit install hooks  -f
-#   > pre-commit autoupdate
-#   > pre-commit run --all-files
+#   > bin/pre-commit install
+#   > bin/pre-commit install hooks -f
+#   > bin/pre-commit autoupdate
+#   > bin/pre-commit run --all-files
 
-# default_install_hook_types: [commit-msg, pre-commit]
 
-# configuration-wide default for the stages property of hooks.
-# This will only override individual hooks that do not set stages.
-# default_stages: [commit, manual, pre-commit, pre-push]  # default: (all stages)
+default_install_hook_types: [commit-msg, pre-commit]
+
+default_stages: [pre-commit, manual]
 
 default_language_version:
-  python: python3.11
+    python: python3.10
 
-# to have pre-commit stop running hooks after the first failure
-fail_fast: false # default: false
+fail_fast: true
 
 repos:
-  - repo: local
-    hooks:
-      # docs: https://black.readthedocs.io/en/stable/integrations/source_version_control.html
-      - id: black
-        name: Black
-        entry: poetry run black
-        args: ["--config=pyproject.toml"]
-        # "--check",  # don't write the files back, just return the status.
-        language: system # use executable found on path
-        require_serial: true
-        types: [python] # check only specific filetypes
 
-  # docs: https://flake8.pycqa.org/en/latest/user/using-hooks.html
+#   - repo: https://github.com/pre-commit/pygrep-hooks
+#     rev: v1.10.0
+#     hooks:
+#       - id: python-check-mock-methods
+#       - id: python-use-type-annotations
+#       - id: rst-backticks
+#       - id: rst-directive-colons
+#       - id: rst-inline-touching-normal
+#       - id: text-unicode-replacement-char
+
   - repo: local
     hooks:
-      - id: flake8
-        name: Flake8
-        entry: poetry run flake8
+
+      # The following are all pre-commit-hooks
+      # docs: https://github.com/pre-commit/pre-commit-hooks
+
+    #   - id: lower-case-only
+    #     name: check filenames are lower-case
+    #     entry: check forbidden filenames
+    #     language: fail
+    #     files: '[^a-z0-9._/-]'
+
+      - id: check-added-large-files
+        name: check added large files
+        entry: check-added-large-files
         language: system
-        require_serial: true
-        types: [python]
 
-  # docs: https://pycqa.github.io/isort/docs/configuration/pre-commit.html
-  - repo: local
-    hooks:
-      - id: isort
-        name: Isort
-        entry: poetry run isort
-        args: ["--settings-path=pyproject.toml"] # "--filter-files"
-        language: system
-        require_serial: true
-        types: [python] # pyi? cython?
-
-  - repo: local
-    hooks:
-      - id: ruff
-        name: Ruff
-        entry: poetry run ruff
-        args: [--fix, --show-fixes]
-        language: system
-        types: [python]
-
-  - repo: local
-    hooks:
-      - id: mypy
-        name: Mypy
-        entry: poetry run mypy
-        language: system
-        types: [python]
-
-  - repo: local
-    hooks:
-      - id: bandit
-        name: Bandit
-        entry: poetry run bandit
-        language: system
-        types: [python]
-        # see https://github.com/PyCQA/bandit/issues/318
-        args: ["--configfile pyproject.toml", "--baseline etc/bandit-baseline.json"]
-
-  # The following are all pre-commit-hooks
-  # docs: https://github.com/pre-commit/pre-commit-hooks
-
-  - repo: local
-    hooks:
       - id: check-case-conflict
-        name: Check for files with names that would conflict on a case-insensitive filesystem like MacOS HFS+ or Windows FAT.
-        entry: poetry run check-case-conflict
+        name: check case conflicts
+        description: Check for files with names that would conflict on a case-insensitive filesystem.
+        entry: check-case-conflict
         language: system
-        types: [text]
 
-  - repo: local
-    hooks:
-      - id: debug-statements
-        name: Check debug statements
-        entry: poetry run debug-statement-hook
+      - id: check-merge-conflict
+        name: check merge conflict
+        entry: check-merge-conflict
+        args: [--assume-in-merge]
         language: system
-        types: [python]
 
-  - repo: local
-    hooks:
+      - id: check-shebang-scripts-are-executable
+        name: check shebang scripts are executable
+        entry: check-shebang-scripts-are-executable
+        language: system
+
+      - id: check-json
+        name: check json
+        entry: check-json
+        language: system
+        types: [json]
+        exclude: '^.vscode/.*\.json'
+
       - id: check-toml
-        name: Check TOML-syntax
-        entry: poetry run check-toml
+        name: check toml syntax
+        entry: check-toml
         language: system
         types: [toml]
 
-  - repo: local
-    hooks:
       - id: check-xml
-        name: Check XML-syntax
-        entry: poetry run check-xml
+        name: check xml syntax
+        entry: check-xml
         language: system
         types: [xml]
 
-  - repo: local
-    hooks:
       - id: check-yaml
-        name: Check YAML-syntax
-        entry: poetry run check-yaml
+        name: check yaml syntax
+        entry: check-yaml
         language: system
         types: [yaml]
-        # exclude: "etc/logging.yaml"
 
-  - repo: local
-    hooks:
-      - id: check-merge-conflict
-        name: Check for files that contain merge conflict strings
-        entry: poetry run check-merge-conflict
+      - id: check-symlinks
+        name: check symlinks
+        entry: check-symlinks
+        language: system
+
+      - id: destroyed-symlinks
+        name: destroyed symlinks
+        entry: destroyed-symlinks
+        language: system
+
+      - id: detect-private-key
+        name: detect private key
+        entry: detect-private-key
+        language: system
+
+      - id: fix-byte-order-marker
+        name: fix byte order marker
+        entry: fix-byte-order-marker
+        language: system
+
+      - id: mixed-line-ending
+        name: fix mixed line ending (CLRF/LF)
+        entry: mixed-line-ending
         language: system
         types: [text]
-        args: ["--assume-in-mergel"] # Allow running this hook when there is no ongoing merge operation
 
-  - repo: local
-    hooks:
-      - id: end-of-file-fixer
-        name: Fix End of Files
-        entry: poetry run end-of-file-fixer
+      - id: trailing-whitespace
+        name: fix trailing whitespace (EOL)
+        entry: trailing-whitespace-fixer
         language: system
-        stages: [commit, push, manual]
-        types: [python] # text too broad?
+        types: [text]
 
-  - repo: local
-    hooks:
-      - id: fix-encoding-pragma
-        name: Fix encoding pragma
-        entry: poetry run fix-encoding-pragma
+      # Below python-specific checks
+
+      - id: check-ast
+        name: check ast
+        entry: check-ast
         language: system
         types: [python]
 
-  - repo: local
-    hooks:
-      - id: mixed-line-ending
-        name: Fix mixed line-endings
-        entry: poetry run mixed-line-ending
+      - id: check-builtin-literals
+        name: check builtin literals
+        entry: check-builtin-literals
         language: system
-        types: [text]
+        types: [python]
 
-  - repo: local
-    hooks:
-      - id: trailing-whitespace
-        name: Trim Trailing Whitespace # fix-trailing-whitespace
-        entry: poetry run trailing-whitespace-fixer
+      - id: check-docstring-first
+        name: check docstring first
+        entry: check-docstring-first
         language: system
-        stages: [commit, push, manual]
-        types: [text]
+        types: [python]
+
+      - id: debug-statements
+        name: check debug statements
+        entry: debug-statement-hook
+        language: system
+        types: [python]
+
+      - id: end-of-file-fixer
+        name: fix end of files (EOF)
+        entry: end-of-file-fixer
+        language: system
+        types: [python]
+
+      - id: fix-encoding-pragma
+        name: fix encoding pragma
+        entry: fix-encoding-pragma --remove
+        language: system
+        types: [python]
+
+      - id: name-tests-test
+        name: pytests are prefixed tests_*.py
+        entry: name-tests-test
+        args: [--pytest-test-first]
+        language: system
+        types: [python]
+        files: '^tests/.*\.py$'
+        exclude: '^tests/_helpers/.*\.py$'
+
+      - id: ruff-format
+        name: ruff format
+        entry: ruff format
+        args: [--fix, --exit-non-zero-on-fix]
+        language: system
+        types: [python]
+
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check
+        args: [--fix]
+        language: system
+        types: [python]
+
+      - id: uv-lock-check
+        name: uv lock check
+        description: check uv.lock is in sync
+        entry: uv lock --check
+        language: system
+        pass_filenames: false
