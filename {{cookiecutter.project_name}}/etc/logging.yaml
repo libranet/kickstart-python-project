@@ -89,38 +89,14 @@ formatters:
             ERROR: red
             CRITICAL: purple
 
-    console_http: # suited for black background
-        "()": "demo_flask.formatter.HttpFormatter"
-        datefmt: "%Y/%m/%d %H:%M:%S"
-        format: "{asctime} - {name} - {levelname:<7} - {message}"
-        style: "{"
+    # uvicorn_default: # see uvicorn/config.py
+    #     "()": "uvicorn.logging.DefaultFormatter"
+    #     datefmt: "%Y-%m-%d %H:%M:%S"
+    #     format: "%(levelprefix)s %(asctime)s %(message)s"
 
-    console_color_http: # suited for black background
-        "()": "demo_flask.formatter.ColorHttpFormatter"
-        datefmt: "%Y/%m/%d %H:%M:%S"
-        format: "{log_color}{asctime} - {name} - {levelname:<7} - {message}{reset}"
-        reset: True
-        style: "{"
-        log_colors:
-            # cfr. https://github.com/borntyping/python-colorlog
-            # supported colors: blue|cyan|green|yellow|red|purple|white|black
-            # supported prefixes: "bold_" and "bg_"
-            # <LOGLEVEL>: <foreground-color>,<background-color>
-            # comma is the separator, but no extra spaces allowed
-            DEBUG: bold_cyan # bold_cyan,bg_white
-            INFO: bold_green
-            WARNING: yellow
-            ERROR: red
-            CRITICAL: purple
-
-    uvicorn_default: # see uvicorn/config.py
-        "()": "uvicorn.logging.DefaultFormatter"
-        datefmt: "%Y-%m-%d %H:%M:%S"
-        format: "%(levelprefix)s %(asctime)s %(message)s"
-
-    uvicorn_access: # see uvicorn/config.py
-        "()": "uvicorn.logging.AccessFormatter"
-        format: '%(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
+    # uvicorn_access: # see uvicorn/config.py
+    #     "()": "uvicorn.logging.AccessFormatter"
+    #     format: '%(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
 
 handlers:
     # Generally there is no need to change to loglevel specified on the handlers.
@@ -247,19 +223,11 @@ loggers:
     dotenv:
         level: !env LOGLEVEL_DOTENV, NOTSET
 
-    flask_cors:
-        level: !env LOGLEVEL_FLASK_CORS, NOTSET
-
-    gunicorn:
-        level: !env LOGLEVEL_GUNICORN, NOTSET
+    # gunicorn:
+    #    level: !env LOGLEVEL_GUNICORN, NOTSET
 
     http.client:
         level: !env LOGLEVEL_HTTP_CLIENT, NOTSET
-
-    httplogger:
-        level: !env LOGLEVEL_HTTPLOGGER, NOTSET
-        handlers:
-            - console_http
 
     ipython-startup:
         level: !env LOGLEVEL_IPYTHON _STARTUP, NOTSET
@@ -304,18 +272,18 @@ loggers:
     urllib3.util.retry:
         level: !env LOGLEVEL_URLLIB3_UTIL_RETRY, NOTSET
 
-    uvicorn:
-        level: !env LOGLEVEL_UVICORN, NOTSET
-        # handlers:
-        #     - uvicorn_default
+    # uvicorn:
+    #     level: !env LOGLEVEL_UVICORN, NOTSET
+    #     handlers:
+    #         - uvicorn_default
 
-    uvicorn_access:
-        level: !env LOGLEVEL_UVICORN_ACCESS, NOTSET
-        handlers:
-            - uvicorn_access
+    # uvicorn_access:
+    #     level: !env LOGLEVEL_UVICORN_ACCESS, NOTSET
+    #     handlers:
+    #         - uvicorn_access
 
-    uvicorn_error: # confusing logger-name, see https://github.com/encode/uvicorn/issues/562
-        level: !env LOGLEVEL_UVICORN_ERROR, NOTSET
+    # uvicorn_error: # confusing logger-name, see https://github.com/encode/uvicorn/issues/562
+    #     level: !env LOGLEVEL_UVICORN_ERROR, NOTSET
 
     watchfiles:
         level: !env LOGLEVEL_WATCHFILES, NOTSET
