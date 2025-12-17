@@ -1,4 +1,4 @@
-{% raw -%}
+
 # uv
 
 
@@ -116,4 +116,3 @@ uv-set-python-version version="3.10":
     @ echo -e "Set python version to {{version}}"
 
 
-{%- endraw %}

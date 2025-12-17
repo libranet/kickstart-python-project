@@ -1,4 +1,4 @@
-{% raw -%}
+
 # pylint
 
 
@@ -25,4 +25,3 @@ pylint-src args="": pylint-which
 pylint-tests args="": pylint-which
     - pylint tests/  {{args}}
 
-{%- endraw %}

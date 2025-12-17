@@ -1,4 +1,4 @@
-{% raw -%}
+
 # See ../justfile
 
 
@@ -43,4 +43,3 @@ pre-commit-run-files: pre-commit-which
 alias precommit-run-files := pre-commit-run-files
 
 
-{%- endraw %}

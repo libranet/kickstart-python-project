@@ -1,4 +1,4 @@
-{% raw -%}
+
 # ipython
 
 
@@ -37,4 +37,3 @@ alias ipython-debug := ipython-shell-debug
 ipython-create-profile name="":
     .venv/bin/ipython profile create {{name}}
 
-{%- endraw %}

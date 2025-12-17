@@ -1,4 +1,4 @@
-{% raw -%}
+
 # sshx
 
 
@@ -30,4 +30,3 @@ sshx-run:
 [unix]
 sshx: sshx-install sshx-run
 
-{%- endraw %}

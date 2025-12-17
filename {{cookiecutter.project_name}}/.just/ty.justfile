@@ -1,4 +1,4 @@
-{% raw -%}
+
 # ty
 
 
@@ -13,4 +13,4 @@ ty-check args="":
     - .venv/bin/ty check src/ tests/ {{args}}
 
 
-{%- endraw %}
+

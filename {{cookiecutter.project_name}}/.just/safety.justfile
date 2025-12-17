@@ -1,4 +1,4 @@
-{% raw -%}
+
 # safety
 
 
@@ -20,4 +20,3 @@ safety-check-html:
     @ mkdir -p var/html/safety
     safety check --save-html var/html/safety/safety.html
 
-{%- endraw %}

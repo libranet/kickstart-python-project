@@ -1,4 +1,4 @@
-{% raw -%}
+
 # See ../justfile
 
 
@@ -13,4 +13,3 @@ pyroma-which:
 pyroma: pyroma-which
     - pyroma .
 
-{%- endraw %}

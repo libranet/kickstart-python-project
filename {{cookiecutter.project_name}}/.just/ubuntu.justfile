@@ -1,4 +1,4 @@
-{% raw -%}
+
 # ubuntu
 
 
@@ -83,4 +83,3 @@ shellcheck-install target_dir="~/bin":
     chmod u+x {{target_dir}}/shellcheck
 
 
-{%- endraw %}

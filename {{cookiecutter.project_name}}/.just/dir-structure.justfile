@@ -1,4 +1,4 @@
-{% raw -%}
+
 # See ../justfile
 #
 # - justfile_directory() is the directory of the toplevel justfile
@@ -71,4 +71,3 @@ clean: clean-symlinks clean-venv clean-pyhon-cache-files
 alias clear := clean
 
 
-{%- endraw %}

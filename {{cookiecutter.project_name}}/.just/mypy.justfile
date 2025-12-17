@@ -1,4 +1,4 @@
-{% raw -%}
+
 # mypy
 
 
@@ -28,4 +28,3 @@ mypy-html: mypy-report
 
 
 
-{%- endraw %}

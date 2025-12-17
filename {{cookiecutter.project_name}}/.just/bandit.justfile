@@ -1,5 +1,5 @@
 # bandit, see ../justfile
-{% raw -%}
+
 
 # show which bandit is used
 [group: 'bandit']
@@ -27,4 +27,3 @@ bandit-html:
 bandit-update-baseline:
     .venv/bin/bandit --configfile pyproject.toml --recursive .  --format json --output etc/bandit-baseline.json
 
-{%- endraw %}

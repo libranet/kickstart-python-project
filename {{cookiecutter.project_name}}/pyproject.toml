@@ -126,25 +126,15 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: POSIX :: Linux",
-    {%- for v in reversed(range(cookiecutter.minimum_python|int, 15)) %}
+    {%- for v in range(cookiecutter.minimum_python.split('.')[1]|int, 15)|reverse %}
     "Programming Language :: Python :: 3.{{ v }}",
     {%- endfor %}
-
-    # "Programming Language :: Python :: 3.14",
-    # "Programming Language :: Python :: 3.13",
-    # "Programming Language :: Python :: 3.12",
-    # "Programming Language :: Python :: 3.11",
-    # "Programming Language :: Python :: 3.10",
-    # "Programming Language :: Python :: 3.9",
-    # "Programming Language :: Python :: {{cookiecutter.minimum_python}}",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development",
     "Typing :: Typed",
 ]
-
-
 
 
 
@@ -251,53 +241,6 @@ webtesting = [
 ]
 
 
-
-
-# [tool.poetry.group.dev.dependencies]
-# absolufy-imports = ">=0.3"
-# bandit = ">=1.7"
-# black = { version = ">=22.0", allow-prereleases = true }
-# flake8 = ">=4.0"
-# flake8-bugbear = ">=23.2"
-# flake8-docstrings = ">=1.6"
-# flake8-pyproject = ">=1.2"
-# flake8-pytest-style = ">=1.6"
-# flake8-rst-docstrings = ">=0.2"
-# isort = ">=5.10"
-# pep8-naming = ">=0.12"
-# pre-commit = ">=2.14"
-# pre-commit-hooks = ">=4.1"
-# pydocstyle = ">=6.1"
-# pylint = ">=2.12"
-# ruff = ">=0.0"
-# safety = ">=1.10"
-
-
-
-
-
-
-
-
-# [tool.poetry.group.testing.dependencies]
-# coverage = { extras = ["toml"], version = ">=6.2" }
-# hypothesis = ">=6.72"
-# nox = ">=2022.11"
-# nox-poetry = ">=1.0"
-# pytest = ">=7.0"
-# pytest-clarity = ">=1.0"
-# pytest-codecov = ">=0.5"
-# pytest-cov = ">=3.0"
-# {%- if cookiecutter.with_cyclopts|int %}
-# pytest-click = ">=1.1"
-# {%- endif %}
-# pytest-mock = ">=3.6"
-# pytest-xdist = ">=3.2"
-# tox = ">=4.4"
-# xdoctest = { extras = ["colors"], version = ">=0.15" }
-
-
-
 [project.scripts]
 {{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.cli:app"
 
@@ -309,9 +252,6 @@ repository = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.pro
 "Releases" = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}/releases"
 {% if cookiecutter.support_rtd|int %}documentation = "https://{{cookiecutter.project_name}}.readthedocs.io"{% endif %}
 {% if cookiecutter.support_rtd|int == 0 %}documentation = "https://github.com/{{cookiecutter.github_user}}/{{cookiecutter.project_name}}"{% endif %}
-
-
-
 
 
 [tool.pylint.format]
@@ -336,11 +276,6 @@ markers = ["unit", "integration"]
 testpaths = ["tests"]
 # the junit-report is used to report coverage in gitlab
 addopts = "--color=yes --junit-xml='var/coverage/pytest.xml'"
-
-
-
-
-
 
 
 [tool.ruff]
@@ -391,6 +326,7 @@ known-local-folder = ["_helpers"]
 [tool.uv]
 managed = true
 package = true
+default-groups = "all"
 default-groups = [
     # "dev",
     # "ipython",

@@ -1,4 +1,4 @@
-{% raw -%}
+
 # pytest
 
 
@@ -48,4 +48,3 @@ alias pytest-lf-pdf := pytest-pdb-failed
 pytest-filter filter args="":
     .venv/bin/pytest tests --color=yes -k {{filter}} {{args}}
 
-{%- endraw %}

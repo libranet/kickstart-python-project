@@ -1,4 +1,4 @@
-{% raw -%}
+
 # ruff
 
 
@@ -46,4 +46,3 @@ alias ruff-fix-unsafe := ruff-check-fix-unsafe
 ruff-format args="":
     - {{RUFF_EXE}} format docs/ etc/ src/ tests/ {{args}}
 
-{%- endraw %}

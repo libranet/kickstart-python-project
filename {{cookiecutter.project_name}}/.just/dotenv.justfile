@@ -1,4 +1,4 @@
-{% raw -%}
+
 # dotenv
 
 env_file :=  justfile_directory() / ".env"
@@ -55,4 +55,3 @@ show-dotenv:
     @ echo -e "Following environment variables are defined in the {{env_file}}:"
     @ cat .env
 
-{%- endraw %}
