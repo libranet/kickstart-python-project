@@ -24,22 +24,31 @@ except importlib.metadata.PackageNotFoundError:  # pragma: no cover
     pkginfo = {}
 
 
-__metadata__: dict = pkginfo
 
-__author__: str | list[str] = pkginfo.get("author", "unknown")
+authors: str | list[str] = pkginfo.get("author_email", "unknown")
 
-__author_email__: str | list[str] = pkginfo.get("author_email", "unknown")
+license_: str | list[str] = pkginfo.get("license_expression") or pkginfo.get("license", "unknown") or "unknown"
 
-__copyright__: str | list[str] = pkginfo.get("license", "unknown")
+version: str | list[str] = pkginfo.get("version", "unknown")
 
-__description__: str | list[str] = pkginfo.get("summary", "unknown")
 
-__license__: str | list[str] = pkginfo.get("license", "unknown")
 
-__pkg_name__: str | list[str] = pkginfo.get("name", "unknown")
+# __metadata__: dict = pkginfo
 
-__readme__: str | list[str] = pkginfo.get("description", "unknown")
+# __author__: str | list[str] = pkginfo.get("author", "unknown")
 
-__url__: str | list[str] = pkginfo.get("project_url", "unknown")
+# __author_email__: str | list[str] = pkginfo.get("author_email", "unknown")
 
-__version__: str | list[str] = pkginfo.get("version", "unknown")
+# __copyright__: str | list[str] = pkginfo.get("license", "unknown")
+
+# __description__: str | list[str] = pkginfo.get("summary", "unknown")
+
+# __license__: str | list[str] = pkginfo.get("license", "unknown")
+
+# __pkg_name__: str | list[str] = pkginfo.get("name", "unknown")
+
+# __readme__: str | list[str] = pkginfo.get("description", "unknown")
+
+# __url__: str | list[str] = pkginfo.get("project_url", "unknown")
+
+# __version__: str | list[str] = pkginfo.get("version", "unknown")
