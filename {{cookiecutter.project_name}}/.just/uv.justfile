@@ -99,7 +99,6 @@ uv-publish path="dist/" args="":
 
 # export uv-defined requirements to a pip-installable requirements-file
 [group: 'uv']
-[unix]
 uv-export-requirements:
     uv export --format requirements-txt --no-hashes --output-file etc/requirements.txt
     @ echo -e "Updated etc/requirements.txt"
@@ -109,7 +108,6 @@ alias uv-export := uv-export-requirements
 
 # set python-version in .python-version file
 [group: 'uv']
-[unix]
 uv-set-python-version version="3.10":
     mv .python-version .python-version.backup
     @ echo "{{version}}" > .python-version

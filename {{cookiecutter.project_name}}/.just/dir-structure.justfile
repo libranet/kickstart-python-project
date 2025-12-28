@@ -13,8 +13,8 @@ export PATH := if os_family() == "windows" { venv_bin_dir + x";${PATH}" } else {
 [group: 'dir-structure']
 create-dirs:
     # vscode does not create cache-dirs, so we need to create it
-    @ echo -e "In current working dir: ${PWD}"
-    @ echo -e "Creating project directory-structure:"
+    @ echo  "In current working dir: ${PWD}"
+    @ echo  "Creating project directory-structure:"
     mkdir -p var
     mkdir -p var/cache
     mkdir -p var/cache/mypy
@@ -23,7 +23,7 @@ create-dirs:
     mkdir -p var/log
     mkdir -p var/run
     mkdir -p var/tmp
-    @ echo -e ""
+    @ echo ""
 
 
 # symlinks to venv-dirs to make bin/python work
