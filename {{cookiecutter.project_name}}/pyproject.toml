@@ -327,11 +327,11 @@ known-local-folder = ["_helpers"]
 managed = true
 package = true
 default-groups = "all"
-default-groups = [
+# default-groups = [
     # "dev",
     # "ipython",
     # "jupyter",
     # "pre-commit",
     # "testing",
     # "typing",
-]
+# ]
