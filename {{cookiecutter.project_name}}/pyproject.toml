@@ -260,14 +260,6 @@ fix = true
 line-length = 120
 target-version = "cookiecutter.minimum_python.split('.')[1]|int"
 
-
-
-[tool.ruff.lint.isort]
-# Settings reference: https://docs.astral.sh/ruff/settings/#lintisort
-# known-first-party = ["{{cookiecutter.package_name}}"]
-combine-as-imports = false
-force-sort-within-sections = false  # sort straight-style imports before from-style imports
-
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
@@ -289,9 +281,13 @@ ignore = [
 allow-star-arg-any = true
 
 [tool.ruff.lint.isort]
+# Settings reference: https://docs.astral.sh/ruff/settings/#lintisort
+
 # https://docs.astral.sh/ruff/settings/#lintisort
-combine-as-imports = true
+# combine-as-imports = true
+combine-as-imports = false
 force-single-line = false
+force-sort-within-sections = false  # sort straight-style imports before from-style imports
 from-first = false
 known-third-party = []
 known-first-party = ["{{cookiecutter.package_name}}"]

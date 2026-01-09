@@ -3,9 +3,9 @@
 
 
 # symlink ipython to ip
-[group: 'ipython']
-symlink-ipython:
-    @ cd .venv/bin && ln -sf ipython ip
+# [group: 'ipython']
+# symlink-ipython:
+#     @ cd .venv/bin && ln -sf ipython ip
 
 
 # open python-shell
@@ -24,7 +24,8 @@ ipython-shell *args:
 alias ipython := ipython-shell
 alias ip := ipython-shell
 
-# open ipython-shell
+
+# open ipython-shell in debug-mode
 [group: 'ipython']
 ipython-shell-debug *args:
     @ uv run ipython --debug {{args}}
