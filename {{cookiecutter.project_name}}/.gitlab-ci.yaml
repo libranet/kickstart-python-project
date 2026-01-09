@@ -36,7 +36,7 @@ cache:
 
 before_script:
     - test -e $CI_PROJECT_DIR/.poetry/bin/poetry || curl -sSL https://install.python-poetry.org | python3 -
-    - export PATH="$CI_PROJECT_DIR/.poetry/bin/:$CI_PROJECT_DIR/.venv/bin/:$PATH"
+    - export PATH="$CI_PROJECT_DIR/.poetry/bin/:$CI_PROJECT_DIR/uv run :$PATH"
     - echo $PATH
     - poetry --version
     - poetry install

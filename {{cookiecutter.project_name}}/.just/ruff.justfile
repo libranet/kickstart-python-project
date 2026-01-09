@@ -15,19 +15,19 @@ ruff-which:
 
 # run ruff on python-files
 [group: 'ruff']
-ruff args="":
+ruff *args:
     - {{RUFF_EXE}} docs/ etc/ src/ tests/ {{args}}
 
 
 # run ruff --check on python-files
 [group: 'ruff']
-ruff-check args="":
+ruff-check *args:
     - {{RUFF_EXE}} check docs/ etc/ src/ tests/ {{args}}
 
 
 # run ruff --fix on python-files
 [group: 'ruff']
-ruff-check-fix args="":
+ruff-check-fix *args:
     - {{RUFF_EXE}} check docs/ etc/ src/ tests/ --fix {{args}}
 
 alias ruff-fix := ruff-check-fix
@@ -35,7 +35,7 @@ alias ruff-fix := ruff-check-fix
 
 # run ruff --fix on python-files
 [group: 'ruff']
-ruff-check-fix-unsafe args="":
+ruff-check-fix-unsafe *args:
     - {{RUFF_EXE}} check docs/ etc/ src/ tests/ --fix --unsafe-fixes {{args}}
 
 alias ruff-fix-unsafe := ruff-check-fix-unsafe
@@ -43,6 +43,6 @@ alias ruff-fix-unsafe := ruff-check-fix-unsafe
 
 # run ruff format on python-files
 [group: 'ruff']
-ruff-format args="":
+ruff-format *args:
     - {{RUFF_EXE}} format docs/ etc/ src/ tests/ {{args}}
 

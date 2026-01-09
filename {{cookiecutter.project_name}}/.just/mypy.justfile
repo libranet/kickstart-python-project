@@ -10,14 +10,14 @@ mypy-which:
 
 # run mypy on python-files
 [group: 'mypy']
-mypy args="": mypy-which
+mypy *args:
     mypy src tests {{ args }}
 
 
 
 # run mypy with html-reporting
 [group: 'mypy']
-mypy-report path="var/html/mypy/" args="": mypy-which
+mypy-report path="var/html/mypy/" *args:
     @ mkdir -p {{ path }}
     mypy src tests --html-report {{ path }} {{ args }}
 
@@ -25,6 +25,4 @@ mypy-report path="var/html/mypy/" args="": mypy-which
 # alias for mypy-report
 [group: 'mypy']
 mypy-html: mypy-report
-
-
 

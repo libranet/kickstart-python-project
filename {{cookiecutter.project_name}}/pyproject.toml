@@ -256,7 +256,11 @@ testpaths = ["tests"]
 [tool.ruff]
 # Settings reference: https://docs.astral.sh/ruff/configuration/
 cache-dir = "var/cache/ruff" # relative to project_root
+fix = true
 line-length = 120
+target-version = "cookiecutter.minimum_python.split('.')[1]|int"
+
+
 
 [tool.ruff.lint.isort]
 # Settings reference: https://docs.astral.sh/ruff/settings/#lintisort
