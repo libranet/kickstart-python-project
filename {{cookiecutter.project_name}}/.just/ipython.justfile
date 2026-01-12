@@ -2,12 +2,6 @@
 # ipython
 
 
-# symlink ipython to ip
-# [group: 'ipython']
-# symlink-ipython:
-#     @ cd .venv/bin && ln -sf ipython ip
-
-
 # open python-shell
 [group: 'ipython']
 python-shell *args:

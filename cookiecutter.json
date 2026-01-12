@@ -17,7 +17,7 @@
   "development_status": [
     "Development Status :: 4 - Beta"
   ],
-  "minimum_python": "3.13.0",
+  "minimum_python": "3.13",
   "with_django": "0",
   "with_flask": "0",
   "with_fastapi": "0",

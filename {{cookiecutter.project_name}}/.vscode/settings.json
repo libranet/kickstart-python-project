@@ -1,45 +1,66 @@
 {
-    // oh-my-posh uses special font (CaskaydiaCove) to display icons in the console
-    "editor.fontFamily": "Consolas, 'Courier New', monospace,'DejaVu Sans Mono for Powerline','CaskaydiaCove NF'",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll": "explicit"
+    },
     "editor.detectIndentation": false,
+    // "editor.formatOnSave": true,  // avoid removing all blank lines in json-files
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
+
     "files.associations": {
         ".env": "dotenv",
-        ".env.example": "dotenv"
+        ".env.template": "dotenv"
     },
-    "makefile.extensionOutputFolder": "./var/cache/vscode",
-    "[makefile]": { // per-language config
-        "editor.insertSpaces": false,
+    "files.exclude": {
+        "**/__pycache__": true,
+        "lib/": true,
+        "lib64/": true
+
     },
-    "[yaml]": { // per-language config
-        "editor.insertSpaces": true,
-        "editor.tabSize": 4,
+    "files.trimTrailingWhitespace": true,
+
+    "[json]": {
+        "editor.formatOnSave": false
     },
-    "makefile.defaultLaunchConfiguration": {},
-    "makefile.makefilePath": "makefile", // Makefile is default
-    "makefile.configurations": [],
-    // https://code.visualstudio.com/docs/python/settings-reference
+
+    // "jupyter.defaultKernel": "${workspaceFolder}/.venv/bin/python",
+    // "jupyter.jupyterServerType": "local",
+
+    "mypy-type-checker.args": ["--config-file", "${workspaceFolder}/pyproject.toml"],
+    "mypy-type-checker.cwd": "${workspaceFolder}/",
+    "mypy-type-checker.importStrategy": "fromEnvironment",
+
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true
+    },
     "python.envFile": "${workspaceFolder}/.env",
-    "python.defaultInterpreterPath": "${workspaceFolder}/uv run python",
-    "python.linting.enabled": true,
-    "python.linting.banditArgs": [
-        "--configfile",
-        "${workspaceFolder}/pyproject.toml",
-        "--recursive"
-    ],
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
     "python.terminal.activateEnvironment": true,
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [
+        "--color=yes",
         "--cov=src",
-        "--cov-report=xml",
-        "--cov-report=html",
-        "--pdb",
+        // "--cov-fail-under=90",
+        // "--cov-report xml:${workspaceFolder}/var/coverage/pytest-cobertura.xml",
+        // "--cov-report html:${workspaceFolder}/var/coverage/html",
+        // "--cov-report term-missing",
+        // "--junit-xml=${workspaceFolder}/var/coverage/pytest-junit.xml",
+        // "--pdb",
         "-v",
         "${workspaceFolder}/tests/",
     ],
-    "yaml.customTags": [
-        "!env"
-    ]
+    "ruff.configuration": "${workspaceFolder}/pyproject.toml",
+    // "ruff.lint.args": ["--extend-ignore=F401"],
+    "ruff.nativeServer": "on",
+
+    "[yaml]": { // per-language config
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+    },
+
+    "vscode-just.runInTerminal": true,
+    "vscode-just.useSingleTerminal": true,
 }

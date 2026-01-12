@@ -2,10 +2,10 @@
 
 import cyclopts
 
-from {{cookiecutter.package_name}} import __version__
+from {{cookiecutter.package_name}}.about import version
 from {{cookiecutter.package_name}}.cli.subcmd1 import app_subcmd1
 
-app: cyclopts.App = cyclopts.App(version=__version__)
+app: cyclopts.App = cyclopts.App(version=version)
 
 # register subcommands
 app.command(obj=app_subcmd1)
@@ -13,5 +13,5 @@ app.command(obj=app_subcmd1)
 
 @app.default
 def main() -> None:
-    """Main command when no subcommand is provided."""
+    """Main command."""
     pass

@@ -54,6 +54,15 @@ import '.just/ubuntu.justfile'
 import '.just/uv.justfile'
 
 
-# Display all canonical tasks (default recipe)
+
+
+# default is the first recipe in the justfile.
+# Display all  tasks (default recipe)
+[group: 'default']
 list:
+    @ just --list --unsorted
+
+
+# Display all canonical tasks
+list-canonical:
     @ just --list --unsorted --no-aliases

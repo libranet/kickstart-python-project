@@ -2,12 +2,6 @@
 # safety
 
 
-# show which safety is used
-# [group: 'safety']
-# safety-which:
-#     @ which safety
-
-
 # run safety check
 [group: 'safety']
 safety-check:

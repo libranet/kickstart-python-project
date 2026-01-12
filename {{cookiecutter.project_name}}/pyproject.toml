@@ -130,7 +130,7 @@ dependencies = [
     {%- if cookiecutter.with_fastapi|int %}
     "fastapi[all]>=0.117",
     {%- endif %}
-    "httpx>=0.28",
+    "httpclient-logging>=1.0",
     "libranet-logging>=1.5",
     "python-dateutil>=2.9",
     "pydantic>=2.9",
@@ -160,9 +160,11 @@ docs = [
     "sphinx-rtd-theme>=1.0",
 ]
 ipython = [
+    "httpx>=0.20",  # demo-function
     "ipdb>=0.13",
     "ipython>=8.0",
-    "rich>=13.9.4",
+    "requests>=2.3", # demo-function
+    "rich>=13.9",
 ]
 jupyter = [
     "ipykernel>=6.0",
@@ -258,7 +260,7 @@ testpaths = ["tests"]
 cache-dir = "var/cache/ruff" # relative to project_root
 fix = true
 line-length = 120
-target-version = "cookiecutter.minimum_python.split('.')[1]|int"
+target-version = "py{{''.join(cookiecutter.minimum_python.split('.')[0:2])|int}}"
 
 [tool.ruff.lint]
 select = ["ALL"]

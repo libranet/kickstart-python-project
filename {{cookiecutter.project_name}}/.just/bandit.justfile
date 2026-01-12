@@ -1,12 +1,6 @@
 # bandit, see ../justfile
 
 
-# show which bandit is used
-[group: 'bandit']
-bandit-which:
-    @ which bandit
-
-
 # run bandit
 [group: 'bandit']
 bandit:

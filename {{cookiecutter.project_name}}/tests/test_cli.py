@@ -8,7 +8,7 @@ from typer.testing import CliRunner
 #     assert result.exit_code == 0
 
 
-def test_cli():
+def test_cli() -> None:
     from {{cookiecutter.package_name}}.cli import main
 
     # Invoke the main() function
@@ -18,7 +18,7 @@ def test_cli():
 
 
 
-def test_app_version(cli_runner):
+def test_app_version(cli_runner) -> None:
     from {{cookiecutter.package_name}}.cli import app
 
     result = cli_runner.invoke(app, ["--version"])
