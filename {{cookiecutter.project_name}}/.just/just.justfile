@@ -22,24 +22,24 @@ alias just-update := just-install
 # show help
 [group: 'just']
 help:
-    @ just --help
+    @ {{just_executable()}} --help
 
 
 # Display all canonical tasks and their aliases
 [group: 'just']
 list-all:
-    @ just --list --unsorted
+    @ {{just_executable()}} --list --unsorted
 
 
 # select recipe from list
 [group: 'just']
 choose:
-    @ just --choose --justfile justfile
+    @ {{just_executable()}} --choose --justfile justfile
 
 
 [group: 'just']
 evaluate:
-    @ just evaluate
+    @ {{just_executable()}} evaluate
 
 
 # Install or update tab-completion for just-recipes
@@ -48,7 +48,7 @@ evaluate:
 just-install-completions:
     #!pwsh.exe
     $filePath = Join-Path $HOME 'completions-just.ps1'
-    just --completions powershell > $filePath
+    {{just_executable()}} --completions powershell > $filePath
     Write-Host "Generated completions-file in $filePath"
     Write-Host "Add following line to your Powershell-profile:"
     Write-Host ". ~\completions-just.ps1 -Force"%
@@ -60,7 +60,7 @@ just-install-completions:
 just-update-completions:
     #!pwsh.exe
     $filePath = 'etc/just/completions-just.ps1'
-    just --completions powershell > $filePath
+    {{just_executable()}} --completions powershell > $filePath
     Write-Host "Generated new completions-file for powershell in $filePath"
 
 
@@ -71,12 +71,12 @@ just-update-completions:
 
 
 # Command to get the version of just
-JUST_VERSION_COMMAND := `just --version || 1`
+JUST_VERSION_COMMAND := `{{just_executable()}} --version || 1`
 
 # Show version of just if it's available
 [group: 'just']
 just-show-version:
-    @ Write-Host "`t just: {{JUST_VERSION_COMMAND}}"
+    @ Write-Host "`t {{just_executable()}}: {{JUST_VERSION_COMMAND}}"
 
 
 # show location of just.exe

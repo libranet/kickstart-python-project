@@ -65,4 +65,4 @@ list:
 
 # Display all canonical tasks
 list-canonical:
-    @ just --list --unsorted --no-aliases
+    @ {{just_executable()}} --list --unsorted --no-aliases
