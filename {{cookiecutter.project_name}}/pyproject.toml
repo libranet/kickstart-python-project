@@ -69,7 +69,7 @@ source = ["{{cookiecutter.package_name}}", "tests"]
 
 [tool.mypy]
 # cfr. https://mypy.readthedocs.io/en/stable/config_file.html#using-a-pyproject-toml-file
-cache_dir = "var/cache/mypy"
+cache_dir = "$MYPY_CONFIG_FILE_DIR/var/cache/mypy"
 check_untyped_defs = true
 exclude = "^bin/"
 ignore_missing_imports = true
