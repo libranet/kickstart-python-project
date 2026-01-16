@@ -8,7 +8,7 @@
 #  - https://docs.mpcdf.mpg.de/doc/data/gitlab/devop-tutorial.html
 #  - https://github.com/Queuecumber/torchjpeg/blob/master/.gitlab-ci.yml
 
-image: python:3.11
+image: python:{{cookiecutter.minimum_python}}
 
 variables:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/var/cache/pip"
