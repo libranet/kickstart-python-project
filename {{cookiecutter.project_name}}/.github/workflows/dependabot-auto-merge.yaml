@@ -1,0 +1,44 @@
+
+# Security references:
+#  - https://securitylab.github.com/resources/github-actions-preventing-pwn-requests
+#  - https://securitylab.github.com/resources/github-actions-untrusted-input
+#  - https://securitylab.github.com/resources/github-actions-building-blocks
+#  - https://securitylab.github.com/resources/github-actions-new-patterns-and-mitigations
+
+
+name: Auto Merge Dependabot
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 5
+
+    # Only run for Dependabot PRs - security: prevent running on PRs from forks or other actors
+    if: github.actor == 'dependabot[bot]'
+
+    steps:
+
+      # repo: https://github.com/actions/checkout
+      # releases: https://github.com/actions/checkout/tags
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1 released on 02-12-2025
+
+      # repo: https://github.com/fastify/github-action-merge-dependabot
+      # releases: https://github.com/fastify/github-action-merge-dependabot/tags
+      # The action waits for required status checks by default
+      - uses: fastify/github-action-merge-dependabot@1b2ed42db8f9d81a46bac83adedfc03eb5149dff  # v3.11.2 released on 03-10-2025
+        with:
+            # github-token: {% raw %}${{ secrets.TOKEN_AUTOMERGE }}{% endraw %}
+            # Using built-in GITHUB_TOKEN for better security (auto-scoped, auto-expires)
+            # Falls back to TOKEN_AUTOMERGE if GITHUB_TOKEN lacks permissions
+            github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+            merge-method: squash  # merge|squash|rebase
+            target: minor
