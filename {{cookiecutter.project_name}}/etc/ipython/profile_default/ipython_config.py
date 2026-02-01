@@ -1,4 +1,5 @@
-# Configuration file for ipython.
+# ruff: noqa: E501
+"""Configuration file for ipython."""
 import os
 import pathlib as pl
 

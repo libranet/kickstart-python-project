@@ -18,7 +18,7 @@ return-statements are not allowed.
 
 print(f"Importing {__file__}")
 
-
+import {{cookiecutter.package_name}}
 from {{cookiecutter.package_name}} import cfg
 
 settings = cfg.get_settings()

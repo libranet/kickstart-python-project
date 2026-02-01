@@ -1,10 +1,81 @@
 {
     "recommendations": [
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-vscode.makefile-tools",
+        // sorted alphabetically
+
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=astral-sh.ty
+        // repo: https://github.com/astral-sh/ty-vscode
+        "astral-sh.ty",
+
+        // support for the Ruff linter.
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff
+        // repo: https://github.com/astral-sh/ruff-vscode
+        "charliermarsh.ruff",
+
+        // support for hadolint, a Dockerfile linter
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=exiasr.hadolint
+        // repo: https://github.com/michaellzc/vscode-hadolint
+        "exiasr.hadolint",
+
+        // reStructuredText Language Support for Visual Studio Code
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext
+        // repo: https://github.com/vscode-restructuredtext/vscode-restructuredtext
+        // "lextudio.restructuredtext",
+
+        // support for dotenv file syntax
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv
+        // repo: https://github.com/mikestead/vscode-dotenv
+        "mikestead.dotenv",
+
+        // support for the Mypy type checker
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
+        // repo: https://github.com/microsoft/vscode-mypy
+        // "ms-python.mypy-type-checker",
+
+        // python language support with extension access points for IntelliSense (Pylance), Debugging (Python Debugger), linting, formatting, refactoring, unit tests, and more.
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=ms-python.python
+        // repo: https://github.com/Microsoft/vscode-python
+        // "ms-python.python",
+
+        // performant, feature-rich language server for Python in VS Code
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance
+        // repo: https://github.com/microsoft/pylance-release
+        // "ms-python.vscode-pylance",
+
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter
+        // repo: https://github.com/Microsoft/vscode-jupyter
+        // docs: https://code.visualstudio.com/docs/datascience/jupyter-notebooks
+        // "ms-toolsai.jupyter",
+
+        // support for the justfile syntax
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=nefrob.vscode-just-syntax
+        // repo: https://github.com/nefrob/vscode-just
+        "nefrob.vscode-just-syntax",
+
+        // visualize strange unicode characters
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=nhoizey.gremlins
+        // repo: https://github.com/nhoizey/vscode-gremlins
+        "nhoizey.gremlins",
+
+        // qyuickly open html files in browser
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=peakchen90.open-html-in-browser
+        // repo: https://github.com/peakchen90/vscode-open-in-default-browser
         "peakchen90.open-html-in-browser",
+
+        // better toml language support
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml
+        // repo: https://github.com/tamasfe/taplo
+        // (we moved away from bungcip.better-toml)
         "tamasfe.even-better-toml",
-        "zeshuaro.vscode-python-poetry"
+
+        // reStructuredText Syntax highlighting
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=trond-snekvik.simple-rst
+        // repo: https://github.com/trond-snekvik/vscode-rst
+        "trond-snekvik.simple-rst",
+
+        // Markdown Support for Visual Studio Code
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
+        // repo: https://github.com/yzhang-gh/vscode-markdown
+        "yzhang.markdown-all-in-one",
+
     ]
 }

@@ -13,5 +13,5 @@ app.command(obj=app_subcmd1)
 
 @app.default
 def main() -> None:
-    """Main command."""
+    """Run the main command."""
     pass

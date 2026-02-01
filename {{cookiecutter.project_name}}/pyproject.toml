@@ -91,8 +91,7 @@ pytest_add_cli_args_test_selection= [ "tests/" ]
 [project]
 name = "{{cookiecutter.project_name}}"
 version = "{{cookiecutter.version}}"
-license = "{{cookiecutter.license}}"
-# license = { text = "{{cookiecutter.license}}" }
+license = { file = "license.md" }
 description = "{{cookiecutter.description}}"
 readme = "docs/readme.md"
 requires-python = ">={{cookiecutter.minimum_python}}"
@@ -269,16 +268,12 @@ select = ["ALL"]
 ignore = [
     "COM812",  # conflicts with ruff format
     "ERA001",  # found commented code
-    "T201",    # print statement found
-
-    # D203 conflicts withs D211
-    # "D211",  # no blank lines allowed before class docstring
+    "G004",    # logging statement uses f-string
+    # D203 conflicts withs D211 (no blank lines allowed before class docstring)
     "D203",    # blank line required before class docstring
-
-    # D212 conflicts with D213
-    # "D213",  # multi-line docstring summary should start at the second line
+    # D212 conflicts with D213 (should start at the second line)
     "D212",    # multi-line docstring summary should start at the first line
-
+    "T201",    # print statement found
 ]
 
 [tool.ruff.lint.flake8-annotations]
@@ -298,6 +293,12 @@ known-first-party = ["{{cookiecutter.package_name}}"]
 known-local-folder = ["_helpers"]
 
 [tool.ruff.lint.per-file-ignores]
+"etc/**" = [
+    "ANN001",  # missing type annotation
+    "D103",    # missing docstring in public function
+    "INP001",  # tests-dir should not be a python-package
+    "PLC0415", # 'import' should be at top-level of file
+    ]
 "tests/**" = [
     "ANN001",  # missing type annotation
     "D103",    # missing docstring in public function
