@@ -1,5 +1,4 @@
-"""
-{{cookiecutter.package_name}}.about.
+"""{{cookiecutter.package_name}}.about.
 
 Fetch metadata from the package's pyproject.toml.
 The package must be properly installed in order the metadata to be available.

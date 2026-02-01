@@ -44,4 +44,4 @@ del local_cache_dir
 del local_cache_dir_python
 del prefix
 
-print("PYTHONSTARTUP")
+# print("PYTHONSTARTUP")

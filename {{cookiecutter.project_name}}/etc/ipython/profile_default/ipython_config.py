@@ -5,10 +5,15 @@ import pathlib as pl
 # At this stage, the sitecustomize-module has already been run
 # and the environment-variables from .env have been loaded.
 ipython_cache_dir = pl.Path(os.getenv("IPYTHON_CACHE_DIR", "~/.cache/ipython"))
+
 # this cache-folder must exist
 ipython_cache_dir.mkdir(exist_ok=True)
+del ipython_cache_dir
 
 c = get_config()  # noqa
+
+
+c.TerminalIPythonApp.display_banner = False
 
 # ------------------------------------------------------------------------------
 # InteractiveShellApp(Configurable) configuration
@@ -1262,4 +1267,3 @@ c.HistoryManager.hist_file = str(ipython_cache_dir / "history.sqlite")
 # c.StoreMagics.autorestore = False
 
 
-del ipython_cache_dir
