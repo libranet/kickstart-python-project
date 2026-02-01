@@ -15,7 +15,7 @@ package: str = __package__ or ""
 try:
     msg = importlib.metadata.metadata(package)
     pkginfo: dict[str, str | list[str]] = msg.json
-except ValueError:
+except ValueError: # pragma: no cover
     # A distribution name is required. __package__ is None
     pkginfo = {}
 except importlib.metadata.PackageNotFoundError:  # pragma: no cover

@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) {{ cookiecutter.copyright_year }} [Libranet.eu](https://libranet.eu).
+Copyright (c) {{ cookiecutter._copyright_year }} [Libranet.eu](https://libranet.eu).
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

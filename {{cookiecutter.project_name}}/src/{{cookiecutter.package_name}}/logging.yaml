@@ -166,9 +166,9 @@ handlers:
         filename: "40-errors.log"
         level: "ERROR"
 
-    kraken_wvh_file:
+     {{cookiecutter.package_name}}_file:
         <<: *default
-        filename: "kraken-wvh.log"
+        filename: "{{cookiecutter.package_name | replace('_', '-')}}.log"
         formatter: "generic"
         level: "DEBUG"
 
