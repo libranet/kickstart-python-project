@@ -166,7 +166,7 @@ handlers:
         filename: "40-errors.log"
         level: "ERROR"
 
-     {{cookiecutter.package_name}}_file:
+    {{cookiecutter.package_name}}_file:
         <<: *default
         filename: "{{cookiecutter.package_name | replace('_', '-')}}.log"
         formatter: "generic"
