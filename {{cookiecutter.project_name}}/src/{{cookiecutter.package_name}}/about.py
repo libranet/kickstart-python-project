@@ -1,12 +1,12 @@
 """
-{{cookiecutter.package_name}}._about.
+{{cookiecutter.package_name}}.about.
 
 Fetch metadata from the package's pyproject.toml.
 The package must be properly installed in order the metadata to be available.
 
 """
 
-from __future__ import annotations
+from __future__ import annotations  # make | in typing work in Python 3.8
 
 import importlib.metadata
 
@@ -30,5 +30,4 @@ authors: str | list[str] = pkginfo.get("author_email", "unknown")
 license_: str | list[str] = pkginfo.get("license_expression") or pkginfo.get("license", "unknown") or "unknown"
 
 version: str | list[str] = pkginfo.get("version", "unknown")
-
 
