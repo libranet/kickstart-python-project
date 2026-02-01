@@ -8,7 +8,7 @@
 
 """IPython startup-file, outside of PYTHONPATH. See readme."""
 
-print(f"Running {__file__}")
+print(f"Importing {__file__}")
 
 import rich.panel
 import rich.pretty
