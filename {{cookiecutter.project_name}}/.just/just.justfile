@@ -2,7 +2,6 @@
 # just
 
 
-
 # install Just to latest version
 [group: 'just']
 [windows]
@@ -23,6 +22,14 @@ alias just-update := just-install
 [group: 'just']
 help:
     @ {{just_executable()}} --help
+
+
+# show version
+[group: 'just']
+just-version:
+    {{just_executable()}} --version
+
+alias version := just-version
 
 
 # Display all canonical tasks and their aliases
@@ -62,21 +69,6 @@ just-update-completions:
     $filePath = 'etc/just/completions-just.ps1'
     {{just_executable()}} --completions powershell > $filePath
     Write-Host "Generated new completions-file for powershell in $filePath"
-
-
-# # show version of just
-# [windows]
-# just-show-version:
-#     @ Write-Host "`t just: $(just --version)"
-
-
-# Command to get the version of just
-JUST_VERSION_COMMAND := `{{just_executable()}} --version || 1`
-
-# Show version of just if it's available
-[group: 'just']
-just-show-version:
-    @ Write-Host "`t {{just_executable()}}: {{JUST_VERSION_COMMAND}}"
 
 
 # show location of just.exe
@@ -168,5 +160,3 @@ just-check:
 #     $installCommand = $installScript.Content + " --to $targetDir"
 #     Invoke-Expression -Command $installCommand
 #     Invoke-WebRequest -Uri "https://just.systems/install.sh" -UseBasicParsing | Invoke-Expression -ArgumentList "--to $DEST"
-
-
