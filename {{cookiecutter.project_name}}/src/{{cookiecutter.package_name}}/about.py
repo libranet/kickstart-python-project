@@ -23,10 +23,8 @@ except importlib.metadata.PackageNotFoundError:  # pragma: no cover
     pkginfo = {}
 
 
-
 authors: str | list[str] = pkginfo.get("author_email", "unknown")
 
 license_: str | list[str] = pkginfo.get("license_expression") or pkginfo.get("license", "unknown") or "unknown"
 
 version: str = pkginfo.get("version", "unknown")  # ty: ignore[invalid-assignment]
-

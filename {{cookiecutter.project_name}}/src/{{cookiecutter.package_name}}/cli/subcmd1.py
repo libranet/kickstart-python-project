@@ -8,8 +8,8 @@ app_subcmd1: cyclopts.App = cyclopts.App(
 )
 
 
-@app_subcmd1.command(sort_key=10)
-def start_instances(instance:str) -> None:
+@app_subcmd1.command(name="start",sort_key=10)
+def start_instances(instance: str) -> None:
     """
     Start instance.
 
@@ -19,8 +19,8 @@ def start_instances(instance:str) -> None:
     """
 
 
-@app_subcmd1.command(sort_key=20)
-def stop_instances(instance:str) -> None:
+@app_subcmd1.command(name="stop", sort_key=20)
+def stop_instances(instance: str) -> None:
     """
     Stop instance.
 

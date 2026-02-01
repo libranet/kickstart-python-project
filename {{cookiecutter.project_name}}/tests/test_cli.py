@@ -1,4 +1,5 @@
 """Tests for module {{cookiecutter.package_name}}.cli."""
+
 import pytest
 
 

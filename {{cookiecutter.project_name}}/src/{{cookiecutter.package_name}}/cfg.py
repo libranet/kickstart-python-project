@@ -27,4 +27,3 @@ class Settings(pdt_settings.BaseSettings):
 def get_settings() -> Settings:
     """Get application settings."""
     return Settings()  # ty: ignore[missing-argument]  # pydantic-settings loads from env vars
-

@@ -12,6 +12,7 @@ and export its path using PYTHONSTARTUP environment variable:
 This file is executed *after* sitecustomize.
 
 """
+
 import atexit
 import pathlib as pl
 import readline

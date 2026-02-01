@@ -14,11 +14,10 @@ so you can control the execution order of files with a prefix, e.g.::
 return-statements are not allowed.
 
 """
-import typing
+
 print(f"Importing {__file__}")
 
 import logging
-
 
 import rich
 
@@ -28,6 +27,7 @@ log: logging.Logger = logging.getLogger("ipython-startup")
 def demo_urllib() -> None:
     """Demo urllib usage."""
     import urllib.request
+
     url = "https://httpbin.org/get"
     resp = urllib.request.urlopen(url)  # noqa: F841, S310
 
@@ -44,6 +44,7 @@ def demo_requests() -> None:
 
     rich.print_json(data=data)
 
+
 def demo_httpx() -> None:
     """Demo httpx usage."""
     import httpx
@@ -56,7 +57,3 @@ def demo_httpx() -> None:
     log.info("HTTPX response data: %s", data)
 
     rich.print_json(data=data)
-
-    # for key, value in data.items():
-    #     r
-    #     log.debug("Key: %s; Value: %s", key, value)
