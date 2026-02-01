@@ -13,7 +13,7 @@ def test_version() -> None:
 
 
 def test_license() -> None:
-    from {{cookiecutter.package_name}}.about import license
+    from {{cookiecutter.package_name}}.about import license_
 
-    assert isinstance(license, str)
-    assert "Copyright" in license
+    assert isinstance(license_, str)
+    assert "Copyright" in license_

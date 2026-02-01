@@ -1,10 +1,10 @@
-"""Tests for module demo3.cli."""
+"""Tests for module {{cookiecutter.package_name}}.cli."""
 import pytest
 
 
 def test_cli(capsys: pytest.CaptureFixture[str]) -> None:
     """Test that the main command runs without error."""
-    from demo3.cli import app
+    from {{cookiecutter.package_name}}.cli import app
 
     # Invoke the app with no arguments (runs default command)
     # Must pass empty list explicitly to prevent cyclopts from using sys.argv
@@ -20,8 +20,8 @@ def test_cli(capsys: pytest.CaptureFixture[str]) -> None:
 
 def test_app_version(capsys: pytest.CaptureFixture[str]) -> None:
     """Test that --version flag works."""
-    from demo3.about import version
-    from demo3.cli import app
+    from {{cookiecutter.package_name}}.about import version
+    from {{cookiecutter.package_name}}.cli import app
 
     # Invoke the app with --version flag
     with pytest.raises(SystemExit) as exc_info:

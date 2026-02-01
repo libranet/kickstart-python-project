@@ -2,18 +2,23 @@
 import os
 import pathlib as pl
 
+c = get_config()  # noqa
+
 # At this stage, the sitecustomize-module has already been run
 # and the environment-variables from .env have been loaded.
 ipython_cache_dir = pl.Path(os.getenv("IPYTHON_CACHE_DIR", "~/.cache/ipython"))
 
 # this cache-folder must exist
 ipython_cache_dir.mkdir(exist_ok=True)
+c.TerminalInteractiveShell.debugger_history_file = str(ipython_cache_dir / "pdb_history")
 del ipython_cache_dir
 
-c = get_config()  # noqa
 
-
+# customizations
 c.TerminalIPythonApp.display_banner = False
+c.TerminalInteractiveShell.colors = "Linux"
+c.TerminalInteractiveShell.confirm_exit = False
+
 
 # ------------------------------------------------------------------------------
 # InteractiveShellApp(Configurable) configuration
@@ -239,7 +244,6 @@ c.BaseIPythonApplication.copy_config_files = True
 ## The IPython profile to use.
 #  Default: 'default'
 # c.BaseIPythonApplication.profile = 'default'
-c.BaseIPythonApplication.profile = "default"
 
 ## Instead of starting the Application, dump configuration to stdout
 #  See also: Application.show_config
@@ -273,7 +277,6 @@ c.TerminalIPythonApp.copy_config_files = True
 ## Whether to display a banner upon starting IPython.
 #  Default: True
 # c.TerminalIPythonApp.display_banner = True
-c.TerminalIPythonApp.display_banner = False
 
 ## Run the file referenced by the PYTHONSTARTUP environment
 #  See also: InteractiveShellApp.exec_PYTHONSTARTUP
@@ -457,7 +460,6 @@ c.TerminalIPythonApp.display_banner = False
 #  Choices: any of ['Neutral', 'NoColor', 'LightBG', 'Linux'] (case-insensitive)
 #  Default: 'Neutral'
 # c.InteractiveShell.colors = 'Neutral'
-c.InteractiveShell.colors = "Linux"
 
 #  Default: False
 # c.InteractiveShell.debug = False
@@ -616,14 +618,14 @@ c.TerminalInteractiveShell.autoformatter = "black"
 ## Set the color scheme (NoColor, Neutral, Linux, or LightBG).
 #  See also: InteractiveShell.colors
 # c.TerminalInteractiveShell.colors = 'Neutral'
-c.TerminalInteractiveShell.colors = "Linux"
+
 
 ## Set to confirm when you try to exit IPython with an EOF (Control-D in Unix,
 #  Control-Z/Enter in Windows). By typing 'exit' or 'quit', you can force a
 #  direct exit without any confirmation.
 #  Default: True
 # c.TerminalInteractiveShell.confirm_exit = True
-c.TerminalInteractiveShell.confirm_exit = False
+
 
 #  See also: InteractiveShell.debug
 # c.TerminalInteractiveShell.debug = False
@@ -631,7 +633,6 @@ c.TerminalInteractiveShell.confirm_exit = False
 ## File in which to store and read history
 #  Default: '~/.pdbhistory'
 # c.TerminalInteractiveShell.debugger_history_file = '~/.pdbhistory'
-c.TerminalInteractiveShell.debugger_history_file = str(ipython_cache_dir / "pdb_history")
 
 ## Don't call post-execute functions that have failed in the past.
 #  See also: InteractiveShell.disable_failing_post_execute
@@ -894,7 +895,6 @@ c.TerminalInteractiveShell.debugger_history_file = str(ipython_cache_dir / "pdb_
 ## Path to file to use for SQLite history database.
 #  See also: HistoryAccessor.hist_file
 # c.HistoryManager.hist_file = traitlets.Undefined
-c.HistoryManager.hist_file = str(ipython_cache_dir / "history.sqlite")
 
 # ------------------------------------------------------------------------------
 # MagicsManager(Configurable) configuration

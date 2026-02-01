@@ -11,16 +11,9 @@ def test_version() -> None:
     assert packaging.version.parse(__version__) >= packaging.version.parse("0.0")
 
 
-# def test_copyright() -> None:
-#     from {{cookiecutter.package_name}} import __copyright__
-
-#     assert isinstance(__copyright__, str)
-#     assert "Copyright" in __copyright__
-
-
 def test_license() -> None:
     import {{cookiecutter.package_name}}
     # from {{cookiecutter.package_name}} import __license__
 
     assert isinstance({{cookiecutter.package_name}}.__license__, str)
-    assert "MIT" in {{cookiecutter.package_name}}.__license__
+    assert "Copyright" in {{cookiecutter.package_name}}.__license__

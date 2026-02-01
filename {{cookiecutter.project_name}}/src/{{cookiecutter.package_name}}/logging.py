@@ -1,6 +1,6 @@
 """{{cookiecutter.package_name}}.logging."""
 
-import importlib
+import importlib.resources
 
 import libranet_logging
 
