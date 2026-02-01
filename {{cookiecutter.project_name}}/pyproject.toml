@@ -247,13 +247,12 @@ disable = [
 [tool.pytest.ini_options]
 # Settings reference: https://docs.pytest.org/en/stable/reference/customize.html
 cache_dir = "var/cache/pytest"
-log_cli = false    # enable to show log-output
+log_cli = false  # enable to show log-output
 log_cli_level = "NOTSET"
 filterwarnings = []
 markers = ["unit", "integration"]
-testpaths = ["tests"]
-# the junit-report is used to report coverage in gitlab
-# addopts = "--color=yes --junit-xml='var/coverage/pytest.xml'"
+pythonpath = ["tests"]  # add to sys.path to make _helpers importable
+testpaths = ["tests"]  # search for test-files
 
 
 [tool.ruff]
@@ -285,7 +284,7 @@ allow-star-arg-any = true
 # https://docs.astral.sh/ruff/settings/#lintisort
 # combine-as-imports = true
 combine-as-imports = false
-force-single-line = false
+force-single-line = true
 force-sort-within-sections = false  # sort straight-style imports before from-style imports
 from-first = false
 known-third-party = []
