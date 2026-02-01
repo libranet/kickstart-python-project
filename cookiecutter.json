@@ -10,7 +10,7 @@
   ],
   "github_user": "libranet",
   "version": "0.1",
-  "copyright_year": "{% now 'utc', '%Y' %}",
+  "_copyright_year": "{% now 'utc', '%Y' %}",
   "license": [
     "MIT"
   ],
