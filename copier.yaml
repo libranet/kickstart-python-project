@@ -169,30 +169,37 @@ _tasks:
   # Create directory structure
   - command: mkdir -p var/cache var/coverage var/log var/tmp
     when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
   # Initialize git repository
   - command: git init
     when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
   # Set up .env from template
   - command: cp .env.template .env
     when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
   # Replace __CWD__ placeholder in .env
   - command: sed -i "s|__CWD__|$(pwd)|g" .env
     when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
   # Install dependencies with uv
   - command: uv sync --all-groups
     when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
   # Install pre-commit hooks
   - command: uv run pre-commit install
     when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
   # Initial commit
   - command: git add -A && git commit -m "Initial commit from copier template"
     when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
 # =============================================================================
 # Migrations (for template updates)
