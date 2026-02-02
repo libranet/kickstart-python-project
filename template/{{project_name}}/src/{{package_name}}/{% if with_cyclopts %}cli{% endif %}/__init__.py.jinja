@@ -1,0 +1,17 @@
+"""{{ package_name }}.cli."""
+
+import cyclopts
+
+from {{ package_name }}.about import version
+from {{ package_name }}.cli.subcmd1 import app_subcmd1
+
+app: cyclopts.App = cyclopts.App(version=version)
+
+# register subcommands
+app.command(obj=app_subcmd1)
+
+
+@app.default
+def main() -> None:
+    """Run the main command."""
+    pass

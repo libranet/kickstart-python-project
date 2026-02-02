@@ -1,0 +1,20 @@
+# pylint: disable=import-outside-toplevel
+# pylint: disable=missing-function-docstring
+"""Testing of module {{ package_name }}.__init__."""
+
+import packaging.version
+
+
+def test_version() -> None:
+    from {{ package_name }} import __version__
+
+    assert isinstance(__version__, str)
+    assert packaging.version.parse(__version__) >= packaging.version.parse("0.0")
+
+
+def test_license() -> None:
+    import {{ package_name }}
+    # from {{ package_name }} import __license__
+
+    assert isinstance({{ package_name }}.__license__, str)
+    assert "Copyright" in {{ package_name }}.__license__

@@ -1,0 +1,206 @@
+# Copier configuration for kickstart-python-project
+# https://copier.readthedocs.io/en/stable/configuring/
+
+_min_copier_version: "9.0.0"
+
+# Template is in the 'template' subdirectory
+_subdirectory: template
+
+# Only files with .jinja suffix are rendered
+_templates_suffix: .jinja
+
+# Answer file location in generated projects
+_answers_file: .copier-answers.yml
+
+# Exclude patterns (files not to copy to destination)
+_exclude:
+  - copier.yaml
+  - copier.yml
+  - "*.pyc"
+  - __pycache__
+  - .git
+  - .DS_Store
+  - "*.bak"
+
+# Skip these files if they already exist (preserves user customizations on update)
+_skip_if_exists:
+  - .env
+  - "var/**"
+
+# Jinja2 extensions for additional filters
+_jinja_extensions:
+  - jinja2_time.TimeExtension
+
+# =============================================================================
+# Questions
+# =============================================================================
+
+project_name:
+  type: str
+  help: "Project name (lowercase with dashes, e.g., my-awesome-project)"
+  default: kickstart-python-project
+  validator: >-
+    {% if not (project_name | regex_search('^[a-z][a-z0-9-]*[a-z0-9]$')) %}
+    Must be lowercase, start with letter, use only letters/numbers/dashes
+    {% endif %}
+
+package_name:
+  type: str
+  help: "Python package name (auto-derived from project name)"
+  default: "{{ project_name | replace('-', '_') }}"
+  validator: >-
+    {% if not (package_name | regex_search('^[a-z][a-z0-9_]*$')) %}
+    Must be a valid Python identifier (lowercase, underscores allowed)
+    {% endif %}
+
+description:
+  type: str
+  help: "Short project description"
+  default: "A Python project."
+
+author:
+  type: str
+  help: "Author full name"
+  default: "Wouter Vanden Hove"
+
+email:
+  type: str
+  help: "Author email address"
+  default: "wouter@libranet.eu"
+
+git_platform:
+  type: str
+  help: "Git hosting platform"
+  choices:
+    - github
+    - gitlab
+  default: github
+
+github_user:
+  type: str
+  help: "GitHub/GitLab username or organization"
+  default: libranet
+
+version:
+  type: str
+  help: "Initial project version"
+  default: "0.1"
+
+license:
+  type: str
+  help: "Project license"
+  choices:
+    - MIT
+    - Apache-2.0
+    - GPL-3.0
+  default: MIT
+
+development_status:
+  type: str
+  help: "PyPI development status classifier"
+  choices:
+    "1 - Planning": "Development Status :: 1 - Planning"
+    "2 - Pre-Alpha": "Development Status :: 2 - Pre-Alpha"
+    "3 - Alpha": "Development Status :: 3 - Alpha"
+    "4 - Beta": "Development Status :: 4 - Beta"
+    "5 - Production/Stable": "Development Status :: 5 - Production/Stable"
+  default: "Development Status :: 4 - Beta"
+
+minimum_python:
+  type: str
+  help: "Minimum Python version"
+  choices:
+    - "3.9"
+    - "3.10"
+    - "3.11"
+    - "3.12"
+    - "3.13"
+  default: "3.13"
+
+# -----------------------------------------------------------------------------
+# Feature toggles
+# -----------------------------------------------------------------------------
+
+with_cyclopts:
+  type: bool
+  help: "Include CLI support with cyclopts?"
+  default: true
+
+with_django:
+  type: bool
+  help: "Include Django framework?"
+  default: false
+
+with_flask:
+  type: bool
+  help: "Include Flask framework?"
+  default: false
+
+with_fastapi:
+  type: bool
+  help: "Include FastAPI framework?"
+  default: false
+
+with_postgres:
+  type: bool
+  help: "Include PostgreSQL database support?"
+  default: false
+  when: "{{ with_django or with_fastapi or with_flask }}"
+
+support_rtd:
+  type: bool
+  help: "Include ReadTheDocs configuration?"
+  default: false
+
+# -----------------------------------------------------------------------------
+# Computed/private variables (not prompted)
+# -----------------------------------------------------------------------------
+
+_copyright_year:
+  type: str
+  default: "{{ '%Y' | strftime }}"
+  when: false
+
+# =============================================================================
+# Tasks (post-generation commands)
+# =============================================================================
+
+_tasks:
+  # Create directory structure
+  - command: mkdir -p var/cache var/coverage var/log var/tmp
+    when: "{{ _copier_operation == 'copy' }}"
+
+  # Initialize git repository
+  - command: git init
+    when: "{{ _copier_operation == 'copy' }}"
+
+  # Set up .env from template
+  - command: cp .env.template .env
+    when: "{{ _copier_operation == 'copy' }}"
+
+  # Replace __CWD__ placeholder in .env
+  - command: sed -i "s|__CWD__|$(pwd)|g" .env
+    when: "{{ _copier_operation == 'copy' }}"
+
+  # Install dependencies with uv
+  - command: uv sync --all-groups
+    when: "{{ _copier_operation == 'copy' }}"
+
+  # Install pre-commit hooks
+  - command: uv run pre-commit install
+    when: "{{ _copier_operation == 'copy' }}"
+
+  # Initial commit
+  - command: git add -A && git commit -m "Initial commit from copier template"
+    when: "{{ _copier_operation == 'copy' }}"
+
+# =============================================================================
+# Migrations (for template updates)
+# =============================================================================
+
+# _migrations:
+#   - version: v2.0.0
+#     before:
+#       - command: echo "Preparing migration to v2.0.0"
+#     after:
+#       - command: uv sync --all-groups

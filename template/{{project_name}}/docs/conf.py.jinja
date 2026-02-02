@@ -1,0 +1,14 @@
+"""Sphinx configuration."""
+project = "{{ project_name }}"
+author = "{{ author }}"
+copyright = "{{ _copyright_year }}, {{ author }}"
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+{%- if with_cyclopts %}
+    "sphinx_click",
+{%- endif %}
+    "myst_parser",
+]
+autodoc_typehints = "description"
+html_theme = "furo"

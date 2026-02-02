@@ -1,0 +1,30 @@
+"""{{ package_name }}.cli.subcmd1."""
+
+import cyclopts
+
+app_subcmd1: cyclopts.App = cyclopts.App(
+    name="subcmd1",
+    help="subcmd1 commands",
+)
+
+
+@app_subcmd1.command(name="start",sort_key=10)
+def start_instances(instance: str) -> None:
+    """
+    Start instance.
+
+    Args:
+        instance: instance to start
+
+    """
+
+
+@app_subcmd1.command(name="stop", sort_key=20)
+def stop_instances(instance: str) -> None:
+    """
+    Stop instance.
+
+    Args:
+        instance: instance to stop
+
+    """

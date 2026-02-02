@@ -1,0 +1,81 @@
+# GitLab CI/CD configuration
+#
+# References:
+#  - https://docs.gitlab.com/ee/ci/yaml
+#  - https://docs.gitlab.com/ee/ci/caching/
+#  - https://docs.astral.sh/uv/guides/integration/gitlab/
+
+image: python:{{ minimum_python }}
+
+variables:
+    # Pin uv version for reproducible builds
+    # https://github.com/astral-sh/uv/releases
+    UV_VERSION: "0.9.26"
+    # Enable colored output
+    PY_COLORS: "1"
+
+stages:
+    # Stages define the order in which the different jobs are executed.
+    # All jobs associated to a stage are run in parallel, and each stage is executed sequentially.
+    - test
+    - build
+    - deploy
+
+cache:
+    key:
+        prefix: ${CI_PROJECT_ID}
+        files:
+            - uv.lock
+            - .gitlab-ci.yml
+    paths:
+        - ".venv/"
+
+
+before_script:
+    # Install uv
+    - curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | sh
+    - export PATH="$HOME/.local/bin:$PATH"
+    - uv --version
+    # Install project dependencies
+    - uv sync --all-groups
+    # Create project directories
+    - mkdir -p var/cache var/coverage var/log var/tmp
+
+
+pytest:
+    stage: test
+    script:
+        - uv run pytest tests -v --color=yes --cov=src --cov-report term-missing --cov-report html:var/coverage/html --cov-report xml:var/coverage/pytest-cobertura.xml
+    artifacts:
+        paths:
+            - var/coverage
+        reports:
+            coverage_report:
+                coverage_format: cobertura
+                path: var/coverage/pytest-cobertura.xml
+        expire_in: 10 days
+
+
+build-docs:
+    stage: build
+    script:
+        - uv run sphinx-build -b html docs var/html-docs
+    artifacts:
+        paths:
+            - var/html-docs
+    rules:
+        - when: always
+
+
+pages:
+    stage: deploy
+    script:
+        - mv var/html-docs public  # symlinks don't work
+    artifacts:
+        paths:
+            # to expose the pages on gitlab.io, the exported path must be named 'public'
+            - public
+    dependencies:
+        - build-docs
+    only:
+        - main
