@@ -34,13 +34,13 @@
 
 /.cookiecutter.json
 
-# .env-files can contain secrets, except the template (ordering matters here)
+# exclude .env-files can contain secrets
 /.env*
+# but include the template (ordering matters here)
 !/.env.template
 
-# excluded generated python-files
+# exclude generated python-cache-files
 __pycache__/
 
 # exclude toplevel var-dir
-/var/
-
+/var

@@ -1,14 +1,17 @@
-# Taken from https://gist.github.com/viliampucik/8713b09ff7e4d984b29bfcd7804dc1f4
-#
-# Store interactive Python shell history in ~/.cache/python_history
-# instead of ~/.python_history.
-#
-# Create the following ~/.config/pythonstartup.py file
-# and export its path using PYTHONSTARTUP environment variable:
-#
-# export PYTHONSTARTUP="${HOME}/.config/pythonstartup.py"
-#
-# this file is executed *after* sitecustomize.
+# ruff: noqa: D100 - Missing docstring in public module
+"""Python startup file.
+
+Taken from https://gist.github.com/viliampucik/8713b09ff7e4d984b29bfcd7804dc1f4
+Store interactive Python shell history in ~/.cache/python_history instead of ~/.python_history.
+
+Create the following ~/.config/pythonstartup.py file
+and export its path using PYTHONSTARTUP environment variable:
+
+  $ export PYTHONSTARTUP="${HOME}/.config/pythonstartup.py"
+
+This file is executed *after* sitecustomize.
+
+"""
 
 import atexit
 import pathlib as pl
@@ -44,4 +47,4 @@ del local_cache_dir
 del local_cache_dir_python
 del prefix
 
-print("PYTHONSTARTUP")
+# print("PYTHONSTARTUP")

@@ -51,8 +51,7 @@ filters:
             # silence sh
             - "^<Command.*process started$" # debug
             - "^<Command.*process completed$" # debug
-            - "^Using selector: EpollSelector" # in asyncio
-            - "^Using proactor: IocpProactor" # in asyncio on windows
+            # - "^Using selector: EpollSelector" # in asyncio
 
 formatters:
     generic:
@@ -90,14 +89,30 @@ formatters:
             ERROR: red
             CRITICAL: purple
 
-    # uvicorn_default: # see uvicorn/config.py
-    #     "()": "uvicorn.logging.DefaultFormatter"
-    #     datefmt: "%Y-%m-%d %H:%M:%S"
-    #     format: "%(levelprefix)s %(asctime)s %(message)s"
+    # console_http: # suited for black background
+    #     "()": "demo_flask.formatter.HttpFormatter"
+    #     datefmt: "%Y/%m/%d %H:%M:%S"
+    #     format: "{asctime} - {name} - {levelname:<7} - {message}"
+    #     style: "{"
 
-    # uvicorn_access: # see uvicorn/config.py
-    #     "()": "uvicorn.logging.AccessFormatter"
-    #     format: '%(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
+    # console_color_http: # suited for black background
+    #     "()": "demo_flask.formatter.ColorHttpFormatter"
+    #     datefmt: "%Y/%m/%d %H:%M:%S"
+    #     format: "{log_color}{asctime} - {name} - {levelname:<7} - {message}{reset}"
+    #     reset: True
+    #     style: "{"
+    #     log_colors:
+    #         # cfr. https://github.com/borntyping/python-colorlog
+    #         # supported colors: blue|cyan|green|yellow|red|purple|white|black
+    #         # supported prefixes: "bold_" and "bg_"
+    #         # <LOGLEVEL>: <foreground-color>,<background-color>
+    #         # comma is the separator, but no extra spaces allowed
+    #         DEBUG: bold_cyan # bold_cyan,bg_white
+    #         INFO: bold_green
+    #         WARNING: yellow
+    #         ERROR: red
+    #         CRITICAL: purple
+
 
 handlers:
     # Generally there is no need to change to loglevel specified on the handlers.
@@ -153,7 +168,7 @@ handlers:
 
     {{cookiecutter.package_name}}_file:
         <<: *default
-        filename: "{{cookiecutter.package_name}}.log"
+        filename: "{{cookiecutter.package_name | replace('_', '-')}}.log"
         formatter: "generic"
         level: "DEBUG"
 
@@ -162,32 +177,6 @@ handlers:
         filename: "ipython-startup.log"
         formatter: "generic"
         level: "DEBUG"
-
-    {% if cookiecutter.with_django | int %}
-    django_db_backends_handler:
-        <<: *default
-        filename: django-db-backends.log
-        level: DEBUG
-        formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
-
-    django_server_handler:
-        class: logging.StreamHandler
-        level: DEBUG
-        # formatter: django.server
-        formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
-    {% endif %}
-
-    # uvicorn_default:
-    #     formatter: "uvicorn_default"
-    #     class: "logging.StreamHandler"
-    #     stream: "ext://sys.stderr"
-    #     level: "DEBUG"
-
-    # uvicorn_access:
-    #     formatter: "uvicorn_access"
-    #     class: "logging.StreamHandler"
-    #     stream: "ext://sys.stdout"
-    #     level: "DEBUG"
 
 loggers:
     # Notes:
@@ -203,32 +192,22 @@ loggers:
     blib2to3:
         level: !env LOGLEVEL_BLIB2TO3, NOTSET
 
-    {{cookiecutter.package_name}}:
-        level: !env LOGLEVEL_{{cookiecutter.package_name}}, NOTSET
-        handlers:
-            - {{cookiecutter.package_name}}_file
-
-    {% if cookiecutter.with_django|int %}
-    django:
-        level: !env LOGLEVEL_DJANGO, DEBUG
-        handlers: # review
-            - console
-
-    django.db.backends:
-        level: !env LOGLEVEL_DJANGO_DB_BACKENDS, DEBUG
-        handlers:
-            - django_db_backends_handler
-        propagate': False
-    {% endif %}
+    "blib2to3.pgen2.driver":
+        level: !env LOGLEVEL_BLIB2TO3, NOTSET
 
     dotenv:
         level: !env LOGLEVEL_DOTENV, NOTSET
 
-    # gunicorn:
-    #    level: !env LOGLEVEL_GUNICORN, NOTSET
+    epoll:
+        level: !env LOGLEVEL_EPOLL, NOTSET
 
     http.client:
         level: !env LOGLEVEL_HTTP_CLIENT, NOTSET
+
+    # httplogger:
+    #     level: !env LOGLEVEL_HTTPLOGGER, NOTSET
+    #     handlers:
+    #         # - console_http
 
     ipython-startup:
         level: !env LOGLEVEL_IPYTHON _STARTUP, NOTSET
@@ -239,6 +218,12 @@ loggers:
 
     libranet_logging:
         level: !env LOGLEVEL_LIBRANET_LOGGING, NOTSET
+
+    markdown_it:
+        level: !env LOGLEVEL_MARKDOWN_IT, NOTSET
+
+    matplotlib:
+        level: !env LOGLEVEL_MATPLOTLIB, NOTSET
 
     multipart:
         level: !env LOGLEVEL_MULTIPART, NOTSET
@@ -255,6 +240,9 @@ loggers:
     requests:
         level: !env LOGLEVEL_REQUESTS, NOTSET
 
+    rich:
+        level: !env LOGLEVEL_RICH, NOTSET
+
     stack_data:
         level: !env LOGLEVEL_STACK_DATA, NOTSET
 
@@ -264,6 +252,11 @@ loggers:
     sh:
         level: !env LOGLEVEL_SH, NOTSET
 
+    {{cookiecutter.package_name}}:
+        level: !env LOGLEVEL_{{cookiecutter.package_name.upper()}}, NOTSET
+        handlers:
+            - {{cookiecutter.package_name}}_file
+
     urllib3:
         level: !env LOGLEVEL_URLLIB3, NOTSET
 
@@ -272,22 +265,6 @@ loggers:
 
     urllib3.util.retry:
         level: !env LOGLEVEL_URLLIB3_UTIL_RETRY, NOTSET
-
-    # uvicorn:
-    #     level: !env LOGLEVEL_UVICORN, NOTSET
-    #     handlers:
-    #         - uvicorn_default
-
-    # uvicorn_access:
-    #     level: !env LOGLEVEL_UVICORN_ACCESS, NOTSET
-    #     handlers:
-    #         - uvicorn_access
-
-    # uvicorn_error: # confusing logger-name, see https://github.com/encode/uvicorn/issues/562
-    #     level: !env LOGLEVEL_UVICORN_ERROR, NOTSET
-
-    watchfiles:
-        level: !env LOGLEVEL_WATCHFILES, NOTSET
 
 root:
     # You can get the root-logger via logging.getLogger(),

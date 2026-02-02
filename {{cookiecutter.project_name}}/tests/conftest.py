@@ -20,11 +20,18 @@ you will not be able to run pytest, instead it will fail with:
     > ImportError: Error importing plugin "_helpers": No module named '_helpers'
 
 """
+
 import pytest
 
-pytest_plugins: list[str] = [
-    "_helpers",
-]
+
+@pytest.fixture
+def sample_data() -> dict:
+    """Provide sample data for tests."""
+    return {"key": "value", "count": 42}
 
 
+@pytest.fixture
+def sample_list() -> list[str]:
+    """Provide a sample list for tests."""
+    return ["foo", "bar", "baz"]
 

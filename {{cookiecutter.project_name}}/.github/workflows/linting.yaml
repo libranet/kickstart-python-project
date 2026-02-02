@@ -1,7 +1,33 @@
+# linting - Github Actions
+#
+# Security references:
+#  - https://securitylab.github.com/resources/github-actions-preventing-pwn-requests
+#  - https://securitylab.github.com/resources/github-actions-untrusted-input
+#  - https://securitylab.github.com/resources/github-actions-building-blocks
+#  - https://securitylab.github.com/resources/github-actions-new-patterns-and-mitigations
+#
+# Used actions:
+#   - actions/checkout
+#     repo: https://github.com/actions/checkout
+#     releases: https://github.com/actions/checkout/tags
+#
+#   - astral-sh/setup-uv: set up uv environment
+#     repo: https://github.com/astral-sh/setup-uv
+#     releases: https://github.com/astral-sh/setup-uv/tags
+#     https://docs.astral.sh/uv/guides/integration/github/
+
+
 name: Linting
 
+concurrency:
+    # see https://docs.github.com/en/actions/using-jobs/using-concurrency
+    # cancel-in-progress: {% raw %}${{ github.event_name == 'pull_request' }}{% endraw %}
+    group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+
 env:
-    POETRY_VERSION: "1.4.0"
+    # Pin uv version for reproducible builds
+    # https://github.com/astral-sh/uv/releases
+    UV_VERSION: "0.9.26"  # released on 2026-01-15
 
 on:
     pull_request:
@@ -14,51 +40,61 @@ permissions:
     contents: read
 
 jobs:
+    # see https://docs.astral.sh/uv/guides/integration/github/
     run-tests:
         name: Python linters
         runs-on: ubuntu-latest
         timeout-minutes: 5
-
+        strategy:
+            matrix:
+                python-version:
+                    - "3.14"
+                    - "3.13"
+                    - "3.12"
+                    - "3.11"
+                    - "3.10"
+                    - "3.9"
+                    - "3.8"
         steps:
-            - uses: actions/checkout@v3
-              with:
-                  persist-credentials: false
-                  fetch-depth: 0
 
-            - name: Set up Python 3.11
-              uses: actions/setup-python@v4
-              with:
-                  python-version: "3.11"
+        # repo: https://github.com/actions/checkout
+        # releases: https://github.com/actions/checkout/tags
+        - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1 released on 02-12-2025
+          with:
+              persist-credentials: false
+              fetch-depth: 0
 
-            - name: Set up Poetry
-              run: |
-                  pip install poetry==${{"{{"}} env.POETRY_VERSION{{"}}"}}
+        - name: Remove sitecustomize.py
+          run: |
+              sudo rm -f /usr/lib/python3.*/sitecustomize.py
+              sudo rm -f /etc/python3.*/sitecustomize.py
 
-            - name: Install
-              run: |
-                  make install
+        # repo: https://github.com/astral-sh/setup-uv
+        # releases: https://github.com/astral-sh/setup-uv/tags
+        # docs: https://docs.astral.sh/uv/guides/integration/github
+        - name: Install pinned version of uv
+          uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b  # v7.2.0 released on 2026-01-06
+          with:
+              python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
+              version: {% raw %}${{ env.UV_VERSION }}{% endraw %}
+              enable-cache: true
+              cache-dependency-glob: "uv.lock"
+              prune-cache: true
 
-            - name: Flake8
-              run: |
-                  make flake8
+        - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
+          run: uv python install {% raw %}${{ matrix.python-version }}{% endraw %}
 
-            - name: Ruff
-              run: |
-                  make ruff-check
+        - name: Install the project
+          run: uv sync --all-groups
 
-            - name: Pylint
-              run: |
-                  make pylint
+        - name: Pre-commit
+          run: uv run pre-commit run --all-files
 
-            - name: Mypy
-              run: |
-                  make mypy
+        # - name: Ruff check
+        #   run: uv run ruff check src tests
 
-            - name: Pyroma
-              run: |
-                  make pyroma
+        # - name: Pylint
+        #   run: uv run pylint src
 
-            - name: Check poetry
-              run: |
-                  make poetry-check
-                  make poetry-lock-check
+        - name: Pyroma
+          run: uv run pyroma .

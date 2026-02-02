@@ -1,6 +1,5 @@
-{% raw -%}
-# just
 
+# just
 
 
 # install Just to latest version
@@ -22,24 +21,32 @@ alias just-update := just-install
 # show help
 [group: 'just']
 help:
-    @ just --help
+    @ {{just_executable()}} --help
+
+
+# show version
+[group: 'just']
+just-version:
+    {{just_executable()}} --version
+
+alias version := just-version
 
 
 # Display all canonical tasks and their aliases
 [group: 'just']
 list-all:
-    @ just --list --unsorted
+    @ {{just_executable()}} --list --unsorted
 
 
 # select recipe from list
 [group: 'just']
 choose:
-    @ just --choose --justfile justfile
+    @ {{just_executable()}} --choose --justfile justfile
 
 
 [group: 'just']
 evaluate:
-    @ just evaluate
+    @ {{just_executable()}} evaluate
 
 
 # Install or update tab-completion for just-recipes
@@ -48,7 +55,7 @@ evaluate:
 just-install-completions:
     #!pwsh.exe
     $filePath = Join-Path $HOME 'completions-just.ps1'
-    just --completions powershell > $filePath
+    {{just_executable()}} --completions powershell > $filePath
     Write-Host "Generated completions-file in $filePath"
     Write-Host "Add following line to your Powershell-profile:"
     Write-Host ". ~\completions-just.ps1 -Force"%
@@ -60,23 +67,8 @@ just-install-completions:
 just-update-completions:
     #!pwsh.exe
     $filePath = 'etc/just/completions-just.ps1'
-    just --completions powershell > $filePath
+    {{just_executable()}} --completions powershell > $filePath
     Write-Host "Generated new completions-file for powershell in $filePath"
-
-
-# # show version of just
-# [windows]
-# just-show-version:
-#     @ Write-Host "`t just: $(just --version)"
-
-
-# Command to get the version of just
-JUST_VERSION_COMMAND := `just --version || 1`
-
-# Show version of just if it's available
-[group: 'just']
-just-show-version:
-    @ Write-Host "`t just: {{JUST_VERSION_COMMAND}}"
 
 
 # show location of just.exe
@@ -168,6 +160,3 @@ just-check:
 #     $installCommand = $installScript.Content + " --to $targetDir"
 #     Invoke-Expression -Command $installCommand
 #     Invoke-WebRequest -Uri "https://just.systems/install.sh" -UseBasicParsing | Invoke-Expression -ArgumentList "--to $DEST"
-
-
-{%- endraw %}

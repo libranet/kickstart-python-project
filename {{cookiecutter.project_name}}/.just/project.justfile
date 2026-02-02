@@ -1,4 +1,4 @@
-{% raw -%}
+
 # project
 
 
@@ -6,4 +6,3 @@
 [group: 'project']
 install: create-dirs dotenv-install uv-sync-all-groups && symlink-venv-dirs
 
-{%- endraw %}

@@ -1,4 +1,4 @@
-{% raw -%}
+
 # sshx
 
 
@@ -8,7 +8,7 @@
 sshx-install:
     curl -sSf https://sshx.io/get | sh
 
-alias install-sshx := sshx-install
+# alias install-sshx := sshx-install
 
 
 # display version of sshx
@@ -30,4 +30,3 @@ sshx-run:
 [unix]
 sshx: sshx-install sshx-run
 
-{%- endraw %}

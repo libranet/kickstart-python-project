@@ -1,4 +1,5 @@
-# Configuration file for ipython-kernel.
+# ruff: noqa: E501
+"""Configuration file for ipython-kernel."""
 
 c = get_config()  # noqa
 

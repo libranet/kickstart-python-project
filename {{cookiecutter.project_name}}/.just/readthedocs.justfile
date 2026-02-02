@@ -1,4 +1,4 @@
-{% raw -%}
+
 # readthedocs, see ../justfile
 
 # readthedocs already provisions a virtualenv for us.
@@ -9,4 +9,3 @@
 install-rtd:
     - uv sync --only docs
 
-{%- endraw %}

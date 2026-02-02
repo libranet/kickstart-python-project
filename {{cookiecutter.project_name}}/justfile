@@ -41,6 +41,7 @@ import '.just/just.justfile'
 import '.just/mypy.justfile'
 import '.just/mutmut.justfile'
 import '.just/pre-commit.justfile'
+import '.just/prek.justfile'
 import '.just/project.justfile'
 import '.just/pylint.justfile'
 import '.just/pyroma.justfile'
@@ -54,6 +55,15 @@ import '.just/ubuntu.justfile'
 import '.just/uv.justfile'
 
 
-# Display all canonical tasks (default recipe)
+
+
+# default is the first recipe in the justfile.
+# Display all  tasks (default recipe)
+[group: 'default']
 list:
-    @ just --list --unsorted --no-aliases
+    @ just --list --unsorted
+
+
+# Display all canonical tasks
+list-canonical:
+    @ {{just_executable()}} --list --unsorted --no-aliases

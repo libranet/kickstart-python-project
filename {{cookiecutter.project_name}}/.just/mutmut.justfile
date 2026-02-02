@@ -3,59 +3,51 @@
 
 # install mutmut
 [group: 'mutmut']
-[unix]
 mutmut-install:
-    uv ad mutmut
+    uv add mutmut
 
 alias install-mutmut := mutmut-install
 
 
 # display version of mutmut
 [group: 'mutmut']
-[unix]
 mutmut-version:
 	mutmut --version
 
 
 # display help for mutmut
 [group: 'mutmut']
-[unix]
 mutmut-help:
 	mutmut --help
 
 
 # run mutmut
 [group: 'mutmut']
-[unix]
-mutmut-run:
-	mutmut run
+mutmut-run *args:
+	mutmut run {{args}}
 
 
 # browse mutmut results
 [group: 'mutmut']
-[unix]
-mutmut-browse:
-    mutmut browse
+mutmut-browse *args:
+    mutmut browse {{args}}
 
 
 # show mutmut results
 [group: 'mutmut']
-[unix]
-mutmut-results:
-    mutmut results
+mutmut-results *args:
+    mutmut results {{args}}
 
 
 # apply mutant by name
 [group: 'mutmut']
-[unix]
-mutmut-apply name="":
-    mutmut apply {{name}}
+mutmut-apply name="" *args:
+    mutmut apply {{name}} {{args}}
 
 
 # test specific mutant by name
 [group: 'mutmut']
-[unix]
-mutmut-test-for-mutant name="":
-    mutmut tests-for-mutant {{name}}
+mutmut-test-for-mutant name="" *args:
+    mutmut tests-for-mutant {{name}} {{args}}
 
 alias mutmut-test := mutmut-test-for-mutant

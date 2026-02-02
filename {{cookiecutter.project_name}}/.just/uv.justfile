@@ -1,4 +1,4 @@
-{% raw -%}
+
 # uv
 
 
@@ -58,7 +58,7 @@ uv-cache-dir:
 
 # install the project and all dependencies from only the default groups
 [group: 'uv']
-uv-sync args="":
+uv-sync *args:
     uv sync {{args}}
 
 # alias uv-install := uv-sync
@@ -67,7 +67,7 @@ alias create-venv := uv-sync
 
 # install the project including all dependencies from all groups
 [group: 'uv']
-uv-sync-all-groups args="":
+uv-sync-all-groups *args:
     uv sync --all-groups {{args}}
 
 alias uv-sync-all := uv-sync-all-groups
@@ -75,31 +75,30 @@ alias uv-sync-all := uv-sync-all-groups
 
 # update uv.lock
 [group: 'uv']
-uv-lock args="":
+uv-lock *args:
     uv lock {{args}}
 
 
 # check uv.lock is up-to-date
 [group: 'uv']
-uv-lock-check args="":
+uv-lock-check *args:
     uv lock --check {{args}}
 
 
 # build the python-package
 [group: 'uv']
-uv-build args="":
+uv-build *args:
     uv build {{args}}
 
 
 # publish the python-package
 [group: 'uv']
-uv-publish path="dist/" args="":
+uv-publish path="dist/" *args:
     uv publish {{path}} --verbose {{args}}
 
 
 # export uv-defined requirements to a pip-installable requirements-file
 [group: 'uv']
-[unix]
 uv-export-requirements:
     uv export --format requirements-txt --no-hashes --output-file etc/requirements.txt
     @ echo -e "Updated etc/requirements.txt"
@@ -109,11 +108,9 @@ alias uv-export := uv-export-requirements
 
 # set python-version in .python-version file
 [group: 'uv']
-[unix]
 uv-set-python-version version="3.10":
     mv .python-version .python-version.backup
     @ echo "{{version}}" > .python-version
     @ echo -e "Set python version to {{version}}"
 
 
-{%- endraw %}

@@ -14,20 +14,24 @@ so you can control the execution order of files with a prefix, e.g.::
 return-statements are not allowed.
 
 """
-print(f"\nRunning {__file__}")
 
+print(f"Importing {__file__}")
+
+# already import highly used modules
+import datetime as dt
 import logging
-import os  # noqa
-import sys  # noqa
+import os
+import pathlib as pl
+import sys
+import typing as tp
 
 import libranet_logging
 
-# import demo_flask.cfg as cfg
 
 # setup the logging according to etc/logging.yml
 libranet_logging.initialize()
 
-log = logging.getLogger("ipython-startup")  # name = "__main__"
+log = logging.getLogger("ipython-startup")
 
 log.debug("debug-message")
 log.info("info-message")
