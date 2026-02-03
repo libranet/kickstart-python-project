@@ -1,9 +1,9 @@
-# ruff: noqa: E501
+# ruff: noqa: E501 - line too long
 """Configuration file for ipython."""
 import os
 import pathlib as pl
 
-c = get_config()  # noqa
+c = get_config()  # noqa: F821
 
 # At this stage, the sitecustomize-module has already been run
 # and the environment-variables from .env have been loaded.

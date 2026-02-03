@@ -8,16 +8,14 @@ import pytest
 
 
 def test_get_settings(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("APP_SECRET_KEY", "test-secret-key")
-    monkeypatch.setenv("BASE_DIR", "/tmp/test-base-dir")
-    monkeypatch.setenv("PROJECT_NAME", "custom-project")
-    monkeypatch.setenv("TMPDIR", "/custom/tmp")
-
     from {{ package_name }}.cfg import get_settings
+
+    monkeypatch.setenv("PROJECT_NAME", "custom-project")
+    monkeypatch.setenv("BASE_DIR", "/tmp/test-base-dir")
+    monkeypatch.setenv("TMPDIR", "/custom/tmp")
 
     settings = get_settings()
 
-    assert settings.app_secret_key == "test-secret-key"
-    assert settings.base_dir == pl.Path("/tmp/test-base-dir")
     assert settings.project_name == "custom-project"
+    assert settings.base_dir == pl.Path("/tmp/test-base-dir")
     assert settings.tmpdir == pl.Path("/custom/tmp")

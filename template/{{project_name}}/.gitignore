@@ -37,7 +37,7 @@
 # exclude .env-files can contain secrets
 /.env*
 # but include the template (ordering matters here)
-!/.env.template
+!/.env.template*
 
 # exclude generated python-cache-files
 __pycache__/
