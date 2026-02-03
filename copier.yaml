@@ -38,7 +38,7 @@ _jinja_extensions:
 project_name:
   type: str
   help: "Project name (lowercase with dashes, e.g., my-awesome-project)"
-  default: kickstart-python-project
+  default: ""
   validator: >-
     {% if not (project_name | regex_search('^[a-z][a-z0-9-]*[a-z0-9]$')) %}
     Must be lowercase, start with letter, use only letters/numbers/dashes
@@ -61,12 +61,12 @@ description:
 author:
   type: str
   help: "Author full name"
-  default: "Wouter Vanden Hove"
+  default: ""
 
 email:
   type: str
   help: "Author email address"
-  default: "wouter@libranet.eu"
+  default: ""
 
 git_platform:
   type: str
@@ -79,12 +79,12 @@ git_platform:
 github_user:
   type: str
   help: "GitHub/GitLab username or organization"
-  default: libranet
+  default: ""
 
 version:
   type: str
   help: "Initial project version"
-  default: "0.1"
+  default: "0.1dev0"
 
 license:
   type: str
@@ -167,7 +167,7 @@ _copyright_year:
 
 _tasks:
   # Create directory structure
-  - command: mkdir -p var/cache var/coverage var/log var/tmp
+  - command: just install
     when: "{{ _copier_operation == 'copy' }}"
     working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
@@ -176,25 +176,10 @@ _tasks:
     when: "{{ _copier_operation == 'copy' }}"
     working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
-  # Set up .env from template
-  - command: cp .env.template .env
-    when: "{{ _copier_operation == 'copy' }}"
-    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
-
-  # Replace __CWD__ placeholder in .env
-  - command: sed -i "s|__CWD__|$(pwd)|g" .env
-    when: "{{ _copier_operation == 'copy' }}"
-    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
-
-  # Install dependencies with uv
-  - command: uv sync --all-groups
-    when: "{{ _copier_operation == 'copy' }}"
-    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
-
   # Install pre-commit hooks
-  - command: uv run pre-commit install
-    when: "{{ _copier_operation == 'copy' }}"
-    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
+  # - command: uv run pre-commit install
+  #   when: "{{ _copier_operation == 'copy' }}"
+  #   working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
 
   # Initial commit
   - command: git add -A && git commit -m "Initial commit from copier template"
