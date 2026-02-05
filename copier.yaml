@@ -38,7 +38,7 @@ _jinja_extensions:
 project_name:
   type: str
   help: "Project name (lowercase with dashes, e.g., my-awesome-project)"
-  default: ""
+  placeholder: "My New App"
   validator: >-
     {% if not (project_name | regex_search('^[a-z][a-z0-9-]*[a-z0-9]$')) %}
     Must be lowercase, start with letter, use only letters/numbers/dashes
@@ -56,17 +56,25 @@ package_name:
 description:
   type: str
   help: "Short project description"
-  default: "A Python project."
+  placeholder: "A Python project."
 
 author:
   type: str
   help: "Author full name"
-  default: ""
+  placeholder: "John Smith"
+  validator: >-
+    {% if not author %}
+    Invalid author name
+    {% endif %}
 
 email:
   type: str
   help: "Author email address"
-  default: ""
+  placeholder: "john.smith@example.com"
+  validator: >-
+    {% if not "@" in email %}
+    Invalid author email address
+    {% endif %}
 
 git_platform:
   type: str
