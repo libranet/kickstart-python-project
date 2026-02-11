@@ -33,37 +33,30 @@ set shell := ["bash", "-uc"]
 # waiting for glob-support, see
 # - https://github.com/casey/just/issues/1885
 # - https://github.com/casey/just/pull/2376
-import '.just/bandit.justfile'
-import '.just/dir-structure.justfile'
-import '.just/dotenv.justfile'
-import '.just/ipython.justfile'
-import '.just/just.justfile'
-import '.just/mypy.justfile'
-import '.just/mutmut.justfile'
-import '.just/pre-commit.justfile'
-import '.just/prek.justfile'
-import '.just/project.justfile'
-import '.just/pylint.justfile'
-import '.just/pyroma.justfile'
-import '.just/pytest.justfile'
-import '.just/readthedocs.justfile'
-import '.just/ruff.justfile'
-import '.just/safety.justfile'
-import '.just/sshx.justfile'
-import '.just/ty.justfile'
-import '.just/ubuntu.justfile'
-import '.just/uv.justfile'
+import? '.just/bandit.justfile'
+import? '.just/dir-structure.justfile'
+import? '.just/dotenv.justfile'
+import? '.just/ipython.justfile'
+import? '.just/just.justfile'
+import? '.just/mypy.justfile'
+import? '.just/mutmut.justfile'
+import? '.just/pre-commit.justfile'
+import? '.just/prek.justfile'
+import? '.just/project.justfile'
+import? '.just/pylint.justfile'
+import? '.just/pyroma.justfile'
+import? '.just/pytest.justfile'
+import? '.just/readthedocs.justfile'
+import? '.just/ruff.justfile'
+import? '.just/safety.justfile'
+import? '.just/sshx.justfile'
+import? '.just/ty.justfile'
+import? '.just/ubuntu.justfile'
+import? '.just/uv.justfile'
 
 
-
-
-# default is the first recipe in the justfile.
-# Display all  tasks (default recipe)
+# Display all tasks (default recipe)
 [group: 'default']
-list:
-    @ just --list --unsorted
+list-tasks:
+    @ {{just_executable()}} --list --unsorted 
 
-
-# Display all canonical tasks
-list-canonical:
-    @ {{just_executable()}} --list --unsorted --no-aliases

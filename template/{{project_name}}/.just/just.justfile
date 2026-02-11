@@ -38,6 +38,12 @@ list-all:
     @ {{just_executable()}} --list --unsorted
 
 
+# Display all canonical tasks without aliases
+[group: 'just']
+list-canonical:
+    @ {{just_executable()}} --list --unsorted --no-aliases
+
+
 # select recipe from list
 [group: 'just']
 choose:
