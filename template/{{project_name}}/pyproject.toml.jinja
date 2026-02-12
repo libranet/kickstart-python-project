@@ -270,8 +270,8 @@ ignore = [
     "G004",    # logging statement uses f-string
     # D203 conflicts withs D211 (no blank lines allowed before class docstring)
     "D203",    # blank line required before class docstring
-    # D212 conflicts with D213 (should start at the second line)
-    "D212",    # multi-line docstring summary should start at the first line
+    # D212 (should start at the first line) conflicts with D213
+    "D213",    # multi-line docstring summary should start at the second line
     "T201",    # print statement found
 ]
 
@@ -284,7 +284,7 @@ allow-star-arg-any = true
 # https://docs.astral.sh/ruff/settings/#lintisort
 # combine-as-imports = true
 combine-as-imports = false
-force-single-line = true
+force-single-line = false
 force-sort-within-sections = false  # sort straight-style imports before from-style imports
 from-first = false
 known-third-party = []
