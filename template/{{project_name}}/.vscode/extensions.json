@@ -26,6 +26,11 @@
         // repo: https://github.com/mikestead/vscode-dotenv
         "mikestead.dotenv",
 
+        // marketplace: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl
+        // repo: https://github.com/Microsoft/vscode-remote-release
+        // docs: https://code.visualstudio.com/docs/remote/remote-overview
+        "ms-vscode-remote.remote-wsl",
+
         // support for the Mypy type checker
         // marketplace: https://marketplace.visualstudio.com/items?itemName=ms-python.mypy-type-checker
         // repo: https://github.com/microsoft/vscode-mypy
@@ -79,3 +84,6 @@
 
     ]
 }
+
+
+
