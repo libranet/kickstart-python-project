@@ -26,12 +26,13 @@ build-backend = "uv_build"
 # You need to invoke "bandit --configfile pyproject.toml"
 # see https://github.com/PyCQA/bandit/issues/318"
 baseline = "etc/bandit-baseline.json"
-exclude_dirs = [".venv", "var"]
+exclude_dirs = ["tests", ".venv", "var"]
 recursive = true
-targets = ["src", "tests"]
+targets = ["src"]
 
 [tool.bandit.assert_used] # B101
-skips = ["tests/*"]
+# skips = ["tests/**/*.py"]  # does not work
+skips = ["**/test_*.py"]
 
 
 [tool.coverage.html]
