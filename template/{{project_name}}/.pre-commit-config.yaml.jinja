@@ -95,6 +95,7 @@ repos:
       - id: check-yaml
         name: check yaml syntax
         entry: uv run check-yaml
+        args: [--unsafe]  # allow custom tags like !env in logging configs
         language: system
         types: [yaml]
 
