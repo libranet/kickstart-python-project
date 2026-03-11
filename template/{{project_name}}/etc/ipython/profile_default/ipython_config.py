@@ -5,20 +5,19 @@ import pathlib as pl
 
 c = get_config()  # noqa: F821
 
-# At this stage, the sitecustomize-module has already been run
-# and the environment-variables from .env have been loaded.
-ipython_cache_dir = pl.Path(os.getenv("IPYTHON_CACHE_DIR", "~/.cache/ipython"))
-
-# this cache-folder must exist
-ipython_cache_dir.mkdir(exist_ok=True)
-c.TerminalInteractiveShell.debugger_history_file = str(ipython_cache_dir / "pdb_history")
-del ipython_cache_dir
-
-
 # customizations
 c.TerminalIPythonApp.display_banner = False
 c.TerminalInteractiveShell.colors = "Linux"
 c.TerminalInteractiveShell.confirm_exit = False
+
+# At this stage, the sitecustomize-module has already been run
+# and the environment-variables from .env have been loaded.
+# the cache-parent folder must exist
+ipython_cache_dir = pl.Path(os.getenv("IPYTHON_CACHE_DIR", "~/.cache/ipython"))
+ipython_cache_dir.mkdir(exist_ok=True)
+c.HistoryManager.hist_file = str(ipython_cache_dir / "history.sqlite")
+c.TerminalInteractiveShell.debugger_history_file = str(ipython_cache_dir / "pdb_history")
+del ipython_cache_dir
 
 
 # ------------------------------------------------------------------------------
