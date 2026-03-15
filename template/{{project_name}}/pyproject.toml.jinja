@@ -133,6 +133,7 @@ dependencies = [
     "pydantic>=2.9",
     "pydantic-settings>=2.12.0",
 ]
+
 [dependency-groups]
 dev = [
     "pylint>=3.1.0",
@@ -196,7 +197,7 @@ testing = [
     {%- endif %}
     "pytest-freezer>=0.4.9",
     "pytest-mock>=3.15",
-    "pytest-xdist==3.8.0",
+    "pytest-xdist>=3.8.0",
 ]
 typing = [
     "lxml>=4.9",
@@ -220,7 +221,7 @@ webtesting = [
 [project.urls]
 homepage = "https://github.com/{{ github_user }}/{{ project_name }}"
 repository = "https://github.com/{{ github_user }}/{{ project_name }}"
-"Changelog" = "https://github.com/{{ github_user }}/{{ project_name }}/docs/changes.md"
+"Changelog" = "https://github.com/{{ github_user }}/{{ project_name }}/blob/main/docs/changes.md"
 "Issues" = "https://github.com/{{ github_user }}/{{ project_name }}/issues"
 "Releases" = "https://github.com/{{ github_user }}/{{ project_name }}/releases"
 {% if support_rtd %}documentation = "https://{{ project_name }}.readthedocs.io"{% endif %}
