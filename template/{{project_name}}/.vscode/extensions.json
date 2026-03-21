@@ -11,12 +11,17 @@
         // repo: https://github.com/astral-sh/ruff-vscode
         "charliermarsh.ruff",
 
+        // Markdown linting and style checking
+        //  marketplace: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
+        // repo: https://github.com/DavidAnson/vscode-markdownlint.git
+        "davidanson.vscode-markdownlint",
+
         // support for hadolint, a Dockerfile linter
         // marketplace: https://marketplace.visualstudio.com/items?itemName=exiasr.hadolint
         // repo: https://github.com/michaellzc/vscode-hadolint
         "exiasr.hadolint",
 
-        // reStructuredText Language Support for Visual Studio Code
+        // reStructuredText Language Support
         // marketplace: https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext
         // repo: https://github.com/vscode-restructuredtext/vscode-restructuredtext
         // "lextudio.restructuredtext",
@@ -77,13 +82,9 @@
         // repo: https://github.com/trond-snekvik/vscode-rst
         "trond-snekvik.simple-rst",
 
-        // Markdown Support for Visual Studio Code
+        // Markdown Support
         // marketplace: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
         // repo: https://github.com/yzhang-gh/vscode-markdown
         "yzhang.markdown-all-in-one",
-
     ]
 }
-
-
-
