@@ -332,6 +332,9 @@ include = [
 
 [tool.uv]
 # Settings reference: https://docs.astral.sh/uv/reference/settings/
+exclude-newer = "10 days"
+# exclude-newer-package = { setuptools = "30 days" }
+
 keyring-provider = "subprocess"
 managed = true
 package = true
