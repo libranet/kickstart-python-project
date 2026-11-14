@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 
 ## 3.0 (unreleased)
 
+- Rename `docs/changes.md` to `docs/changelog.md`, in this repository and in generated projects.
+
 - Migrate from Cookiecutter to Copier template engine.
 
 - Add support for template updates via `copier update`.
@@ -43,7 +45,7 @@ All notable changes to this project will be documented in this file.
 
 - Rename `.gitlab-ci.yaml` to `.gitlab-ci.yml` and `supervisord.just` to `supervisord.justfile`.
 
-- Add `docs/changes.md` and self-contained docs pages; switch Sphinx theme to `sphinx_rtd_theme`.
+- Add `docs/changelog.md` and self-contained docs pages; switch Sphinx theme to `sphinx_rtd_theme`.
 
 - Fix the ruff pre-commit hooks to run via `uv run`; fix `about.py` metadata lookup by distribution name.
 

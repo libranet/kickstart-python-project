@@ -5,7 +5,7 @@ Kickstart Python Porject
     :maxdepth: 2
 
     readme
-    changes
+    changelog
     security
     license
 

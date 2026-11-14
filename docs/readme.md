@@ -86,7 +86,7 @@ copier update --trust
 
 ## Documentation
 
-- [Changelog](changes.md)
+- [Changelog](changelog.md)
 - [Migration Guide](migration-to-copier.md)
 - [Contributing](contributing.md)
 - [License](../license.md)

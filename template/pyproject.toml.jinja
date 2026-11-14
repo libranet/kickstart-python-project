@@ -194,7 +194,7 @@ security = [
 ]
 testing = [
     "mutmut>=3.3",
-    "pytest>=8.1",
+    "pytest>=9.0",
     "pytest-clarity>=1.0",
     "pytest-cov>=5.0.0",
     "pytest-dotenv>=0.5",
@@ -229,7 +229,7 @@ webtesting = [
 [project.urls]
 homepage = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}"
 repository = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}"
-"Changelog" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/blob/main/docs/changes.md"
+"Changelog" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/blob/main/docs/changelog.md"
 "Issues" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/issues"
 "Releases" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/releases"
 {% if support_rtd %}documentation = "https://{{ project_name }}.readthedocs.io"{% endif %}
@@ -251,7 +251,7 @@ disable = [
 ]
 
 
-[tool.pytest.ini_options]
+[tool.pytest]
 # Settings reference: https://docs.pytest.org/en/stable/reference/customize.html
 cache_dir = "var/cache/pytest"
 log_cli = false  # enable to show log-output
@@ -370,4 +370,3 @@ default-groups = "all"
 # [tool.uv.workspace]
 # Settings reference: https://docs.astral.sh/uv/reference/settings/#workspace
 # members = ["packages/*"]
-
