@@ -33,7 +33,7 @@ set shell := ["bash", "-uc"]
 # waiting for glob-support, see
 # - https://github.com/casey/just/issues/1885
 # - https://github.com/casey/just/pull/2376
-import? '~.config/just/imports.just'
+import? '~/.config/just/imports.just'
 
 import? '.just/bandit.justfile'
 import? '.just/dir-structure.justfile'
