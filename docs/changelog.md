@@ -47,6 +47,13 @@ All notable changes to this project will be documented in this file.
 
 - Optionally import user-level just recipes from the global just config directory in the generated `justfile`.
 
+- Add a `zizmor` GitHub workflow, `.just/zizmor.justfile` and `zizmor` security dependency to GitHub projects, to
+  lint GitHub Actions workflows for security issues (pedantic persona).
+
+- Update GitHub Actions in the linting and testing workflows: `actions/checkout` v7.0.1, `astral-sh/setup-uv`
+  v10.0.1, `codecov/codecov-action` v7.0.0; add `extractions/setup-just` v4.0.0. Pin just 1.58.0 and uv 0.13.7,
+  install via `just install`, run tests via `just pytest-cov`, and pass matrix values through `env`.
+
 - Rename `.gitlab-ci.yaml` to `.gitlab-ci.yml` and `supervisord.just` to `supervisord.justfile`.
 
 - Add `docs/changelog.md` and self-contained docs pages; switch Sphinx theme to `sphinx_rtd_theme`.
