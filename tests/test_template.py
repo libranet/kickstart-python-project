@@ -1,6 +1,6 @@
 """Regression checks for rendered Copier projects.
 
-Run with `uv run --with copier --with jinja2-time python -m unittest tests/test_template.py`.
+Run with `uv run python -m unittest tests/test_template.py` (dependencies: `testing` group in pyproject.toml).
 """
 
 import ast
@@ -14,7 +14,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-# Run copier from the current environment, which must include the jinja2-time extension.
+# Run copier from the current environment (the `testing` dependency group, which includes jinja2-time).
 COPIER = [sys.executable, "-m", "copier"]
 
 
