@@ -45,7 +45,8 @@ All notable changes to this project will be documented in this file.
 
 - Require `pytest>=9.0` and move pytest settings from `[tool.pytest.ini_options]` to the native `[tool.pytest]` table.
 
-- Optionally import user-level just recipes from the global just config directory in the generated `justfile`.
+- Optionally import user-level just recipes from the global just config directory in the generated `justfile`,
+  after the project recipes and with `allow-duplicate-recipes`, so project recipes win on a name clash.
 
 - Add a `zizmor` GitHub workflow, `.just/zizmor.justfile` and `zizmor` security dependency to GitHub projects, to
   lint GitHub Actions workflows for security issues (pedantic persona).
@@ -68,7 +69,8 @@ All notable changes to this project will be documented in this file.
 - Fix the ruff pre-commit hooks to run via `uv run`; fix `about.py` metadata lookup by distribution name.
 
 - Add `tests/test_template.py` to render and check the template for several option combinations. It is a uv
-  script with `copier` and `jinja2-time` as inline dependencies: run it with `uv run tests/test_template.py`.
+  test has no dependency on `just`; run it with
+  `uv run --with copier --with jinja2-time python -m unittest tests/test_template.py`.
 
 - Add github-cli, supervisord, mdformat and markdown-lint justfiles; support Python 3.14;
   add `exclude-newer = "7 days"`.

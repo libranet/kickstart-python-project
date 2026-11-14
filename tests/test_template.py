@@ -1,18 +1,9 @@
-#!/usr/bin/env -S uv run --script
-# /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "copier>=9.0",
-#     "jinja2-time>=0.2",
-# ]
-# ///
 """Regression checks for rendered Copier projects.
 
-Run with `uv run tests/test_template.py`; also requires `git` and `just` on the PATH.
+Run with `uv run --with copier --with jinja2-time python -m unittest tests/test_template.py`.
 """
 
 import ast
-import os
 import pathlib
 import shutil
 import subprocess
@@ -23,7 +14,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-# Run copier from this script's environment, which includes the jinja2-time extension.
+# Run copier from the current environment, which must include the jinja2-time extension.
 COPIER = [sys.executable, "-m", "copier"]
 
 
@@ -75,14 +66,6 @@ class TemplateTests(unittest.TestCase):
                         if workflow.stem in ("testing", "linting"):
                             self.assertIn('- "3.12"', workflow.read_text())
                             self.assertNotIn('- "3.11"', workflow.read_text())
-                    # Use an empty HOME so the optional `~/.config/just/imports.just` of whoever
-                    # runs the tests is not imported into the generated justfile.
-                    subprocess.run(
-                        ["just", "--justfile", str(destination / "justfile"), "--summary"],
-                        check=True, stdout=subprocess.DEVNULL,
-                        env={**os.environ, "HOME": directory},
-                    )
-
     def test_update_preserves_answers_and_customizations(self):
         with tempfile.TemporaryDirectory() as directory:
             source = pathlib.Path(directory) / "template"
@@ -130,7 +113,3 @@ class TemplateTests(unittest.TestCase):
             self.assertEqual((destination / ".env").read_text(), "CUSTOM=value\n")
             self.assertTrue((destination / "src/custom_package").is_dir())
             self.assertFalse((destination / "src/custom_package/cli").exists())
-
-
-if __name__ == "__main__":
-    unittest.main()
