@@ -191,7 +191,9 @@ security = [
     "bandit>=1.7",
     # bandit = { extras = ["toml"], version = ">=1.7" }
     "safety>=2.3",
-    {% if git_platform == 'github' %}"zizmor>=1.0",{% endif %}
+{%- if git_platform == 'github' %}
+    "zizmor>=1.0",
+{%- endif %}
 ]
 testing = [
     "mutmut>=3.3",

@@ -2,7 +2,6 @@
 # pylint: disable=wrong-import-position
 # pylint: disable=invalid-name
 
-# ruff: noqa: INP001 (implicit part of namespace package)
 # ruff: noqa: E402 (module level import not at top of file)
 # ruff: noqa: F401 (unused import)
 

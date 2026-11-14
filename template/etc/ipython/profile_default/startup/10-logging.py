@@ -1,4 +1,5 @@
 # flake8: noqa: E402 (module level import not at top of file)
+# ruff: noqa: F401 (unused import) - preload highly used modules into the IPython namespace
 # pylint: disable=unused-import
 # pylint: disable=wrong-import-position
 # pylint: disable=invalid-name
@@ -26,7 +27,6 @@ import sys
 import typing as tp
 
 import libranet_logging
-
 
 # setup the logging according to etc/logging.yml
 libranet_logging.initialize()

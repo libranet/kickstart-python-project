@@ -68,6 +68,13 @@ All notable changes to this project will be documented in this file.
 
 - Fix the ruff pre-commit hooks to run via `uv run`; fix `about.py` metadata lookup by distribution name.
 
+- Make `pre-commit run --all-files` pass on a freshly generated project without modifying files: fix
+  whitespace left by indented Jinja tags (`etc/logging.yaml`, `pyproject.toml`, `docs/usage.md`), trailing
+  newlines in `ipython_config.py`, ruff findings in the IPython startup files (keeping the intentional imports),
+  an unused `ty: ignore`, and mdformat style in the issue templates. Remove the `fix-encoding-pragma` hook (dropped
+  from pre-commit-hooks 5; ruff `UP009` covers it), exclude `uv.lock` from `check-added-large-files`, and exclude
+  `docs/index.md` and `docs/readme.md` from mdformat, which would break their shared link definitions.
+
 - Add `tests/test_template.py` to render and check the template for several option combinations. The
   test has no dependency on `just`; run it with `uv run python -m unittest tests/test_template.py`.
 
