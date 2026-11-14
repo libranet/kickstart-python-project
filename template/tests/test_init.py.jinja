@@ -17,4 +17,4 @@ def test_license() -> None:
     # from {{ package_name }} import __license__
 
     assert isinstance({{ package_name }}.__license__, str)
-    assert "Copyright" in {{ package_name }}.__license__
+    assert {{ package_name }}.__license__ == "{{ license_spdx }}"

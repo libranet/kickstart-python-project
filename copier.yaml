@@ -107,6 +107,12 @@ license:
     - GPL-3.0
   default: MIT
 
+license_spdx:
+  type: str
+  help: "SPDX license expression (PEP 639), derived from license"
+  default: "{% if license == 'GPL-3.0' %}GPL-3.0-or-later{% else %}{{ license }}{% endif %}"
+  when: false
+
 development_status:
   type: str
   help: "PyPI development status classifier"

@@ -16,7 +16,7 @@
 
 # https://docs.astral.sh/uv/concepts/projects/config/#build-systems
 [build-system]
-requires = ["uv_build>=0.10,<0.11.0"]
+requires = ["uv_build>=0.13.8,<0.14.0"]
 build-backend = "uv_build"
 
 
@@ -90,7 +90,8 @@ pytest_add_cli_args_test_selection= [ "tests/" ]
 [project]
 name = {{ project_name | to_json }}
 version = {{ version | to_json }}
-license = { file = "license.md" }
+license = "{{ license_spdx }}"
+license-files = ["license.md"]
 description = {{ description | to_json }}
 readme = "docs/readme.md"
 requires-python = ">={{ minimum_python }}"
@@ -101,9 +102,6 @@ classifiers = [
     "{{ development_status }}",
     "Environment :: Console",
     "Intended Audience :: Developers",
-    {% if license == 'MIT' %}"License :: OSI Approved :: MIT License",{% endif %}
-    {% if license == 'Apache-2.0' %}"License :: OSI Approved :: Apache Software License",{% endif %}
-    {% if license == 'GPL-3.0' %}"License :: OSI Approved :: GNU General Public License v3 (GPLv3)",{% endif %}
     "Natural Language :: English",
     "Operating System :: POSIX :: Linux",
     {%- for v in range(minimum_python.split('.')[1]|int, 15)|reverse %}

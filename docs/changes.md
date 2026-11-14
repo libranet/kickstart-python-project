@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 
 
+## 3.2 (2026-11-14)
+
+- Bump the build backend to `uv_build>=0.13.8,<0.14.0`, so `uv build` no longer warns that the requirement does
+  not contain the current uv version.
+
+- Use a PEP 639 SPDX `license` expression with `license-files` in `pyproject.toml` and drop the deprecated
+  license classifiers; GPL-3.0 maps to `GPL-3.0-or-later`. Generated license tests check the SPDX expression.
+
+
 ## 3.1 (2026-11-14)
 
 - Flatten the template from `template/{{project_name}}/` to `template/`: the copier destination is now the
