@@ -1,0 +1,297 @@
+# This is a comment.
+# Please indent this yaml-file with 4 spaces, just like in python.
+# This config-file configures the logging used in python-applications.
+#
+# For more information, please see:
+#   - https://www.python.org/dev/peps/pep-0391/
+#   - https://pyyaml.org/wiki/PyYAMLDocumentation
+#   - https://docs.python.org/2.7/library/logging.config.html
+#   - http://docs.python-guide.org/en/latest/writing/logging
+#   - https://docs.python.org/3/howto/logging-cookbook.html
+#   - https://fangpenlin.com/posts/2012/08/26/good-logging-practice-in-python
+#   - https://logmatic.io/blog/python-logging-with-json-steroids
+#   - https://docs.djangoproject.com/en/1.8/topics/logging/#examples
+#
+# Available default levels:
+#   -  0 NOTSET
+#   - 10 DEBUG
+#   - 20 INFO
+#   - 30 WARNING  (WARN is deprecated)
+#   - 40 ERROR
+#   - 50 CRITICAL (=FATAL)
+#
+# You can create an extra loglevel in your code via:
+#     > libranet_logging.loglevel.create_loglevel("TRACE", 5)
+#
+# Note about environment-variables:
+# You can use "!env" as a constructor to load values from an environment-variable.
+# This constructor takes 2 input-arguments:
+#   - The name of the env-variable
+#   - The default-value in case the env-var is not set.
+#     Defaults to empty string if not provided.
+#     Any quotes in default-values will be stripped.
+#     To provide an array, use ; as separator, just like setting $PATH.
+#
+# For example:
+# loggers:
+#     <name-logger>:
+#         level: !env <NAME-ENV-VARIABLE>, <DEFAULT-IF-ENV-VAR-IS-MISSING>
+
+logdir: !env LOG_DIR
+
+version: 1
+
+disable_existing_loggers: True
+
+filters:
+    regex-filter:
+        "()": "libranet_logging.filters.RegexFilter"
+        params:
+            # Note: You need to escape backslash ("\") with a backslash ("\\")
+            # silence sh
+            - "^<Command.*process started$" # debug
+            - "^<Command.*process completed$" # debug
+            - "^Using selector: EpollSelector" # in asyncio
+            - "^Using proactor: IocpProactor" # in asyncio on windows
+
+formatters:
+    generic:
+        format: "%(asctime)s - %(name)s - %(levelname)-7s - %(message)s"
+        datefmt: "%Y/%m/%d %H:%M:%S"
+
+    simple:
+        format: "%(asctime)s - %(levelname)-7s - %(message)s"
+        datefmt: "%Y/%m/%d %H:%M:%S"
+
+    verbose:
+        format: "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+        datefmt: "%Y/%m/%d %H:%M:%S"
+
+    console_bw: # simple back & white
+        format: "%(asctime)s - %(name)s - %(levelname)-7s - %(message)s"
+        datefmt: "%Y/%m/%d %H:%M:%S"
+
+    console_color: # suited for black background
+        "()": "colorlog.ColoredFormatter"
+        # removed the %(reset)s in order to have full colored traceback, instead of only the first line
+        # format: "%(log_color)s%(asctime)s - %(name)s - %(levelname)-7s - %(message)s%(reset)s"
+        format: "%(log_color)s%(asctime)s - %(name)s - %(levelname)-7s - %(message)s"
+        datefmt: "%Y/%m/%d %H:%M:%S"
+        reset: True
+        log_colors:
+            # cfr. https://github.com/borntyping/python-colorlog
+            # supported colors: blue|cyan|green|yellow|red|purple|white|black
+            # supported prefixes: "bold_" and "bg_"
+            # <LOGLEVEL>: <foreground-color>,<background-color>
+            # comma is the separator, but no extra spaces allowed
+            DEBUG: cyan # bold_cyan,bg_white
+            INFO: bold_green
+            WARNING: yellow
+            ERROR: red
+            CRITICAL: purple
+
+    # uvicorn_default: # see uvicorn/config.py
+    #     "()": "uvicorn.logging.DefaultFormatter"
+    #     datefmt: "%Y-%m-%d %H:%M:%S"
+    #     format: "%(levelprefix)s %(asctime)s %(message)s"
+
+    # uvicorn_access: # see uvicorn/config.py
+    #     "()": "uvicorn.logging.AccessFormatter"
+    #     format: '%(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
+
+handlers:
+    # Generally there is no need to change to loglevel specified on the handlers.
+    # Easier is to adjust the loglevel only on the loggers by setting the corresponding env-variable.
+
+    "null": # quoting prevents incorrect conversion to None
+        class: "logging.NullHandler"
+        level: "DEBUG"
+
+    console:
+        class: "logging.StreamHandler"
+        formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
+        level: !env LOGLEVEL_CONSOLE, DEBUG
+        stream: "ext://sys.stdout"
+        filters:
+            - "regex-filter"
+
+    # console_http:
+    #     class: "logging.StreamHandler"
+    #     # formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
+    #     # formatter: console_http
+    #     formatter: console_color_http
+    #     level: !env LOGLEVEL_CONSOLE, DEBUG
+    #     stream: "ext://sys.stdout"
+    #     filters:
+    #         - "regex-filter"
+
+    debug_file: &default
+        class: "logging.handlers.RotatingFileHandler"
+        level: "DEBUG"
+        formatter: "generic"
+        filename: "10-debug.log"
+        maxBytes: 104857600 # 100 MB = 100*1024*1024
+        backupCount: 10
+        encoding: "utf8"
+        filters:
+            - "regex-filter"
+
+    info_file:
+        <<: *default
+        filename: "20-info.log"
+        level: "INFO"
+
+    warning_file:
+        <<: *default
+        filename: "30-warning.log"
+        level: "WARNING"
+
+    error_file:
+        <<: *default
+        filename: "40-errors.log"
+        level: "ERROR"
+
+    {{ package_name }}_file:
+        <<: *default
+        filename: "{{ package_name }}.log"
+        formatter: "generic"
+        level: "DEBUG"
+
+    ipython_startupfile:
+        <<: *default
+        filename: "ipython-startup.log"
+        formatter: "generic"
+        level: "DEBUG"
+
+    {% if with_django %}
+    django_db_backends_handler:
+        <<: *default
+        filename: django-db-backends.log
+        level: DEBUG
+        formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
+
+    django_server_handler:
+        class: logging.StreamHandler
+        level: DEBUG
+        # formatter: django.server
+        formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
+    {% endif %}
+
+    # uvicorn_default:
+    #     formatter: "uvicorn_default"
+    #     class: "logging.StreamHandler"
+    #     stream: "ext://sys.stderr"
+    #     level: "DEBUG"
+
+    # uvicorn_access:
+    #     formatter: "uvicorn_access"
+    #     class: "logging.StreamHandler"
+    #     stream: "ext://sys.stdout"
+    #     level: "DEBUG"
+
+loggers:
+    # Notes:
+    # -) A disabled logger does nothing. If your application, or a library it uses underneath,
+    #    instantiates a logger, that logger is disabled unless you add it here.
+    # -) Propagation goes bottom-up, not top-to-bottom.
+    #    propagate defaults to True.
+    #    Therefore propagate is not applicable for the root-logger.
+
+    asyncio:
+        level: !env LOGLEVEL_ASYNCIO, NOTSET
+
+    blib2to3:
+        level: !env LOGLEVEL_BLIB2TO3, NOTSET
+
+    {{ package_name }}:
+        level: !env LOGLEVEL_{{ package_name }}, NOTSET
+        handlers:
+            - {{ package_name }}_file
+
+    {% if with_django %}
+    django:
+        level: !env LOGLEVEL_DJANGO, DEBUG
+        handlers: # review
+            - console
+
+    django.db.backends:
+        level: !env LOGLEVEL_DJANGO_DB_BACKENDS, DEBUG
+        handlers:
+            - django_db_backends_handler
+        propagate': False
+    {% endif %}
+
+    dotenv:
+        level: !env LOGLEVEL_DOTENV, NOTSET
+
+    # gunicorn:
+    #    level: !env LOGLEVEL_GUNICORN, NOTSET
+
+    http.client:
+        level: !env LOGLEVEL_HTTP_CLIENT, NOTSET
+
+    ipython-startup:
+        level: !env LOGLEVEL_IPYTHON _STARTUP, NOTSET
+        propagate: false
+        handlers:
+            - console
+            - ipython_startupfile
+
+    libranet_logging:
+        level: !env LOGLEVEL_LIBRANET_LOGGING, NOTSET
+
+    multipart:
+        level: !env LOGLEVEL_MULTIPART, NOTSET
+
+    pkg_resources:
+        level: !env LOGLEVEL_PKG_RESOURCES, NOTSET
+
+    parso: # triggered by ipython autocomplete
+        level: !env LOGLEVEL_PARSO, NOTSET
+
+    py.warnings: # triggered by deprecation-warnings
+        level: !env LOGLEVEL_PY_WARNINGS, NOTSET
+
+    requests:
+        level: !env LOGLEVEL_REQUESTS, NOTSET
+
+    stack_data:
+        level: !env LOGLEVEL_STACK_DATA, NOTSET
+
+    setuptools:
+        level: !env LOGLEVEL_SETUPTOOLS, NOTSET
+
+    sh:
+        level: !env LOGLEVEL_SH, NOTSET
+
+    urllib3:
+        level: !env LOGLEVEL_URLLIB3, NOTSET
+
+    urllib3.connectionpool:
+        level: !env LOGLEVEL_URLLIB3_CONNECTIONPOOL, NOTSET
+
+    urllib3.util.retry:
+        level: !env LOGLEVEL_URLLIB3_UTIL_RETRY, NOTSET
+
+    # uvicorn:
+    #     level: !env LOGLEVEL_UVICORN, NOTSET
+    #     handlers:
+    #         - uvicorn_default
+
+    # uvicorn_access:
+    #     level: !env LOGLEVEL_UVICORN_ACCESS, NOTSET
+    #     handlers:
+    #         - uvicorn_access
+
+    # uvicorn_error: # confusing logger-name, see https://github.com/encode/uvicorn/issues/562
+    #     level: !env LOGLEVEL_UVICORN_ERROR, NOTSET
+
+    watchfiles:
+        level: !env LOGLEVEL_WATCHFILES, NOTSET
+
+root:
+    # You can get the root-logger via logging.getLogger(),
+    # Normally you don't need to use the root-logger directly, since all other loggers descend from it.
+    # The dedicated "<loglevel>_file"-handlers are automatically removed if the root-loglevel is set higher.
+    level: !env LOGLEVEL_ROOT, NOTSET
+    handlers: !env LOG_HANDLERS, "console|debug_file|info_file|warning_file|error_file"

@@ -42,3 +42,9 @@
 
 # excluded generated python-files Byte-compiled / optimized / DLL files
 __pycache__/
+
+# Keep shipped template helpers and archives despite global directory exclusions.
+!template/**/_*/
+!template/**/_*/**
+!template/.claude/
+!template/.claude/**

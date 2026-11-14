@@ -1,0 +1,107 @@
+# Testing - Github Actions
+#
+# Security references:
+#  - https://securitylab.github.com/resources/github-actions-preventing-pwn-requests
+#  - https://securitylab.github.com/resources/github-actions-untrusted-input
+#  - https://securitylab.github.com/resources/github-actions-building-blocks
+#  - https://securitylab.github.com/resources/github-actions-new-patterns-and-mitigations
+#
+# Used actions:
+#   - actions/checkout
+#     repo: https://github.com/actions/checkout
+#     releases: https://github.com/actions/checkout/tags
+#
+#   - astral-sh/setup-uv: set up uv environment
+#     repo: https://github.com/astral-sh/setup-uv
+#     releases: https://github.com/astral-sh/setup-uv/tags
+#     docs: https://docs.astral.sh/uv/guides/integration/github/
+
+
+name: Testing
+
+concurrency:
+    # see https://docs.github.com/en/actions/using-jobs/using-concurrency
+    # Run jobs on all commits - we're on free tier and want full diagnostic history
+    # cancel-in-progress: {% raw %}${{ github.event_name == 'pull_request' }}{% endraw %}
+    group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
+
+env:
+    # Enable colored output for pytest
+    # https://github.com/pytest-dev/pytest/issues/7443
+    # https://github.com/actions/runner/issues/241
+    PY_COLORS: 1
+
+    # Pin uv version for reproducible builds
+    # https://github.com/astral-sh/uv/releases
+    UV_VERSION: "0.9.26"  # released on 2026-01-15
+
+on:
+    pull_request:
+        types: [opened, reopened, synchronize]
+    push:
+        branches:
+            - main
+
+permissions:
+    contents: read
+
+jobs:
+    # see https://docs.astral.sh/uv/guides/integration/github/
+    python-tests:
+        name: python
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version:
+                    {%- for v in range(minimum_python.split('.')[1] | int, 15) | reverse %}
+                    - "3.{{ v }}"
+                    {%- endfor %}
+
+        steps:
+
+        # repo: https://github.com/actions/checkout
+        # releases: https://github.com/actions/checkout/tags
+        - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1 released on 02-12-2025
+          with:
+              persist-credentials: false
+              fetch-depth: 0
+
+        - name: Remove sitecustomize.py
+          run: |
+              sudo rm -f /usr/lib/python3.*/sitecustomize.py
+              sudo rm -f /etc/python3.*/sitecustomize.py
+
+        # repo: https://github.com/astral-sh/setup-uv
+        # releases: https://github.com/astral-sh/setup-uv/tags
+        # docs: https://docs.astral.sh/uv/guides/integration/github
+        - name: Install pinned version of uv
+          uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b  # v7.1.6 released on 13-12-2025
+          with:
+              python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
+              version: {% raw %}${{ env.UV_VERSION }}{% endraw %}
+              enable-cache: true
+              cache-dependency-glob: "uv.lock"
+              prune-cache: true
+
+        - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
+          run: uv python install {% raw %}${{ matrix.python-version }}{% endraw %}
+
+        - name: Install the project
+          run: uv sync --all-groups
+
+        - name: Run tests
+          run: uv run pytest tests --color=yes --cov=src --cov-fail-under=50 --cov-report html:var/coverage/html --cov-report xml:var/coverage/pytest-cobertura.xml --cov-report term-missing -v
+
+        # repo: https://github.com/codecov/codecov-action
+        # releases: https://github.com/codecov/codecov-action/tags
+        - name: "Upload coverage to Codecov"
+          uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de  # v5.5.2 released on 09-12-2025
+          with:
+              fail_ci_if_error: true  # false is default
+              files: var/coverage/pytest-cobertura.xml
+              flags: unittests # optional
+              token: {% raw %}${{ secrets.CODECOV_TOKEN }}{% endraw %}  # not required for public repos
+              verbose: true  # false is default
