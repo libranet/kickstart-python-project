@@ -1,0 +1,164 @@
+{
+  // Renovate configuration (JSON5 — comments allowed).
+  //
+  // Docs:   https://docs.renovatebot.com/configuration-options/
+  // Schema: https://docs.renovatebot.com/renovate-schema.json
+  //
+  // Using uv with renovate:
+  //   - https://docs.astral.sh/uv/guides/integration/renovate/#uvlock-output
+  //
+  // Renovate needs the Renovate GitHub App installed on the repository:
+  //   - https://github.com/apps/renovate
+
+
+  // Renovate approves nothing; with `automerge` it merges eligible PRs itself once
+  // every status check on the branch has passed — no custom token, no
+  // `contents: write` workflow, no third-party action to keep pinned.
+
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  "extends": [
+    "config:recommended",
+  ],
+
+  // Managers Renovate may use. Everything not listed here is ignored.
+  //   - github-actions: SHA-pinned actions in .github/workflows
+  //   - pep621:         dependencies in pyproject.toml (and uv.lock)
+  //   - pyenv:          the Python version in .python-version
+  // To let Renovate update Python dependencies too, add "pep621" and "pyenv",
+  // and enable `lockFileMaintenance` below.
+  "enabledManagers": [
+    "github-actions",
+{%- if with_renovate_python %}
+    "pep621",
+    "pyenv",
+{%- endif %}
+  ],
+
+  "labels": [
+    "dependencies",
+  ],
+
+  // Only open/update PRs outside working hours to reduce CI noise.
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "every weekend",
+  ],
+
+  "prConcurrentLimit": 9, // max open Renovate PRs at any time
+  "prHourlyLimit": 9, // max PRs opened per hour (0 = unlimited)
+
+  // Wait 7 days after a release before proposing it — filters yanked / hotfixed
+  // versions. Matches `exclude-newer = "7 days"` in pyproject.toml.
+  "minimumReleaseAge": "7 days",
+
+  // `config:recommended` already implies semantic commits; keep this explicit so
+  // the prefix below is always applied.
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore(deps):",
+
+  // Never rewrite version constraints in pyproject.toml. Renovate only repins
+  // uv.lock for versions that already satisfy the declared range; an update that
+  // would require widening a constraint is skipped instead of editing the file.
+  "rangeStrategy": "in-range-only",
+
+  // Refresh uv.lock on a schedule so transitive dependencies get updated too
+  // (normal updates only touch direct deps). Recommended by the uv docs:
+  // https://docs.astral.sh/uv/guides/integration/renovate/
+  "lockFileMaintenance": {
+    "enabled": {{ 'true' if with_renovate_python else 'false' }},
+    "schedule": [
+      "before 5am on the first day of the month",
+    ],
+    "automerge": true,
+  },
+
+  // ---------------------------------------------------------------------------
+  // Auto-merge
+  //
+  // `automerge`         — let Renovate merge the PR once its checks pass.
+  // `platformAutomerge` — false: Renovate merges itself, after it has seen every
+  //                       check on the branch pass. GitHub's native auto-merge
+  //                       only waits for *required* checks, so it could merge
+  //                       before CI ran. Only switch this to true after adding
+  //                       required status checks to the branch ruleset.
+  // `automergeStrategy` — squash-merge Renovate PRs.
+  //
+  // NOTE: if branch protection requires an approving review, Renovate cannot
+  // approve its own PRs. Install the `renovate-approve` GitHub App
+  // (https://github.com/apps/renovate-approve) or relax the review requirement
+  // for these branches.
+  // ---------------------------------------------------------------------------
+  "platformAutomerge": false,
+  "automergeStrategy": "squash",
+
+  "packageRules": [
+    {
+      "description": "Auto-merge patch and minor updates once checks pass; majors stay manual",
+      "matchUpdateTypes": [
+        "patch",
+        "minor",
+        "digest",
+        "pin",
+        "bump",
+      ],
+      "automerge": true,
+    },
+    {
+      "description": "Never auto-merge major updates — always review by hand",
+      "matchUpdateTypes": [
+        "major",
+      ],
+      "automerge": false,
+    },
+    {
+      "description": "GitHub Actions updates - weekly schedule, grouped",
+      "matchManagers": [
+        "github-actions",
+      ],
+      "extends": [
+        "schedule:weekly",
+      ],
+      "labels": [
+        "dependencies",
+        "github-actions",
+      ],
+      "groupName": "github-actions",
+      // Actions are SHA-pinned in the workflows, so these arrive as `digest`
+      // updates and are covered by the auto-merge rule above.
+      "automerge": true,
+    },
+    {
+      // Only applies when "pep621" / "pyenv" are in `enabledManagers`.
+      // Renovate reads pyproject.toml under the `pep621` manager and
+      // .python-version under `pyenv` — there is no `uv` manager. Match the
+      // whole `python` category so both are covered. uv.lock is updated
+      // automatically by pep621 after each change, and fully by the
+      // `lockFileMaintenance` block above.
+      "description": "Python updates - monthly schedule, grouped",
+      "matchCategories": [
+        "python",
+      ],
+      "extends": [
+        "schedule:monthly",
+      ],
+      "labels": [
+        "dependencies",
+        "python",
+      ],
+      "groupName": "python-dependencies",
+    },
+  ],
+
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": [
+      "dependencies",
+      "security",
+    ],
+    // Security fixes bypass the schedule and the release-age wait.
+    "schedule": [],
+    "minimumReleaseAge": null,
+  },
+}

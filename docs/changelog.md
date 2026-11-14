@@ -54,6 +54,10 @@ All notable changes to this project will be documented in this file.
   v10.0.1, `codecov/codecov-action` v7.0.0; add `extractions/setup-just` v4.0.0. Pin just 1.58.0 and uv 0.13.7,
   install via `just install`, run tests via `just pytest-cov`, and pass matrix values through `env`.
 
+- Replace Dependabot and the `dependabot-auto-merge` workflow with Renovate (`.github/renovate.json5`), which
+  auto-merges passing minor/patch updates itself. By default it only updates GitHub Actions; the new
+  `with_renovate_python` option also enables Python dependency and `uv.lock` updates.
+
 - Rename `.gitlab-ci.yaml` to `.gitlab-ci.yml` and `supervisord.just` to `supervisord.justfile`.
 
 - Add `docs/changelog.md` and self-contained docs pages; switch Sphinx theme to `sphinx_rtd_theme`.

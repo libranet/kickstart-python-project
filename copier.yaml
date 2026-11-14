@@ -170,6 +170,12 @@ support_rtd:
   help: "Include ReadTheDocs configuration?"
   default: false
 
+with_renovate_python:
+  type: bool
+  help: "Let Renovate also update Python dependencies? (GitHub Actions are always updated)"
+  default: false
+  when: "{{ git_platform == 'github' }}"
+
 # -----------------------------------------------------------------------------
 # Computed variables (not prompted)
 # -----------------------------------------------------------------------------
