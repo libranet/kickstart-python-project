@@ -83,10 +83,11 @@ copier update --trust
 | `with_django` | Include Django | `false` |
 | `with_fastapi` | Include FastAPI | `false` |
 | `support_rtd` | ReadTheDocs config | `false` |
+| `with_renovate_python` | Renovate also updates Python deps (GitHub only) | `false` |
 
 ## Documentation
 
-- [Changelog](changes.md)
+- [Changelog](changelog.md)
 - [Migration Guide](migration-to-copier.md)
 - [Contributing](contributing.md)
 - [License](../license.md)

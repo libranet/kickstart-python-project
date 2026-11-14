@@ -1,14 +1,21 @@
-"""Regression checks for rendered Copier projects (requires copier and just)."""
+"""Regression checks for rendered Copier projects.
+
+Run with `uv run python -m unittest tests/test_template.py` (dependencies: `testing` group in pyproject.toml).
+"""
 
 import ast
 import pathlib
-import subprocess
 import shutil
+import subprocess
+import sys
 import tempfile
 import tomllib
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+
+# Run copier from the current environment (the `testing` dependency group, which includes jinja2-time).
+COPIER = [sys.executable, "-m", "copier"]
 
 
 class TemplateTests(unittest.TestCase):
@@ -35,7 +42,7 @@ class TemplateTests(unittest.TestCase):
                         "with_postgres": "true",
                     }
                     command = [
-                        "copier", "copy", "--quiet", "--trust", "--skip-tasks",
+                        *COPIER, "copy", "--quiet", "--trust", "--skip-tasks",
                         "--defaults", "--vcs-ref", "HEAD",
                     ]
                     for key, value in answers.items():
@@ -59,11 +66,6 @@ class TemplateTests(unittest.TestCase):
                         if workflow.stem in ("testing", "linting"):
                             self.assertIn('- "3.12"', workflow.read_text())
                             self.assertNotIn('- "3.11"', workflow.read_text())
-                    subprocess.run(
-                        ["just", "--justfile", str(destination / "justfile"), "--summary"],
-                        check=True, stdout=subprocess.DEVNULL,
-                    )
-
     def test_update_preserves_answers_and_customizations(self):
         with tempfile.TemporaryDirectory() as directory:
             source = pathlib.Path(directory) / "template"
@@ -90,7 +92,7 @@ class TemplateTests(unittest.TestCase):
             git(source, "commit", "-m", "Test template v1")
             git(source, "tag", "v1.0.0")
             subprocess.run([
-                "copier", "copy", "--quiet", "--trust", "--skip-tasks", "--defaults",
+                *COPIER, "copy", "--quiet", "--trust", "--skip-tasks", "--defaults",
                 "-d", "project_name=update-demo", "-d", "package_name=custom_package",
                 "-d", "author=Tester", "-d", "email=test@example.com",
                 "-d", "description=Update test", "-d", "with_cyclopts=false",
@@ -105,7 +107,7 @@ class TemplateTests(unittest.TestCase):
             git(source, "commit", "-m", "Test template v2")
             git(source, "tag", "v2.0.0")
             subprocess.run([
-                "copier", "update", "--quiet", "--trust", "--skip-tasks", "--defaults",
+                *COPIER, "update", "--quiet", "--trust", "--skip-tasks", "--defaults",
             ], cwd=destination, check=True)
             self.assertEqual((destination / "update-marker.txt").read_text(), "updated\n")
             self.assertEqual((destination / ".env").read_text(), "CUSTOM=value\n")

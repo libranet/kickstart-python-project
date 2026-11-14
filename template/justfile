@@ -30,6 +30,8 @@ set windows-shell := ["pwsh.exe", "-NoLogo", "-Command"]
 set shell := ["bash", "-uc"]
 
 
+set allow-duplicate-recipes
+
 # waiting for glob-support, see
 # - https://github.com/casey/just/issues/1885
 # - https://github.com/casey/just/pull/2376
@@ -56,10 +58,13 @@ import? '.just/supervisord.justfile'
 import? '.just/ty.justfile'
 import? '.just/ubuntu.justfile'
 import? '.just/uv.justfile'
+import? '.just/zizmor.justfile'
+
+# user-level recipes; imported last, so project recipes with the same name take precedence
+import? '~/.config/just/imports.just'
 
 
 # Display all tasks (default recipe)
 [group: 'default']
 list-tasks:
-    @ {{just_executable()}} --list --unsorted 
-
+    @ {{just_executable()}} --list --unsorted

@@ -16,7 +16,7 @@
 
 # https://docs.astral.sh/uv/concepts/projects/config/#build-systems
 [build-system]
-requires = ["uv_build>=0.10,<0.11.0"]
+requires = ["uv_build>=0.13.0,<1.0"]
 build-backend = "uv_build"
 
 
@@ -90,7 +90,8 @@ pytest_add_cli_args_test_selection= [ "tests/" ]
 [project]
 name = {{ project_name | to_json }}
 version = {{ version | to_json }}
-license = { file = "license.md" }
+license = "{{ license_spdx }}"
+license-files = ["license.md"]
 description = {{ description | to_json }}
 readme = "docs/readme.md"
 requires-python = ">={{ minimum_python }}"
@@ -101,9 +102,6 @@ classifiers = [
     "{{ development_status }}",
     "Environment :: Console",
     "Intended Audience :: Developers",
-    {% if license == 'MIT' %}"License :: OSI Approved :: MIT License",{% endif %}
-    {% if license == 'Apache-2.0' %}"License :: OSI Approved :: Apache Software License",{% endif %}
-    {% if license == 'GPL-3.0' %}"License :: OSI Approved :: GNU General Public License v3 (GPLv3)",{% endif %}
     "Natural Language :: English",
     "Operating System :: POSIX :: Linux",
     {%- for v in range(minimum_python.split('.')[1]|int, 15)|reverse %}
@@ -193,10 +191,11 @@ security = [
     "bandit>=1.7",
     # bandit = { extras = ["toml"], version = ">=1.7" }
     "safety>=2.3",
+    {% if git_platform == 'github' %}"zizmor>=1.0",{% endif %}
 ]
 testing = [
     "mutmut>=3.3",
-    "pytest>=8.1",
+    "pytest>=9.0",
     "pytest-clarity>=1.0",
     "pytest-cov>=5.0.0",
     "pytest-dotenv>=0.5",
@@ -231,7 +230,7 @@ webtesting = [
 [project.urls]
 homepage = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}"
 repository = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}"
-"Changelog" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/blob/main/docs/changes.md"
+"Changelog" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/blob/main/docs/changelog.md"
 "Issues" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/issues"
 "Releases" = "https://{{ git_platform }}.com/{{ github_user }}/{{ project_name }}/releases"
 {% if support_rtd %}documentation = "https://{{ project_name }}.readthedocs.io"{% endif %}
@@ -253,7 +252,7 @@ disable = [
 ]
 
 
-[tool.pytest.ini_options]
+[tool.pytest]
 # Settings reference: https://docs.pytest.org/en/stable/reference/customize.html
 cache_dir = "var/cache/pytest"
 log_cli = false  # enable to show log-output
@@ -345,9 +344,8 @@ include = [
 
 [tool.uv]
 # Settings reference: https://docs.astral.sh/uv/reference/settings/
-exclude-newer = "10 days"
+exclude-newer = "7 days"
 # exclude-newer-package = { setuptools = "30 days" }
-
 keyring-provider = "subprocess"
 managed = true
 package = true
@@ -372,4 +370,3 @@ default-groups = "all"
 # [tool.uv.workspace]
 # Settings reference: https://docs.astral.sh/uv/reference/settings/#workspace
 # members = ["packages/*"]
-

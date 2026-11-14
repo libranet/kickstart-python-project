@@ -1,0 +1,28 @@
+# pyproject.toml for the kickstart-python-project Copier template itself.
+#
+# This is not a Python package: it only declares the tools needed to test the template.
+# Run the template tests with:
+#
+#   uv run python -m unittest tests/test_template.py
+
+
+[project]
+name = "kickstart-python-project"
+version = "3.0"
+description = "Copier template for modern Python projects"
+readme = "docs/readme.md"
+requires-python = ">=3.11"
+dependencies = []
+
+
+[dependency-groups]
+testing = [
+    "copier>=9.0",
+    "jinja2-time>=0.2",  # copier.yaml uses the jinja2_time.TimeExtension
+]
+
+
+[tool.uv]
+# Not a package: do not build or install the project itself.
+package = false
+default-groups = ["testing"]

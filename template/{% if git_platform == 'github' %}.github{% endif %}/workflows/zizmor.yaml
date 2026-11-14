@@ -1,0 +1,55 @@
+# Zizmor - lints Github Actions workflows for security issues
+#
+# References:
+#   - Official: https://www.zizmor.sh/
+#   - Docs: https://docs.zizmor.sh/
+#   - Repo: https://github.com/zizmorcore/zizmor
+#   - GitHub Action: https://github.com/zizmorcore/zizmor-action
+#
+# GitHub Actions Security references:
+#  - https://securitylab.github.com/resources/github-actions-preventing-pwn-requests
+#  - https://securitylab.github.com/resources/github-actions-untrusted-input
+#  - https://securitylab.github.com/resources/github-actions-building-blocks
+#  - https://securitylab.github.com/resources/github-actions-new-patterns-and-mitigations
+#
+# Used actions:
+#   - actions/checkout
+#     repo: https://github.com/actions/checkout
+#     releases: https://github.com/actions/checkout/tags
+#
+#   - zizmorcore/zizmor-action: run zizmor and upload SARIF results
+#     repo: https://github.com/zizmorcore/zizmor-action
+#     releases: https://github.com/zizmorcore/zizmor-action/tags
+#     docs: https://docs.zizmor.sh/
+
+
+name: Zizmor 🌈
+
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["**"]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+    zizmor:
+        name: Run zizmor 🌈
+        runs-on: ubuntu-latest
+        permissions:
+            security-events: write # Required for upload-sarif (used by zizmor-action) to upload SARIF files.
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
+
+            - name: Run zizmor 🌈
+              uses: zizmorcore/zizmor-action@3dc1ecc9bcb9e94e9b2c709687979e1298497054 # v0.6.2
+              with:
+                  persona: pedantic

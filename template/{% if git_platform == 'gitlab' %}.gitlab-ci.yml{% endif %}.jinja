@@ -10,7 +10,10 @@ image: python:{{ minimum_python }}
 variables:
     # Pin uv version for reproducible builds
     # https://github.com/astral-sh/uv/releases
-    UV_VERSION: "0.9.26"
+    UV_VERSION: "0.13.7"
+    # Pin just version for reproducible builds
+    # https://github.com/casey/just/releases
+    JUST_VERSION: "1.58.0"
     # Enable colored output
     PY_COLORS: "1"
 
@@ -36,16 +39,17 @@ before_script:
     - curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | sh
     - export PATH="$HOME/.local/bin:$PATH"
     - uv --version
-    # Install project dependencies
-    - uv sync --all-groups
-    # Create project directories
-    - mkdir -p var/cache var/coverage var/log var/tmp
+    # Install just from PyPI (rust-just)
+    - uv tool install "rust-just==${JUST_VERSION}"
+    - just --version
+    # Create project directories, .env and install all dependency groups
+    - just install
 
 
 pytest:
     stage: test
     script:
-        - uv run pytest tests -v --color=yes --cov=src --cov-report term-missing --cov-report html:var/coverage/html --cov-report xml:var/coverage/pytest-cobertura.xml
+        - just pytest-cov
     artifacts:
         paths:
             - var/coverage
@@ -53,6 +57,7 @@ pytest:
             coverage_report:
                 coverage_format: cobertura
                 path: var/coverage/pytest-cobertura.xml
+            junit: var/coverage/pytest-junit.xml
         expire_in: 10 days
 
 

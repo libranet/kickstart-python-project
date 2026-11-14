@@ -11,23 +11,37 @@
 #     repo: https://github.com/actions/checkout
 #     releases: https://github.com/actions/checkout/tags
 #
+#   - extractions/setup-just: install just
+#     repo: https://github.com/extractions/setup-just
+#     releases: https://github.com/extractions/setup-just/releases
+#
 #   - astral-sh/setup-uv: set up uv environment
 #     repo: https://github.com/astral-sh/setup-uv
 #     releases: https://github.com/astral-sh/setup-uv/tags
 #     https://docs.astral.sh/uv/guides/integration/github/
 
 
-name: Linting
+name: Linting 🧹
 
 concurrency:
     # see https://docs.github.com/en/actions/using-jobs/using-concurrency
+    # Run jobs on all commits - we're on free tier and want full diagnostic history
     # cancel-in-progress: {% raw %}${{ github.event_name == 'pull_request' }}{% endraw %}
     group: {% raw %}${{ github.workflow }}-${{ github.ref }}{% endraw %}
 
 env:
+    # Enable colored output for pytest
+    # https://github.com/pytest-dev/pytest/issues/7443
+    # https://github.com/actions/runner/issues/241
+    PY_COLORS: 1
+
+    # Pin just version for reproducible builds
+    # https://github.com/casey/just/releases
+    JUST_VERSION: "1.58.0"
+
     # Pin uv version for reproducible builds
     # https://github.com/astral-sh/uv/releases
-    UV_VERSION: "0.9.26"  # released on 2026-01-15
+    UV_VERSION: "0.13.7"
 
 on:
     pull_request:
@@ -43,10 +57,13 @@ jobs:
     # see https://docs.astral.sh/uv/guides/integration/github/
     run-tests:
         name: Python linters
-        runs-on: ubuntu-latest
+        runs-on: {% raw %}${{ matrix.os }}{% endraw %}
         timeout-minutes: 5
         strategy:
+            fail-fast: false
             matrix:
+                os:
+                    - ubuntu-latest
                 python-version:
                     {%- for v in range(minimum_python.split('.')[1] | int, 15) | reverse %}
                     - "3.{{ v }}"
@@ -55,21 +72,23 @@ jobs:
 
         # repo: https://github.com/actions/checkout
         # releases: https://github.com/actions/checkout/tags
-        - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1 released on 02-12-2025
+        - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
           with:
               persist-credentials: false
               fetch-depth: 0
 
-        - name: Remove sitecustomize.py
-          run: |
-              sudo rm -f /usr/lib/python3.*/sitecustomize.py
-              sudo rm -f /etc/python3.*/sitecustomize.py
+        # repo: https://github.com/extractions/setup-just
+        # releases: https://github.com/extractions/setup-just/releases
+        - name: Install pinned version of just
+          uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3  # v4.0.0
+          with:
+              just-version: {% raw %}${{ env.JUST_VERSION }}{% endraw %}
 
         # repo: https://github.com/astral-sh/setup-uv
         # releases: https://github.com/astral-sh/setup-uv/tags
         # docs: https://docs.astral.sh/uv/guides/integration/github
         - name: Install pinned version of uv
-          uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b  # v7.2.0 released on 2026-01-06
+          uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d  # v10.0.1
           with:
               python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
               version: {% raw %}${{ env.UV_VERSION }}{% endraw %}
@@ -77,20 +96,26 @@ jobs:
               cache-dependency-glob: "uv.lock"
               prune-cache: true
 
-        - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
-          run: uv python install {% raw %}${{ matrix.python-version }}{% endraw %}
+        - name: Remove global sitecustomize.py
+          # Ubuntu-only: unblocks our own sitecustomize entrypoint from the one preinstalled on
+          # the runner image.
+          if: runner.os == 'Linux'
+          run: just ubuntu-remove-global-sitecustomize
 
-        - name: Install the project
-          run: uv sync --all-groups
+        - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
+          env:
+              PYTHON_VERSION: {% raw %}${{ matrix.python-version }}{% endraw %}
+          run: uv python install "${PYTHON_VERSION}"
+
+        - name: Install project + dependencies
+          env:
+              PYTHON_VERSION: {% raw %}${{ matrix.python-version }}{% endraw %}
+          run: |
+              just uv-set-python-version "${PYTHON_VERSION}"
+              just install
 
         - name: Pre-commit
           run: uv run pre-commit run --all-files
-
-        # - name: Ruff check
-        #   run: uv run ruff check src tests
-
-        # - name: Pylint
-        #   run: uv run pylint src
 
         - name: Pyroma
           run: uv run pyroma .
