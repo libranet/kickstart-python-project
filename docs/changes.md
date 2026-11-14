@@ -3,21 +3,26 @@
 All notable changes to this project will be documented in this file.
 
 
-## 3.2 (2026-11-14)
+## 3.0 (unreleased)
 
-- Require `uv_build>=0.13.0,<1.0`: a loose upper bound, so `uv build` neither warns about the current uv version
-  being out of range nor about a missing upper bound, and new uv minor releases need no template update.
+- Migrate from Cookiecutter to Copier template engine.
 
-- Use a PEP 639 SPDX `license` expression with `license-files` in `pyproject.toml` and drop the deprecated
-  license classifiers; GPL-3.0 maps to `GPL-3.0-or-later`. Generated license tests check the SPDX expression.
+- Add support for template updates via `copier update`.
 
+- Use conditional file names instead of post-generation hooks.
 
-## 3.1 (2026-11-14)
+- Add native boolean support for feature toggles (no more `|int` casting).
+
+- Generate `.copier-answers.yml` from `_copier_answers` for tracking template configuration.
+
+- Add post-generation tasks: git init, uv sync, pre-commit install.
+
+- Support multiple licenses: MIT, Apache-2.0, GPL-3.0.
+
+- Archive original Cookiecutter files to `_archive/cookiecutter/`.
 
 - Flatten the template from `template/{{project_name}}/` to `template/`: the copier destination is now the
   project root, and tasks run in `.`.
-
-- Generate a proper `.copier-answers.yml` from `_copier_answers`, so `copier update` works.
 
 - Rename `_copyright_year` to `copyright_year` so it is rendered in license files and Sphinx config.
 
@@ -27,8 +32,14 @@ All notable changes to this project will be documented in this file.
 
 - Drop Python 3.9; derive CI test and lint matrices from `minimum_python`.
 
-- Escape strings in `pyproject.toml`, select the license classifier per license, add `flask` and `psycopg`
-  dependencies, only add `[project.scripts]` with cyclopts, and use `git_platform` in project URLs.
+- Escape strings in `pyproject.toml`, add `flask` and `psycopg` dependencies, only add `[project.scripts]` with
+  cyclopts, and use `git_platform` in project URLs.
+
+- Use a PEP 639 SPDX `license` expression with `license-files` in `pyproject.toml` instead of license
+  classifiers; GPL-3.0 maps to `GPL-3.0-or-later`. Generated license tests check the SPDX expression.
+
+- Require `uv_build>=0.13.0,<1.0`: a loose upper bound, so `uv build` neither warns about the current uv version
+  being out of range nor about a missing upper bound, and new uv minor releases need no template update.
 
 - Rename `.gitlab-ci.yaml` to `.gitlab-ci.yml` and `supervisord.just` to `supervisord.justfile`.
 
@@ -41,25 +52,6 @@ All notable changes to this project will be documented in this file.
 - Add github-cli, supervisord, mdformat and markdown-lint justfiles; support Python 3.14; add `exclude-newer`.
 
 - Remove personal defaults in favour of placeholders; start with an empty keyword list.
-
-
-## 3.0 (2026-02-02)
-
-- Migrate from Cookiecutter to Copier template engine.
-
-- Add support for template updates via `copier update`.
-
-- Use conditional file names instead of post-generation hooks.
-
-- Add native boolean support for feature toggles (no more `|int` casting).
-
-- Add `.copier-answers.yml` for tracking template configuration.
-
-- Add post-generation tasks: git init, uv sync, pre-commit install.
-
-- Support multiple licenses: MIT, Apache-2.0, GPL-3.0.
-
-- Archive original Cookiecutter files to `_archive/cookiecutter/`.
 
 
 ## 2.0 (2025-11-15)
