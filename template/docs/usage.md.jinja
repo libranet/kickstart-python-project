@@ -1,0 +1,15 @@
+# Usage
+
+{% if with_cyclopts %}
+Run the command-line application:
+
+```bash
+{{ project_name }} --help
+```
+{% else %}
+Import the package in Python:
+
+```python
+import {{ package_name }}
+```
+{% endif %}

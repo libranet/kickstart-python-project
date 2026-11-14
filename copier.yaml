@@ -40,7 +40,7 @@ project_name:
   help: "Project name (lowercase with dashes, e.g., my-awesome-project)"
   placeholder: "My New App"
   validator: >-
-    {% if not (project_name | regex_search('^[a-z][a-z0-9-]*[a-z0-9]$')) %}
+    {% if not (project_name | regex_search('^[a-z](?:[a-z0-9-]*[a-z0-9])?$')) %}
     Must be lowercase, start with letter, use only letters/numbers/dashes
     {% endif %}
 
@@ -49,7 +49,11 @@ package_name:
   help: "Python package name (auto-derived from project name)"
   default: "{{ project_name | replace('-', '_') }}"
   validator: >-
-    {% if not (package_name | regex_search('^[a-z][a-z0-9_]*$')) %}
+    {% if not (package_name | regex_search('^[a-z][a-z0-9_]*$'))
+       or package_name in ['and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue',
+                          'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global',
+                          'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass',
+                          'raise', 'return', 'try', 'while', 'with', 'yield'] %}
     Must be a valid Python identifier (lowercase, underscores allowed)
     {% endif %}
 
@@ -123,7 +127,6 @@ minimum_python:
     - "3.12"
     - "3.11"
     - "3.10"
-    - "3.9"
   default: "3.14"
 
 # -----------------------------------------------------------------------------
@@ -162,10 +165,10 @@ support_rtd:
   default: false
 
 # -----------------------------------------------------------------------------
-# Computed/private variables (not prompted)
+# Computed variables (not prompted)
 # -----------------------------------------------------------------------------
 
-_copyright_year:
+copyright_year:
   type: str
   default: "{{ '%Y' | strftime }}"
   when: false
@@ -178,22 +181,36 @@ _tasks:
   # Create directory structure
   - command: just install
     when: "{{ _copier_operation == 'copy' }}"
-    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
+    working_directory: "."
 
   # Initialize git repository
   - command: git init
     when: "{{ _copier_operation == 'copy' }}"
-    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
+    working_directory: "."
 
   # Install pre-commit hooks
   # - command: uv run pre-commit install
   #   when: "{{ _copier_operation == 'copy' }}"
-  #   working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
+  #   working_directory: "."
+
+  # Fall back to the template author/email when no git identity is configured
+  - command:
+      - "{{ _copier_python }}"
+      - -c
+      - >-
+        import subprocess, sys;
+        [subprocess.run(['git', 'config', key, value], check=True)
+        for key, value in zip(['user.name', 'user.email'], sys.argv[1:])
+        if subprocess.run(['git', 'config', '--get', key], capture_output=True).returncode]
+      - "{{ author }}"
+      - "{{ email }}"
+    when: "{{ _copier_operation == 'copy' }}"
+    working_directory: "."
 
   # Initial commit
   - command: git add -A && git commit -m "Initial commit from copier template"
     when: "{{ _copier_operation == 'copy' }}"
-    working_directory: "{{ _copier_conf.dst_path }}/{{ project_name }}"
+    working_directory: "."
 
 # =============================================================================
 # Migrations (for template updates)

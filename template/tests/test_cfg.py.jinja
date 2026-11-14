@@ -1,0 +1,22 @@
+# pylint: disable=import-outside-toplevel
+# pylint: disable=missing-function-docstring
+"""Testing of module {{ package_name }}.cfg."""
+
+import pathlib as pl
+
+import pytest
+
+
+def test_get_settings(monkeypatch: pytest.MonkeyPatch) -> None:
+    from {{ package_name }}.cfg import get_settings
+
+    monkeypatch.setenv("APP_SECRET_KEY", "test-secret")
+    monkeypatch.setenv("PROJECT_NAME", "custom-project")
+    monkeypatch.setenv("BASE_DIR", "/tmp/test-base-dir")
+    monkeypatch.setenv("TMPDIR", "/custom/tmp")
+
+    settings = get_settings()
+
+    assert settings.project_name == "custom-project"
+    assert settings.base_dir == pl.Path("/tmp/test-base-dir")
+    assert settings.tmpdir == pl.Path("/custom/tmp")
