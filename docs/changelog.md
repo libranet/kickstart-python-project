@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file.
 
 - Support multiple licenses: MIT, Apache-2.0, GPL-3.0.
 
-- Archive original Cookiecutter files to `_archive/cookiecutter/`.
+- Remove the original Cookiecutter files (`cookiecutter.json`, hooks, license files) from the repository.
 
 - Flatten the template from `template/{{project_name}}/` to `template/`: the copier destination is now the
   project root, and tasks run in `.`.
