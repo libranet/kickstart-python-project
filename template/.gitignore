@@ -32,8 +32,6 @@
 # distribution / packaging
 /dist/
 
-/.cookiecutter.json
-
 # exclude .env-files can contain secrets
 /.env*
 # but include the template (ordering matters here)
