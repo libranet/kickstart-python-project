@@ -58,13 +58,17 @@ All notable changes to this project will be documented in this file.
   auto-merges passing minor/patch updates itself. By default it only updates GitHub Actions; the new
   `with_renovate_python` option also enables Python dependency and `uv.lock` updates.
 
+- GitLab CI: pin uv 0.13.7 and just 1.58.0 (installed as `rust-just` via `uv tool`), install via `just install`,
+  run tests via `just pytest-cov`, and publish the JUnit report.
+
 - Rename `.gitlab-ci.yaml` to `.gitlab-ci.yml` and `supervisord.just` to `supervisord.justfile`.
 
 - Add `docs/changelog.md` and self-contained docs pages; switch Sphinx theme to `sphinx_rtd_theme`.
 
 - Fix the ruff pre-commit hooks to run via `uv run`; fix `about.py` metadata lookup by distribution name.
 
-- Add `tests/test_template.py` to render and check the template for several option combinations.
+- Add `tests/test_template.py` to render and check the template for several option combinations. It is a uv
+  script with `copier` and `jinja2-time` as inline dependencies: run it with `uv run tests/test_template.py`.
 
 - Add github-cli, supervisord, mdformat and markdown-lint justfiles; support Python 3.14;
   add `exclude-newer = "7 days"`.

@@ -1,14 +1,30 @@
-"""Regression checks for rendered Copier projects (requires copier and just)."""
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "copier>=9.0",
+#     "jinja2-time>=0.2",
+# ]
+# ///
+"""Regression checks for rendered Copier projects.
+
+Run with `uv run tests/test_template.py`; also requires `git` and `just` on the PATH.
+"""
 
 import ast
+import os
 import pathlib
-import subprocess
 import shutil
+import subprocess
+import sys
 import tempfile
 import tomllib
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+
+# Run copier from this script's environment, which includes the jinja2-time extension.
+COPIER = [sys.executable, "-m", "copier"]
 
 
 class TemplateTests(unittest.TestCase):
@@ -35,7 +51,7 @@ class TemplateTests(unittest.TestCase):
                         "with_postgres": "true",
                     }
                     command = [
-                        "copier", "copy", "--quiet", "--trust", "--skip-tasks",
+                        *COPIER, "copy", "--quiet", "--trust", "--skip-tasks",
                         "--defaults", "--vcs-ref", "HEAD",
                     ]
                     for key, value in answers.items():
@@ -59,9 +75,12 @@ class TemplateTests(unittest.TestCase):
                         if workflow.stem in ("testing", "linting"):
                             self.assertIn('- "3.12"', workflow.read_text())
                             self.assertNotIn('- "3.11"', workflow.read_text())
+                    # Use an empty HOME so the optional `~/.config/just/imports.just` of whoever
+                    # runs the tests is not imported into the generated justfile.
                     subprocess.run(
                         ["just", "--justfile", str(destination / "justfile"), "--summary"],
                         check=True, stdout=subprocess.DEVNULL,
+                        env={**os.environ, "HOME": directory},
                     )
 
     def test_update_preserves_answers_and_customizations(self):
@@ -90,7 +109,7 @@ class TemplateTests(unittest.TestCase):
             git(source, "commit", "-m", "Test template v1")
             git(source, "tag", "v1.0.0")
             subprocess.run([
-                "copier", "copy", "--quiet", "--trust", "--skip-tasks", "--defaults",
+                *COPIER, "copy", "--quiet", "--trust", "--skip-tasks", "--defaults",
                 "-d", "project_name=update-demo", "-d", "package_name=custom_package",
                 "-d", "author=Tester", "-d", "email=test@example.com",
                 "-d", "description=Update test", "-d", "with_cyclopts=false",
@@ -105,9 +124,13 @@ class TemplateTests(unittest.TestCase):
             git(source, "commit", "-m", "Test template v2")
             git(source, "tag", "v2.0.0")
             subprocess.run([
-                "copier", "update", "--quiet", "--trust", "--skip-tasks", "--defaults",
+                *COPIER, "update", "--quiet", "--trust", "--skip-tasks", "--defaults",
             ], cwd=destination, check=True)
             self.assertEqual((destination / "update-marker.txt").read_text(), "updated\n")
             self.assertEqual((destination / ".env").read_text(), "CUSTOM=value\n")
             self.assertTrue((destination / "src/custom_package").is_dir())
             self.assertFalse((destination / "src/custom_package/cli").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()
