@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 
 ## 3.0 (unreleased)
 
+- Remove the obsolete `/.cookiecutter.json` entry from the generated `.gitignore`.
+
 - Rename `docs/changes.md` to `docs/changelog.md`, in this repository and in generated projects.
 
 - Migrate from Cookiecutter to Copier template engine.
