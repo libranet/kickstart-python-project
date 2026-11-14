@@ -43,6 +43,10 @@ All notable changes to this project will be documented in this file.
 - Require `uv_build>=0.13.0,<1.0`: a loose upper bound, so `uv build` neither warns about the current uv version
   being out of range nor about a missing upper bound, and new uv minor releases need no template update.
 
+- Require `pytest>=9.0` and move pytest settings from `[tool.pytest.ini_options]` to the native `[tool.pytest]` table.
+
+- Optionally import user-level just recipes from the global just config directory in the generated `justfile`.
+
 - Rename `.gitlab-ci.yaml` to `.gitlab-ci.yml` and `supervisord.just` to `supervisord.justfile`.
 
 - Add `docs/changelog.md` and self-contained docs pages; switch Sphinx theme to `sphinx_rtd_theme`.
@@ -51,7 +55,8 @@ All notable changes to this project will be documented in this file.
 
 - Add `tests/test_template.py` to render and check the template for several option combinations.
 
-- Add github-cli, supervisord, mdformat and markdown-lint justfiles; support Python 3.14; add `exclude-newer`.
+- Add github-cli, supervisord, mdformat and markdown-lint justfiles; support Python 3.14;
+  add `exclude-newer = "7 days"`.
 
 - Remove personal defaults in favour of placeholders; start with an empty keyword list.
 

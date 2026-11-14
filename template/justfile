@@ -33,6 +33,8 @@ set shell := ["bash", "-uc"]
 # waiting for glob-support, see
 # - https://github.com/casey/just/issues/1885
 # - https://github.com/casey/just/pull/2376
+import? '~.config/just/imports.just'
+
 import? '.just/bandit.justfile'
 import? '.just/dir-structure.justfile'
 import? '.just/dotenv.justfile'
@@ -61,5 +63,4 @@ import? '.just/uv.justfile'
 # Display all tasks (default recipe)
 [group: 'default']
 list-tasks:
-    @ {{just_executable()}} --list --unsorted 
-
+    @ {{just_executable()}} --list --unsorted
