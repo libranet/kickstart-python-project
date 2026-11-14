@@ -1,5 +1,6 @@
 # ruff: noqa: E501 - line too long
 """Configuration file for ipython."""
+
 import os
 import pathlib as pl
 
@@ -1265,5 +1266,3 @@ c.TerminalInteractiveShell.autoformatter = "black"
 #          when IPython starts.
 #  Default: False
 # c.StoreMagics.autorestore = False
-
-

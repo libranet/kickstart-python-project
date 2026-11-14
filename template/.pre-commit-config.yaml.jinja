@@ -55,6 +55,8 @@ repos:
         name: check added large files
         entry: uv run check-added-large-files
         language: system
+        # uv.lock is generated and meant to be committed; with all dependency groups it exceeds 500 KB.
+        exclude: '^uv\.lock$'
 
       - id: check-case-conflict
         name: check case conflicts
@@ -163,18 +165,15 @@ repos:
         language: system
         types: [python]
 
-      - id: fix-encoding-pragma
-        name: fix encoding pragma
-        entry: uv run fix-encoding-pragma --remove
-        language: system
-        types: [python]
-
       - id: mdformat
         name: mdformat
         description: format markdown files
         entry: uv run mdformat
         language: system
         types: [markdown]
+        # docs/index.md and docs/readme.md share link definitions via a MyST include (and the
+        # `<!-- github-only -->` marker); mdformat would drop or move them and break the Sphinx docs.
+        exclude: '^docs/(index|readme)\.md$'
 
       - id: name-tests-test
         name: pytests are prefixed tests_*.py

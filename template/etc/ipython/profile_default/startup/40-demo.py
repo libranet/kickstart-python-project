@@ -29,7 +29,7 @@ def demo_urllib() -> None:
     import urllib.request
 
     url = "https://httpbin.org/get"
-    resp = urllib.request.urlopen(url)  # noqa: F841, S310
+    resp = urllib.request.urlopen(url)  # noqa: F841
 
 
 def demo_requests() -> None:

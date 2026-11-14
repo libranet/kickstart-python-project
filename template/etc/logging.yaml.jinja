@@ -163,7 +163,7 @@ handlers:
         formatter: "generic"
         level: "DEBUG"
 
-    {% if with_django %}
+{% if with_django %}
     django_db_backends_handler:
         <<: *default
         filename: django-db-backends.log
@@ -175,7 +175,7 @@ handlers:
         level: DEBUG
         # formatter: django.server
         formatter: !env PYTHON_CONSOLE_FORMATTER, console_bw
-    {% endif %}
+{% endif %}
 
     # uvicorn_default:
     #     formatter: "uvicorn_default"
@@ -208,7 +208,7 @@ loggers:
         handlers:
             - {{ package_name }}_file
 
-    {% if with_django %}
+{% if with_django %}
     django:
         level: !env LOGLEVEL_DJANGO, DEBUG
         handlers: # review
@@ -219,7 +219,7 @@ loggers:
         handlers:
             - django_db_backends_handler
         propagate': False
-    {% endif %}
+{% endif %}
 
     dotenv:
         level: !env LOGLEVEL_DOTENV, NOTSET
