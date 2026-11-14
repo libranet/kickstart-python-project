@@ -68,7 +68,7 @@ All notable changes to this project will be documented in this file.
 
 - Fix the ruff pre-commit hooks to run via `uv run`; fix `about.py` metadata lookup by distribution name.
 
-- Add `tests/test_template.py` to render and check the template for several option combinations. It is a uv
+- Add `tests/test_template.py` to render and check the template for several option combinations. The
   test has no dependency on `just`; run it with
   `uv run --with copier --with jinja2-time python -m unittest tests/test_template.py`.
 
